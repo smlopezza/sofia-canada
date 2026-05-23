@@ -68,3 +68,13 @@ body { background-color: #f8f9fa; }
 
 .mission-box { border-left: 4px solid var(--teal); padding: 1rem 1.5rem;
                background-color: var(--teal-light); border-radius: 0 8px 8px 0; }
+.mission-text { font-size: 1.05rem; }
+.stat-date-range { font-size: 0.7rem; color: #adb5bd; margin-top: 0.2rem; }
+.journey-state { font-size: 0.9rem; }
+.journey-count { font-size: 0.9rem; color: #6c757d; }
+.badge-auto { font-size: 0.7rem; }
+.cost-total-row { font-weight: 600; background-color: #f8f9fa; }
+.btn-teal { background-color: var(--teal); color: white; border: none; }
+.btn-teal:hover { background-color: var(--teal-dark); color: white; }
+.footer-link { color: rgba(255,255,255,0.75); }
+.footer-link:hover { color: white; }

@@ -82,6 +82,11 @@ def _build_stats(lang: str) -> dict:
     one_month_ago = now - timedelta(days=30)
     one_year_ago = now - timedelta(days=365)
 
+    date_ranges = {
+        "year": f"{one_year_ago.strftime('%b %Y')} – {now.strftime('%b %Y')}",
+        "month": f"{one_month_ago.strftime('%b %d')} – {now.strftime('%b %d, %Y')}",
+    }
+
     users = get_all_users()
     all_contacts = get_all_contacts()
 
@@ -181,6 +186,7 @@ def _build_stats(lang: str) -> dict:
             "last_month": _total_cost("last_month"),
             "last_year": _total_cost("last_year"),
         },
+        "date_ranges": date_ranges,
     }
 
 
@@ -204,6 +210,7 @@ def home(request: Request, lang: str = "en"):
         "request": request,
         "stats": stats,
         "lang": lang,
+        "date_ranges": stats.get("date_ranges", {}),
     })
 
 

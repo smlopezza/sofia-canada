@@ -34,7 +34,7 @@
   <div class="row mb-5">
     <div class="col-md-10 offset-md-1">
       <div class="mission-box">
-        <p class="mb-0" style="font-size:1.05rem;">
+        <p class="mb-0 mission-text">
           {% if lang == 'es' %}
             SofIA es una compañera de IA bilingüe para recién llegados latinos en Canadá que aún no trabajan en su profesión.
             Vive en WhatsApp — sin aplicaciones que descargar, sin formularios.
@@ -64,12 +64,14 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.users.year }}</div>
         <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.year }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="card stat-card">
         <div class="stat-number">{{ stats.users.month }}</div>
         <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.month }}</div>
       </div>
     </div>
   </div>
@@ -87,12 +89,14 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.contacts.year }}</div>
         <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.year }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="card stat-card">
         <div class="stat-number">{{ stats.contacts.month }}</div>
         <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.month }}</div>
       </div>
     </div>
   </div>
@@ -110,12 +114,14 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.chats.year }}</div>
         <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.year }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="card stat-card">
         <div class="stat-number">{{ stats.chats.month }}</div>
         <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.month }}</div>
       </div>
     </div>
   </div>
@@ -133,12 +139,14 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.mentors.year }}</div>
         <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.year }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
       <div class="card stat-card">
         <div class="stat-number">{{ stats.mentors.month }}</div>
         <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.month }}</div>
       </div>
     </div>
   </div>
@@ -152,8 +160,8 @@
       {% for item in stats.journey %}
       <div class="mb-3">
         <div class="d-flex justify-content-between mb-1">
-          <span style="font-size:0.9rem;">{{ item.state }}</span>
-          <span style="font-size:0.9rem;color:#6c757d;">{{ item.count }}</span>
+          <span class="journey-state">{{ item.state }}</span>
+          <span class="journey-count">{{ item.count }}</span>
         </div>
         <div class="journey-bar">
           <div class="journey-fill" style="width: {{ (item.count / max_count * 100) | int }}%"></div>
@@ -200,10 +208,6 @@
 
   <!-- Costs -->
   <p class="section-title">{% if lang == 'es' %}Costo del proyecto{% else %}Project cost{% endif %}</p>
-  <p class="text-muted mb-3" style="font-size:0.85rem;">
-    {% if lang == 'es' %}Twilio se obtiene automáticamente. Claude API y GCP se actualizan con las variables de entorno <code>CLAUDE_COST_LAST_MONTH</code>, <code>CLAUDE_COST_LAST_YEAR</code>, <code>GCP_COST_LAST_MONTH</code>, <code>GCP_COST_LAST_YEAR</code>.
-    {% else %}Twilio is fetched automatically. Update Claude API and GCP costs monthly via env vars <code>CLAUDE_COST_LAST_MONTH</code>, <code>CLAUDE_COST_LAST_YEAR</code>, <code>GCP_COST_LAST_MONTH</code>, <code>GCP_COST_LAST_YEAR</code>.{% endif %}
-  </p>
   <div class="card mb-5">
     <div class="table-responsive">
       <table class="table mb-0">
@@ -216,7 +220,7 @@
         </thead>
         <tbody>
           <tr>
-            <td>Twilio <span class="badge badge-success" style="font-size:0.7rem;">auto</span></td>
+            <td>Twilio <span class="badge badge-success badge-auto">auto</span></td>
             <td>{% if stats.costs.twilio.last_month is not none %}${{ stats.costs.twilio.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
             <td>{% if stats.costs.twilio.last_year is not none %}${{ stats.costs.twilio.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
           </tr>
@@ -230,7 +234,7 @@
             <td>{% if stats.costs.gcp.last_month %}${{ stats.costs.gcp.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
             <td>{% if stats.costs.gcp.last_year %}${{ stats.costs.gcp.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
           </tr>
-          <tr style="font-weight:600;background-color:#f8f9fa;">
+          <tr class="cost-total-row">
             <td>Total</td>
             <td>{% if stats.total_cost.last_month is not none %}${{ stats.total_cost.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
             <td>{% if stats.total_cost.last_year is not none %}${{ stats.total_cost.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
@@ -252,8 +256,7 @@
         If you represent a settlement organization, foundation, or company — reach out.
       {% endif %}
     </p>
-    <a href="mailto:sandritamlz@gmail.com" class="btn btn-lg"
-       style="background-color: var(--teal); color: white; border: none;">
+    <a href="mailto:slopezza@outlook.com" class="btn btn-lg btn-teal">
       {% if lang == 'es' %}Conectemos{% else %}Let's connect{% endif %}
     </a>
   </div>
@@ -262,7 +265,7 @@
 
 <div class="sofia-footer">
   <div class="container text-center">
-    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · slopezza.com</p>
+    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · <a href="https://www.slopezza.com" target="_blank" class="footer-link">slopezza.com</a></p>
   </div>
 </div>
 
