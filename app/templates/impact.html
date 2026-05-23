@@ -9,7 +9,6 @@
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
   <span class="navbar-brand mb-0 h1">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %}</span>
   <div>
@@ -18,17 +17,13 @@
   </div>
 </nav>
 
-<!-- Hero -->
 <div class="hero">
   <div class="container text-center">
     <img src="/static/images/sofia_avatar.png" alt="SofIA" class="hero-avatar">
     <h1>{% if lang == 'es' %}Impacto en la comunidad{% else %}Community Impact{% endif %}</h1>
     <p class="mt-2">
-      {% if lang == 'es' %}
-        Acompañando a recién llegados latinos en su camino profesional en Canadá
-      {% else %}
-        Supporting Latino newcomers on their professional journey in Canada
-      {% endif %}
+      {% if lang == 'es' %}Acompañando a recién llegados latinos en su camino profesional en Canadá
+      {% else %}Supporting Latino newcomers on their professional journey in Canada{% endif %}
     </p>
   </div>
 </div>
@@ -41,16 +36,14 @@
       <div class="mission-box">
         <p class="mb-0" style="font-size:1.05rem;">
           {% if lang == 'es' %}
-            SofIA es una compañera de IA bilingüe (español/inglés) para recién llegados latinos en Canadá
-            que aún no trabajan en su profesión. Vive en WhatsApp — sin aplicaciones que descargar,
-            sin formularios. Los acompaña desde el miedo y la parálisis ante el networking profesional
-            hasta la confianza, las conexiones genuinas y el momentum real.
+            SofIA es una compañera de IA bilingüe para recién llegados latinos en Canadá que aún no trabajan en su profesión.
+            Vive en WhatsApp — sin aplicaciones que descargar, sin formularios.
+            Los acompaña desde el miedo ante el networking profesional hasta la confianza, conexiones genuinas y momentum real.
             No reemplaza a coaches, mentores o terapeutas — los anima a buscarlos.
           {% else %}
-            SofIA is a bilingual (Spanish/English) AI companion for Latino newcomers in Canada
-            who haven't yet found work in their profession. She lives on WhatsApp — no app to download,
-            no forms to fill. She walks with them from fear and paralysis around professional networking
-            to genuine confidence, real connections, and momentum.
+            SofIA is a bilingual AI companion for Latino newcomers in Canada who haven't yet found work in their profession.
+            She lives on WhatsApp — no app to download, no forms to fill.
+            She walks with them from fear of professional networking to genuine confidence, real connections, and momentum.
             She doesn't replace coaches, mentors, or therapists — she encourages users to seek them out.
           {% endif %}
         </p>
@@ -58,73 +51,100 @@
     </div>
   </div>
 
-  <!-- Key stats -->
-  <p class="section-title text-center mb-4">{% if lang == 'es' %}En números{% else %}By the numbers{% endif %}</p>
-  <div class="row mb-5">
-    <div class="col-6 col-md-3">
+  <!-- Users -->
+  <p class="section-title">{% if lang == 'es' %}Usuarios{% else %}Users{% endif %}</p>
+  <div class="row mb-4">
+    <div class="col-6 col-md-4">
       <div class="card stat-card">
-        <div class="stat-number">{{ stats.total_users }}</div>
-        <div class="stat-label">{% if lang == 'es' %}Usuarios activos{% else %}Active users{% endif %}</div>
+        <div class="stat-number">{{ stats.users.all }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-4">
       <div class="card stat-card">
-        <div class="stat-number">{{ stats.total_contacts }}</div>
-        <div class="stat-label">{% if lang == 'es' %}Contactos registrados{% else %}Contacts registered{% endif %}</div>
+        <div class="stat-number">{{ stats.users.year }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
       </div>
     </div>
-    <div class="col-6 col-md-3">
+    <div class="col-6 col-md-4">
       <div class="card stat-card">
-        <div class="stat-number">{{ stats.total_chats }}</div>
-        <div class="stat-label">Coffee chats</div>
-      </div>
-    </div>
-    <div class="col-6 col-md-3">
-      <div class="card stat-card">
-        <div class="stat-number">{{ stats.countries | length }}</div>
-        <div class="stat-label">{% if lang == 'es' %}Países de origen{% else %}Countries of origin{% endif %}</div>
+        <div class="stat-number">{{ stats.users.month }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
       </div>
     </div>
   </div>
 
-  <div class="row mb-5">
-
-    <!-- Countries -->
-    <div class="col-md-6">
-      <p class="section-title">{% if lang == 'es' %}Países de origen{% else %}Countries of origin{% endif %}</p>
-      <div class="card">
-        <div class="card-body">
-          {% if stats.countries %}
-            {% for country, count in stats.countries.items() %}
-            <span class="country-badge">{{ country }} ({{ count }})</span>
-            {% endfor %}
-          {% else %}
-          <p class="text-muted mb-0">{% if lang == 'es' %}Datos próximamente.{% else %}Data coming soon.{% endif %}</p>
-          {% endif %}
-        </div>
+  <!-- Contacts -->
+  <p class="section-title">{% if lang == 'es' %}Contactos registrados{% else %}Contacts registered{% endif %}</p>
+  <div class="row mb-4">
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.contacts.all }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
       </div>
     </div>
-
-    <!-- Cities -->
-    <div class="col-md-6">
-      <p class="section-title">{% if lang == 'es' %}Ciudades{% else %}Cities{% endif %}</p>
-      <div class="card">
-        <div class="card-body">
-          {% if stats.cities %}
-            {% for city, count in stats.cities.items() %}
-            <span class="country-badge">{{ city }} ({{ count }})</span>
-            {% endfor %}
-          {% else %}
-          <p class="text-muted mb-0">{% if lang == 'es' %}Datos próximamente.{% else %}Data coming soon.{% endif %}</p>
-          {% endif %}
-        </div>
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.contacts.year }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
       </div>
     </div>
-
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.contacts.month }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
+      </div>
+    </div>
   </div>
 
-  <!-- User journey -->
-  <p class="section-title">{% if lang == 'es' %}Dónde están los usuarios en su camino{% else %}Where users are in their journey{% endif %}</p>
+  <!-- Coffee chats -->
+  <p class="section-title">Coffee chats</p>
+  <div class="row mb-4">
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.chats.all }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.chats.year }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.chats.month }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mentors -->
+  <p class="section-title">{% if lang == 'es' %}Mentores identificados{% else %}Mentors identified{% endif %}</p>
+  <div class="row mb-5">
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.mentors.all }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.mentors.year }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.mentors.month }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Journey -->
+  <p class="section-title">{% if lang == 'es' %}Dónde están los usuarios{% else %}Where users are in their journey{% endif %}</p>
   <div class="card mb-5">
     <div class="card-body">
       {% if stats.journey %}
@@ -146,35 +166,90 @@
     </div>
   </div>
 
-  <!-- Languages -->
+  <!-- Countries / Cities -->
   <div class="row mb-5">
     <div class="col-md-6">
-      <p class="section-title">{% if lang == 'es' %}Idioma preferido{% else %}Preferred language{% endif %}</p>
+      <p class="section-title">{% if lang == 'es' %}Países de origen{% else %}Countries of origin{% endif %}</p>
       <div class="card">
         <div class="card-body">
-          {% for l, count in stats.languages.items() %}
-          <div class="d-flex justify-content-between">
-            <span>{{ "Español" if l == "es" else "English" }}</span>
-            <strong>{{ count }}</strong>
-          </div>
-          {% endfor %}
+          {% if stats.countries %}
+            {% for country, count in stats.countries.items() %}
+            <span class="country-badge">{{ country }} ({{ count }})</span>
+            {% endfor %}
+          {% else %}
+          <p class="text-muted mb-0">{% if lang == 'es' %}Próximamente.{% else %}Coming soon.{% endif %}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <p class="section-title">{% if lang == 'es' %}Ciudades{% else %}Cities{% endif %}</p>
+      <div class="card">
+        <div class="card-body">
+          {% if stats.cities %}
+            {% for city, count in stats.cities.items() %}
+            <span class="country-badge">{{ city }} ({{ count }})</span>
+            {% endfor %}
+          {% else %}
+          <p class="text-muted mb-0">{% if lang == 'es' %}Próximamente.{% else %}Coming soon.{% endif %}</p>
+          {% endif %}
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Support CTA -->
+  <!-- Costs -->
+  <p class="section-title">{% if lang == 'es' %}Costo del proyecto{% else %}Project cost{% endif %}</p>
+  <p class="text-muted mb-3" style="font-size:0.85rem;">
+    {% if lang == 'es' %}Twilio se obtiene automáticamente. Claude API y GCP se actualizan con las variables de entorno <code>CLAUDE_COST_LAST_MONTH</code>, <code>CLAUDE_COST_LAST_YEAR</code>, <code>GCP_COST_LAST_MONTH</code>, <code>GCP_COST_LAST_YEAR</code>.
+    {% else %}Twilio is fetched automatically. Update Claude API and GCP costs monthly via env vars <code>CLAUDE_COST_LAST_MONTH</code>, <code>CLAUDE_COST_LAST_YEAR</code>, <code>GCP_COST_LAST_MONTH</code>, <code>GCP_COST_LAST_YEAR</code>.{% endif %}
+  </p>
+  <div class="card mb-5">
+    <div class="table-responsive">
+      <table class="table mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th>{% if lang == 'es' %}Servicio{% else %}Service{% endif %}</th>
+            <th>{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</th>
+            <th>{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Twilio <span class="badge badge-success" style="font-size:0.7rem;">auto</span></td>
+            <td>{% if stats.costs.twilio.last_month is not none %}${{ stats.costs.twilio.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td>{% if stats.costs.twilio.last_year is not none %}${{ stats.costs.twilio.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          </tr>
+          <tr>
+            <td>Claude API</td>
+            <td>{% if stats.costs.claude.last_month %}${{ stats.costs.claude.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td>{% if stats.costs.claude.last_year %}${{ stats.costs.claude.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          </tr>
+          <tr>
+            <td>Google Cloud</td>
+            <td>{% if stats.costs.gcp.last_month %}${{ stats.costs.gcp.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td>{% if stats.costs.gcp.last_year %}${{ stats.costs.gcp.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          </tr>
+          <tr style="font-weight:600;background-color:#f8f9fa;">
+            <td>Total</td>
+            <td>{% if stats.total_cost.last_month is not none %}${{ stats.total_cost.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td>{% if stats.total_cost.last_year is not none %}${{ stats.total_cost.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CTA -->
   <div class="text-center mb-5">
-    <p class="section-title">
-      {% if lang == 'es' %}¿Quieres apoyar este proyecto?{% else %}Want to support this project?{% endif %}
-    </p>
+    <p class="section-title">{% if lang == 'es' %}¿Quieres apoyar este proyecto?{% else %}Want to support this project?{% endif %}</p>
     <p class="text-muted">
       {% if lang == 'es' %}
         SofIA está siendo construida para escalar a más comunidades de recién llegados.<br>
-        Si representas una organización de asentamiento, fundación, o empresa interesada en apoyar — escríbenos.
+        Si representas una organización de asentamiento, fundación, o empresa — escríbenos.
       {% else %}
         SofIA is being built to scale to more newcomer communities.<br>
-        If you represent a settlement organization, foundation, or company interested in supporting — reach out.
+        If you represent a settlement organization, foundation, or company — reach out.
       {% endif %}
     </p>
     <a href="mailto:sandritamlz@gmail.com" class="btn btn-lg"
@@ -185,7 +260,6 @@
 
 </div>
 
-<!-- Footer -->
 <div class="sofia-footer">
   <div class="container text-center">
     <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · slopezza.com</p>
