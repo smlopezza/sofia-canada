@@ -6,33 +6,47 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <title>Mi historia con SofIA</title>
   <style>
+    :root { --teal: #1aafaf; --teal-dark: #0d8a8a; --teal-light: #e6f8f8; }
     body { background-color: #f8f9fa; }
-    .hero { background: linear-gradient(135deg, #6f42c1, #e83e8c); color: white; padding: 3rem 0; }
+    .hero { background: linear-gradient(135deg, #0d8a8a, #1aafaf); color: white; padding: 3rem 0; }
     .hero h1 { font-size: 2rem; font-weight: 700; }
     .hero p { font-size: 1.1rem; opacity: 0.9; }
+    .hero-avatar { width: 110px; height: 110px; border-radius: 50%;
+                   border: 3px solid rgba(255,255,255,0.6);
+                   object-fit: cover; margin-bottom: 1rem; }
     .section-title { font-size: 1.1rem; font-weight: 600; text-transform: uppercase;
-                     letter-spacing: 0.05rem; color: #6f42c1; margin-bottom: 1rem; }
-    .milestone-item { border-left: 3px solid #6f42c1; padding-left: 1rem; margin-bottom: 1rem; }
+                     letter-spacing: 0.05rem; color: var(--teal-dark); margin-bottom: 1rem; }
+    .milestone-item { border-left: 3px solid var(--teal); padding-left: 1rem; margin-bottom: 1rem; }
     .milestone-date { font-size: 0.8rem; color: #6c757d; }
     .badge-high { background-color: #28a745; }
     .badge-medium { background-color: #ffc107; color: #212529; }
     .badge-uncertain { background-color: #dc3545; }
     .card { border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1rem; }
-    .download-btn { font-size: 0.85rem; }
-    .sofia-footer { background-color: #343a40; color: #adb5bd; padding: 1.5rem 0;
+    .download-btn { font-size: 0.85rem; color: var(--teal-dark); border-color: var(--teal-dark); }
+    .download-btn:hover { background-color: var(--teal-dark); color: white; }
+    .sofia-footer { background-color: #0d8a8a; color: rgba(255,255,255,0.75); padding: 1.5rem 0;
                     font-size: 0.85rem; margin-top: 3rem; }
+    .contact-row { cursor: pointer; }
+    .contact-row:hover td { background-color: var(--teal-light); }
+    .chat-detail { background-color: #fafafa; border-top: 1px solid #dee2e6; }
+    .chat-entry { border-left: 3px solid var(--teal); padding: 0.6rem 1rem; margin-bottom: 0.75rem; }
+    .chat-date { font-size: 0.8rem; color: #6c757d; font-weight: 600; }
+    .chat-notes { font-size: 0.9rem; color: #495057; margin-top: 0.25rem; }
+    .toggle-icon { float: right; color: var(--teal); font-size: 0.85rem; }
+    .navbar-sofia { background-color: var(--teal-dark); }
   </style>
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-dark" style="background-color: #6f42c1;">
+<nav class="navbar navbar-dark navbar-sofia">
   <span class="navbar-brand mb-0 h1">SofIA — Tu aliada en Canadá</span>
 </nav>
 
 <!-- Hero -->
 <div class="hero">
-  <div class="container">
+  <div class="container text-center">
+    <img src="/static/sofia_avatar.png" alt="SofIA" class="hero-avatar">
     <h1>{{ user.name or "Tu historia" }}</h1>
     {% if user.about_me %}
     <p class="mt-2">{{ user.about_me }}</p>
@@ -72,18 +86,55 @@
             <th>Nombre</th>
             <th>Rol</th>
             <th>Empresa</th>
+            <th>Primer contacto</th>
+            <th>Último contacto</th>
             <th>Chats</th>
             <th>Mentor</th>
           </tr>
         </thead>
         <tbody>
           {% for c in contacts %}
-          <tr>
-            <td><strong>{{ c.name }}</strong></td>
+          {% set last_chat = c.chats[-1] if c.chats else none %}
+          {% set first_date = c.created_at[:10] if c.created_at else "—" %}
+          {% set last_date = last_chat.get("scheduled_at", "")[:10] if last_chat else "—" %}
+          <tr class="contact-row" data-toggle="collapse" data-target="#chats-{{ loop.index }}">
+            <td><strong>{{ c.name }}</strong> <span class="toggle-icon">▾</span></td>
             <td>{{ c.role }}</td>
             <td>{{ c.company }}</td>
+            <td>{{ first_date }}</td>
+            <td>{{ last_date }}</td>
             <td>{{ c.chats | length }}</td>
             <td>{% if c.is_mentor %}<span class="badge badge-success">Sí</span>{% endif %}</td>
+          </tr>
+          <tr class="collapse chat-detail" id="chats-{{ loop.index }}">
+            <td colspan="7">
+              {% if c.chats %}
+              <div class="py-2 px-3">
+                <p class="mb-2" style="font-size:0.8rem;text-transform:uppercase;color:#6f42c1;font-weight:600;">
+                  Historial de conversaciones
+                </p>
+                {% for chat in c.chats %}
+                <div class="chat-entry">
+                  <div class="chat-date">
+                    {{ chat.get("scheduled_at", "")[:10] or "Fecha desconocida" }}
+                  </div>
+                  {% if chat.get("notes") %}
+                  <div class="chat-notes">{{ chat.get("notes") }}</div>
+                  {% else %}
+                  <div class="chat-notes text-muted" style="font-style:italic;">Sin notas registradas</div>
+                  {% endif %}
+                  {% if chat.get("depth_signals") %}
+                  <div class="mt-1" style="font-size:0.8rem;color:#6c757d;">
+                    <strong>Señales:</strong> {{ chat.get("depth_signals") }}
+                  </div>
+                  {% endif %}
+                </div>
+                {% endfor %}
+              </div>
+              {% else %}
+              <div class="py-2 px-3 text-muted" style="font-size:0.9rem;">Sin conversaciones registradas.</div>
+              {% endif %}
+            </td>
           </tr>
           {% endfor %}
         </tbody>
