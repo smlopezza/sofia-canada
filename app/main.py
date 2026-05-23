@@ -3,7 +3,6 @@ load_dotenv()
 
 from pathlib import Path
 from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from app.webhook import router as webhook_router
 from app.jobs import router as jobs_router
@@ -18,11 +17,6 @@ app.include_router(webhook_router)
 app.include_router(jobs_router)
 app.include_router(export_router)
 app.include_router(dashboard_router)
-
-
-@app.get("/")
-def root():
-    return RedirectResponse(url="/impact")
 
 
 @app.get("/health")

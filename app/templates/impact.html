@@ -1,25 +1,35 @@
 <!doctype html>
-<html lang="es">
+<html lang="{{ lang }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="/static/css/styles.css">
-  <title>SofIA — Impacto en la comunidad</title>
+  <title>SofIA — {% if lang == 'es' %}Impacto en la comunidad{% else %}Community Impact{% endif %}</title>
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-dark navbar-sofia">
-  <span class="navbar-brand mb-0 h1">SofIA — Tu aliada en Canadá</span>
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <span class="navbar-brand mb-0 h1">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %}</span>
+  <div>
+    <a href="/?lang=en" class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/?lang=es" class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
 </nav>
 
 <!-- Hero -->
 <div class="hero">
   <div class="container text-center">
     <img src="/static/images/sofia_avatar.png" alt="SofIA" class="hero-avatar">
-    <h1>Impacto en la comunidad</h1>
-    <p class="mt-2">Acompañando a recién llegados latinos en su camino profesional en Canadá</p>
+    <h1>{% if lang == 'es' %}Impacto en la comunidad{% else %}Community Impact{% endif %}</h1>
+    <p class="mt-2">
+      {% if lang == 'es' %}
+        Acompañando a recién llegados latinos en su camino profesional en Canadá
+      {% else %}
+        Supporting Latino newcomers on their professional journey in Canada
+      {% endif %}
+    </p>
   </div>
 </div>
 
@@ -30,28 +40,37 @@
     <div class="col-md-10 offset-md-1">
       <div class="mission-box">
         <p class="mb-0" style="font-size:1.05rem;">
-          SofIA es una compañera de IA bilingüe (español/inglés) para recién llegados latinos en Canadá
-          que aún no trabajan en su profesión. Vive en WhatsApp — sin aplicaciones que descargar,
-          sin formularios. Los acompaña desde el miedo y la parálisis ante el networking profesional
-          hasta la confianza, las conexiones genuinas y el momentum real.
+          {% if lang == 'es' %}
+            SofIA es una compañera de IA bilingüe (español/inglés) para recién llegados latinos en Canadá
+            que aún no trabajan en su profesión. Vive en WhatsApp — sin aplicaciones que descargar,
+            sin formularios. Los acompaña desde el miedo y la parálisis ante el networking profesional
+            hasta la confianza, las conexiones genuinas y el momentum real.
+            No reemplaza a coaches, mentores o terapeutas — los anima a buscarlos.
+          {% else %}
+            SofIA is a bilingual (Spanish/English) AI companion for Latino newcomers in Canada
+            who haven't yet found work in their profession. She lives on WhatsApp — no app to download,
+            no forms to fill. She walks with them from fear and paralysis around professional networking
+            to genuine confidence, real connections, and momentum.
+            She doesn't replace coaches, mentors, or therapists — she encourages users to seek them out.
+          {% endif %}
         </p>
       </div>
     </div>
   </div>
 
   <!-- Key stats -->
-  <p class="section-title text-center mb-4">En números</p>
+  <p class="section-title text-center mb-4">{% if lang == 'es' %}En números{% else %}By the numbers{% endif %}</p>
   <div class="row mb-5">
     <div class="col-6 col-md-3">
       <div class="card stat-card">
         <div class="stat-number">{{ stats.total_users }}</div>
-        <div class="stat-label">Usuarios activos</div>
+        <div class="stat-label">{% if lang == 'es' %}Usuarios activos{% else %}Active users{% endif %}</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
       <div class="card stat-card">
         <div class="stat-number">{{ stats.total_contacts }}</div>
-        <div class="stat-label">Contactos registrados</div>
+        <div class="stat-label">{% if lang == 'es' %}Contactos registrados{% else %}Contacts registered{% endif %}</div>
       </div>
     </div>
     <div class="col-6 col-md-3">
@@ -63,7 +82,7 @@
     <div class="col-6 col-md-3">
       <div class="card stat-card">
         <div class="stat-number">{{ stats.countries | length }}</div>
-        <div class="stat-label">Países de origen</div>
+        <div class="stat-label">{% if lang == 'es' %}Países de origen{% else %}Countries of origin{% endif %}</div>
       </div>
     </div>
   </div>
@@ -72,7 +91,7 @@
 
     <!-- Countries -->
     <div class="col-md-6">
-      <p class="section-title">Países de origen</p>
+      <p class="section-title">{% if lang == 'es' %}Países de origen{% else %}Countries of origin{% endif %}</p>
       <div class="card">
         <div class="card-body">
           {% if stats.countries %}
@@ -80,7 +99,7 @@
             <span class="country-badge">{{ country }} ({{ count }})</span>
             {% endfor %}
           {% else %}
-          <p class="text-muted mb-0">Datos próximamente.</p>
+          <p class="text-muted mb-0">{% if lang == 'es' %}Datos próximamente.{% else %}Data coming soon.{% endif %}</p>
           {% endif %}
         </div>
       </div>
@@ -88,7 +107,7 @@
 
     <!-- Cities -->
     <div class="col-md-6">
-      <p class="section-title">Ciudades</p>
+      <p class="section-title">{% if lang == 'es' %}Ciudades{% else %}Cities{% endif %}</p>
       <div class="card">
         <div class="card-body">
           {% if stats.cities %}
@@ -96,7 +115,7 @@
             <span class="country-badge">{{ city }} ({{ count }})</span>
             {% endfor %}
           {% else %}
-          <p class="text-muted mb-0">Datos próximamente.</p>
+          <p class="text-muted mb-0">{% if lang == 'es' %}Datos próximamente.{% else %}Data coming soon.{% endif %}</p>
           {% endif %}
         </div>
       </div>
@@ -105,7 +124,7 @@
   </div>
 
   <!-- User journey -->
-  <p class="section-title">Dónde están los usuarios en su camino</p>
+  <p class="section-title">{% if lang == 'es' %}Dónde están los usuarios en su camino{% else %}Where users are in their journey{% endif %}</p>
   <div class="card mb-5">
     <div class="card-body">
       {% if stats.journey %}
@@ -122,7 +141,7 @@
       </div>
       {% endfor %}
       {% else %}
-      <p class="text-muted mb-0">Datos próximamente.</p>
+      <p class="text-muted mb-0">{% if lang == 'es' %}Datos próximamente.{% else %}Data coming soon.{% endif %}</p>
       {% endif %}
     </div>
   </div>
@@ -130,12 +149,12 @@
   <!-- Languages -->
   <div class="row mb-5">
     <div class="col-md-6">
-      <p class="section-title">Idioma preferido</p>
+      <p class="section-title">{% if lang == 'es' %}Idioma preferido{% else %}Preferred language{% endif %}</p>
       <div class="card">
         <div class="card-body">
-          {% for lang, count in stats.languages.items() %}
+          {% for l, count in stats.languages.items() %}
           <div class="d-flex justify-content-between">
-            <span>{{ "Español" if lang == "es" else "English" }}</span>
+            <span>{{ "Español" if l == "es" else "English" }}</span>
             <strong>{{ count }}</strong>
           </div>
           {% endfor %}
@@ -146,14 +165,21 @@
 
   <!-- Support CTA -->
   <div class="text-center mb-5">
-    <p class="section-title">¿Quieres apoyar este proyecto?</p>
+    <p class="section-title">
+      {% if lang == 'es' %}¿Quieres apoyar este proyecto?{% else %}Want to support this project?{% endif %}
+    </p>
     <p class="text-muted">
-      SofIA está siendo construida para escalar a más comunidades de recién llegados.<br>
-      Si representas una organización de asentamiento, fundación, o empresa interesada en apoyar — escríbenos.
+      {% if lang == 'es' %}
+        SofIA está siendo construida para escalar a más comunidades de recién llegados.<br>
+        Si representas una organización de asentamiento, fundación, o empresa interesada en apoyar — escríbenos.
+      {% else %}
+        SofIA is being built to scale to more newcomer communities.<br>
+        If you represent a settlement organization, foundation, or company interested in supporting — reach out.
+      {% endif %}
     </p>
     <a href="mailto:sandritamlz@gmail.com" class="btn btn-lg"
        style="background-color: var(--teal); color: white; border: none;">
-      Conectemos
+      {% if lang == 'es' %}Conectemos{% else %}Let's connect{% endif %}
     </a>
   </div>
 
@@ -162,7 +188,7 @@
 <!-- Footer -->
 <div class="sofia-footer">
   <div class="container text-center">
-    <p class="mb-0">SofIA — Tu aliada en Canadá · slopezza.com</p>
+    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · slopezza.com</p>
   </div>
 </div>
 
