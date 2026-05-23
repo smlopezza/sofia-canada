@@ -219,6 +219,11 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
     if about_me and not user.about_me:
         user.about_me = about_me
 
+    user_name = tool_inputs.get("user_name")
+    if user_name and not user.name:
+        user.name = user_name
+        logger.info("User name set for %s: %s", phone, user_name)
+
     country_of_origin = tool_inputs.get("country_of_origin")
     if country_of_origin and not user.country_of_origin:
         user.country_of_origin = country_of_origin

@@ -66,6 +66,13 @@ TOOLS = [
                         "asks to update their About Me."
                     )
                 },
+                "user_name": {
+                    "type": "string",
+                    "description": (
+                        "User's first name. Set once during onboarding when the user tells you "
+                        "their name. Never overwrite once set."
+                    )
+                },
                 "country_of_origin": {
                     "type": "string",
                     "description": (
