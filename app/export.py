@@ -79,13 +79,24 @@ def export_contacts_csv(token: str):
 
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["Name", "Role", "Company", "Connection Context", "Last Chat", "Is Mentor", "Notes"])
+    writer.writerow(["Name", "Role", "Company", "Connection Context", "First Registered",
+                     "Chat Date", "Chat Notes", "Is Mentor"])
     for _, c in contacts_with_chats:
-        last_chat = c.chats[-1].get("scheduled_at", "") if c.chats else ""
-        writer.writerow([
-            c.name, c.role, c.company, c.connection_context,
-            last_chat, c.is_mentor, c.post_call_notes or ""
-        ])
+        if c.chats:
+            for chat in c.chats:
+                writer.writerow([
+                    c.name, c.role, c.company, c.connection_context,
+                    c.created_at[:10] if c.created_at else "",
+                    chat.get("scheduled_at", "")[:10],
+                    chat.get("notes") or "",
+                    c.is_mentor,
+                ])
+        else:
+            writer.writerow([
+                c.name, c.role, c.company, c.connection_context,
+                c.created_at[:10] if c.created_at else "",
+                "", "", c.is_mentor,
+            ])
 
     output.seek(0)
     return StreamingResponse(
