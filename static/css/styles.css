@@ -53,3 +53,18 @@ body { background-color: #f8f9fa; }
 .toggle-icon { float: right; color: var(--teal); font-size: 0.85rem; }
 
 .navbar-sofia { background-color: var(--teal-dark); }
+
+/* Impact dashboard */
+.stat-card { text-align: center; padding: 2rem 1rem; }
+.stat-number { font-size: 3rem; font-weight: 700; color: var(--teal); line-height: 1; }
+.stat-label { font-size: 0.9rem; color: #6c757d; margin-top: 0.5rem; text-transform: uppercase;
+              letter-spacing: 0.05rem; }
+
+.journey-bar { background-color: var(--teal-light); border-radius: 4px; height: 10px; margin-bottom: 0.25rem; }
+.journey-fill { background-color: var(--teal); height: 10px; border-radius: 4px; }
+
+.country-badge { display: inline-block; background-color: var(--teal-light); color: var(--teal-dark);
+                 border-radius: 20px; padding: 0.3rem 0.8rem; margin: 0.2rem; font-size: 0.85rem; }
+
+.mission-box { border-left: 4px solid var(--teal); padding: 1rem 1.5rem;
+               background-color: var(--teal-light); border-radius: 0 8px 8px 0; }

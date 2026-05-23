@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <title>SofIA — Impacto en la comunidad</title>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark navbar-sofia">
+  <span class="navbar-brand mb-0 h1">SofIA — Tu aliada en Canadá</span>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="container text-center">
+    <img src="/static/images/sofia_avatar.png" alt="SofIA" class="hero-avatar">
+    <h1>Impacto en la comunidad</h1>
+    <p class="mt-2">Acompañando a recién llegados latinos en su camino profesional en Canadá</p>
+  </div>
+</div>
+
+<div class="container mt-5">
+
+  <!-- Mission -->
+  <div class="row mb-5">
+    <div class="col-md-10 offset-md-1">
+      <div class="mission-box">
+        <p class="mb-0" style="font-size:1.05rem;">
+          SofIA es una compañera de IA bilingüe (español/inglés) para recién llegados latinos en Canadá
+          que aún no trabajan en su profesión. Vive en WhatsApp — sin aplicaciones que descargar,
+          sin formularios. Los acompaña desde el miedo y la parálisis ante el networking profesional
+          hasta la confianza, las conexiones genuinas y el momentum real.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key stats -->
+  <p class="section-title text-center mb-4">En números</p>
+  <div class="row mb-5">
+    <div class="col-6 col-md-3">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.total_users }}</div>
+        <div class="stat-label">Usuarios activos</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.total_contacts }}</div>
+        <div class="stat-label">Contactos registrados</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.total_chats }}</div>
+        <div class="stat-label">Coffee chats</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-3">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.countries | length }}</div>
+        <div class="stat-label">Países de origen</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+
+    <!-- Countries -->
+    <div class="col-md-6">
+      <p class="section-title">Países de origen</p>
+      <div class="card">
+        <div class="card-body">
+          {% if stats.countries %}
+            {% for country, count in stats.countries.items() %}
+            <span class="country-badge">{{ country }} ({{ count }})</span>
+            {% endfor %}
+          {% else %}
+          <p class="text-muted mb-0">Datos próximamente.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Cities -->
+    <div class="col-md-6">
+      <p class="section-title">Ciudades</p>
+      <div class="card">
+        <div class="card-body">
+          {% if stats.cities %}
+            {% for city, count in stats.cities.items() %}
+            <span class="country-badge">{{ city }} ({{ count }})</span>
+            {% endfor %}
+          {% else %}
+          <p class="text-muted mb-0">Datos próximamente.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- User journey -->
+  <p class="section-title">Dónde están los usuarios en su camino</p>
+  <div class="card mb-5">
+    <div class="card-body">
+      {% if stats.journey %}
+      {% set max_count = stats.journey[0].count %}
+      {% for item in stats.journey %}
+      <div class="mb-3">
+        <div class="d-flex justify-content-between mb-1">
+          <span style="font-size:0.9rem;">{{ item.state }}</span>
+          <span style="font-size:0.9rem;color:#6c757d;">{{ item.count }}</span>
+        </div>
+        <div class="journey-bar">
+          <div class="journey-fill" style="width: {{ (item.count / max_count * 100) | int }}%"></div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p class="text-muted mb-0">Datos próximamente.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Languages -->
+  <div class="row mb-5">
+    <div class="col-md-6">
+      <p class="section-title">Idioma preferido</p>
+      <div class="card">
+        <div class="card-body">
+          {% for lang, count in stats.languages.items() %}
+          <div class="d-flex justify-content-between">
+            <span>{{ "Español" if lang == "es" else "English" }}</span>
+            <strong>{{ count }}</strong>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Support CTA -->
+  <div class="text-center mb-5">
+    <p class="section-title">¿Quieres apoyar este proyecto?</p>
+    <p class="text-muted">
+      SofIA está siendo construida para escalar a más comunidades de recién llegados.<br>
+      Si representas una organización de asentamiento, fundación, o empresa interesada en apoyar — escríbenos.
+    </p>
+    <a href="mailto:sandritamlz@gmail.com" class="btn btn-lg"
+       style="background-color: var(--teal); color: white; border: none;">
+      Conectemos
+    </a>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<div class="sofia-footer">
+  <div class="container text-center">
+    <p class="mb-0">SofIA — Tu aliada en Canadá · slopezza.com</p>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
