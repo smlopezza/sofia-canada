@@ -1,0 +1,6 @@
+.venv
+__pycache__
+*.pyc
+.env
+.DS_Store
+test_e2e.py

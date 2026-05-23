@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <title>Mi historia con SofIA</title>
+  <style>
+    body { background-color: #f8f9fa; }
+    .hero { background: linear-gradient(135deg, #6f42c1, #e83e8c); color: white; padding: 3rem 0; }
+    .hero h1 { font-size: 2rem; font-weight: 700; }
+    .hero p { font-size: 1.1rem; opacity: 0.9; }
+    .section-title { font-size: 1.1rem; font-weight: 600; text-transform: uppercase;
+                     letter-spacing: 0.05rem; color: #6f42c1; margin-bottom: 1rem; }
+    .milestone-item { border-left: 3px solid #6f42c1; padding-left: 1rem; margin-bottom: 1rem; }
+    .milestone-date { font-size: 0.8rem; color: #6c757d; }
+    .badge-high { background-color: #28a745; }
+    .badge-medium { background-color: #ffc107; color: #212529; }
+    .badge-uncertain { background-color: #dc3545; }
+    .card { border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.08); margin-bottom: 1rem; }
+    .download-btn { font-size: 0.85rem; }
+    .sofia-footer { background-color: #343a40; color: #adb5bd; padding: 1.5rem 0;
+                    font-size: 0.85rem; margin-top: 3rem; }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark" style="background-color: #6f42c1;">
+  <span class="navbar-brand mb-0 h1">SofIA — Tu aliada en Canadá</span>
+</nav>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="container">
+    <h1>{{ user.name or "Tu historia" }}</h1>
+    {% if user.about_me %}
+    <p class="mt-2">{{ user.about_me }}</p>
+    {% endif %}
+    {% if user.goals %}
+    <div class="mt-3">
+      {% for goal in user.goals %}
+      <span class="badge badge-light mr-1" style="font-size:0.9rem;">{{ goal }}</span>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="mt-3">
+      <span class="badge badge-light mr-2">{{ user.field }}</span>
+      <span class="badge badge-light mr-2">{{ user.city }}</span>
+      {% if user.time_in_canada %}
+      <span class="badge badge-light">{{ user.time_in_canada }} en Canadá</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+
+  <!-- Contacts -->
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <p class="section-title mb-0">Contactos ({{ contacts | length }})</p>
+    <a href="/export/contacts.csv?token={{ token }}" class="btn btn-outline-secondary btn-sm download-btn">
+      Descargar CSV
+    </a>
+  </div>
+  {% if contacts %}
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover mb-0">
+        <thead class="thead-light">
+          <tr>
+            <th>Nombre</th>
+            <th>Rol</th>
+            <th>Empresa</th>
+            <th>Chats</th>
+            <th>Mentor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in contacts %}
+          <tr>
+            <td><strong>{{ c.name }}</strong></td>
+            <td>{{ c.role }}</td>
+            <td>{{ c.company }}</td>
+            <td>{{ c.chats | length }}</td>
+            <td>{% if c.is_mentor %}<span class="badge badge-success">Sí</span>{% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">Aún no hay contactos registrados.</p>
+  {% endif %}
+
+  <!-- Milestones -->
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+    <p class="section-title mb-0">Tu progreso</p>
+    {% if user.milestones %}
+    <a href="/export/milestones.csv?token={{ token }}" class="btn btn-outline-secondary btn-sm download-btn">
+      Descargar CSV
+    </a>
+    {% endif %}
+  </div>
+  {% if user.milestones %}
+  <div class="card">
+    <div class="card-body">
+      {% for m in user.milestones %}
+      <div class="milestone-item">
+        <strong>{{ m.label or m.key }}</strong>
+        <div class="milestone-date">{{ m.achieved_at[:10] if m.achieved_at else "" }}</div>
+        {% if m.note %}<p class="mb-0 mt-1 text-muted" style="font-size:0.9rem;">{{ m.note }}</p>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">Los logros aparecerán aquí a medida que avances.</p>
+  {% endif %}
+
+  <!-- Learnings -->
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
+    <p class="section-title mb-0">Lo que aprendiste</p>
+    {% if user.learnings %}
+    <a href="/export/learnings.csv?token={{ token }}" class="btn btn-outline-secondary btn-sm download-btn">
+      Descargar CSV
+    </a>
+    {% endif %}
+  </div>
+  {% if user.learnings %}
+  <div class="row">
+    {% for l in user.learnings %}
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-1">
+            <small class="text-muted text-uppercase">{{ l.topic | replace("_", " ") }}</small>
+            <span class="badge badge-{{ l.confidence or 'medium' }}">{{ l.confidence or "medium" }}</span>
+          </div>
+          <p class="mb-0">{{ l.insight }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-muted">Los aprendizajes aparecerán aquí a medida que SofIA detecte ideas clave.</p>
+  {% endif %}
+
+</div>
+
+<!-- Footer -->
+<div class="sofia-footer">
+  <div class="container text-center">
+    <p class="mb-0">Generado por SofIA — Tu aliada en Canadá · Este enlace es válido por 24 horas</p>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>
