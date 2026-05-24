@@ -163,8 +163,8 @@
         <div class="card-body">
           <p class="section-title">{% if lang == 'es' %}Únete a la beta{% else %}Join the beta{% endif %}</p>
           <p class="section-note">
-            {% if lang == 'es' %}Estamos en beta cerrada. Aplica abajo — si eres seleccionado, te contactamos.
-            {% else %}We're in closed beta. Apply below — if selected, we'll reach out.{% endif %}
+            {% if lang == 'es' %}Estamos en beta cerrada. Aplica abajo y si eres seleccionado, te contactamos.
+            {% else %}We're in closed beta. Apply below, if selected, we'll reach out.{% endif %}
           </p>
           <form method="POST" action="/waitlist">
             <input type="hidden" name="lang" value="{{ lang }}">
@@ -208,7 +208,7 @@
       <div class="card h-100">
         <div class="card-body">
           <p class="section-title">
-            {% if lang == 'es' %}¿Eres profesional en Canadá?{% else %}Are you a Canadian professional?{% endif %}
+            {% if lang == 'es' %}¿Eres profesional en Canadá?{% else %}Are you a professional in Canada?{% endif %}
           </p>
           <p class="section-note">
             {% if lang == 'es' %}Regístrate como mentor y ayuda a recién llegados en su transición profesional en Canadá.
@@ -227,8 +227,8 @@
             {% if lang == 'es' %}¿Crees en este proyecto?{% else %}Believe in this project?{% endif %}
           </p>
           <p class="section-note">
-            {% if lang == 'es' %}SofIA se sostiene gracias a la comunidad — no a corporaciones. Si quieres contribuir o ver el impacto, escríbenos.
-            {% else %}SofIA is community-funded — not corporate. If you want to contribute or see the impact, reach out.{% endif %}
+            {% if lang == 'es' %}SofIA se sostiene gracias a la comunidad, no a corporaciones. Si quieres contribuir o ver el impacto, escríbenos.
+            {% else %}SofIA is community-funded, not corporate. If you want to contribute or see the impact, reach out.{% endif %}
           </p>
           <a href="/impact" class="btn btn-outline-secondary btn-sm mr-2">
             {% if lang == 'es' %}Ver impacto{% else %}View impact{% endif %}

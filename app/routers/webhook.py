@@ -54,7 +54,7 @@ ERROR_MSG = {
     "en": "Something went wrong on my end — try again in a moment.",
 }
 
-MAX_USERS = int(os.getenv("MAX_USERS", "50"))
+MAX_USERS = int(os.getenv("MAX_USERS", "20"))
 
 MILESTONE_LABELS = {
     "en": {
