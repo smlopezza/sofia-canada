@@ -1,20 +1,14 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <title>Mi historia con SofIA</title>
-  <link rel="stylesheet" href="/static/css/styles.css">
-</head>
-<body>
+{% extends "base.html" %}
 
-<!-- Navbar -->
+{% block title %}Mi historia con SofIA{% endblock %}
+
+{% block navbar %}
 <nav class="navbar navbar-dark navbar-sofia">
   <span class="navbar-brand mb-0 h1">SofIA — Tu aliada en Canadá</span>
 </nav>
+{% endblock %}
 
-<!-- Hero -->
+{% block hero %}
 <div class="hero">
   <div class="container text-center">
     <img src="/static/images/sofia_avatar.png" alt="SofIA" class="hero-avatar">
@@ -38,8 +32,23 @@
     </div>
   </div>
 </div>
+{% endblock %}
 
+{% block main %}
 <div class="container mt-4">
+  {% block content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="sofia-footer">
+  <div class="container text-center">
+    <p class="mb-0">Generado por SofIA — Tu aliada en Canadá · Este enlace es válido por 24 horas</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
 
   <!-- Contacts -->
   <div class="d-flex justify-content-between align-items-center mb-2">
@@ -170,16 +179,4 @@
   <p class="text-muted">Los aprendizajes aparecerán aquí a medida que SofIA detecte ideas clave.</p>
   {% endif %}
 
-</div>
-
-<!-- Footer -->
-<div class="sofia-footer">
-  <div class="container text-center">
-    <p class="mb-0">Generado por SofIA — Tu aliada en Canadá · Este enlace es válido por 24 horas</p>
-  </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
-</html>
+{% endblock %}

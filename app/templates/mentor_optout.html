@@ -1,19 +1,8 @@
-<!doctype html>
-<html lang="{{ lang }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/css/styles.css">
-  <title>SofIA — {% if lang == 'es' %}Salir del directorio{% else %}Leave the directory{% endif %}</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
-  <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
-</nav>
+{% block title %}SofIA — {% if lang == 'es' %}Salir del directorio{% else %}Leave the directory{% endif %}{% endblock %}
 
-<div class="container mt-5">
+{% block content %}
   <div class="row">
     <div class="col-md-6 offset-md-3 text-center">
       <div class="card p-4">
@@ -25,13 +14,4 @@
       </div>
     </div>
   </div>
-</div>
-
-<div class="sofia-footer mt-5">
-  <div class="container text-center">
-    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %}</p>
-  </div>
-</div>
-
-</body>
-</html>
+{% endblock %}

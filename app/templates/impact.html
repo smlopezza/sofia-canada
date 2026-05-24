@@ -1,22 +1,8 @@
-<!doctype html>
-<html lang="{{ lang }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/css/styles.css">
-  <title>SofIA — {% if lang == 'es' %}Impacto en la comunidad{% else %}Community Impact{% endif %}</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
-  <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
-  <div>
-    <a href="/impact?lang=en" class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
-    <a href="/impact?lang=es" class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
-  </div>
-</nav>
+{% block title %}SofIA — {% if lang == 'es' %}Impacto en la comunidad{% else %}Community Impact{% endif %}{% endblock %}
 
+{% block hero %}
 <div class="hero">
   <div class="container text-center">
     <img src="/static/images/sofia_avatar.png" alt="SofIA" class="hero-avatar">
@@ -27,8 +13,9 @@
     </p>
   </div>
 </div>
+{% endblock %}
 
-<div class="container mt-5">
+{% block content %}
 
   <!-- Mission -->
   <div class="row mb-5">
@@ -288,15 +275,4 @@
     </a>
   </div>
 
-</div>
-
-<div class="sofia-footer">
-  <div class="container text-center">
-    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · <a href="https://www.slopezza.com" target="_blank" class="footer-link">slopezza.com</a></p>
-  </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
-</html>
+{% endblock %}

@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="{{ lang | default('en') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <title>{% block title %}SofIA{% endblock %}</title>
+</head>
+<body>
+
+{% block navbar %}
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
+  <div>
+    <a href="{{ request.url.path }}?lang=en"
+       class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="{{ request.url.path }}?lang=es"
+       class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
+</nav>
+{% endblock %}
+
+{% block hero %}{% endblock %}
+
+{% block main %}
+<div class="container mt-5">
+  {% block content %}{% endblock %}
+</div>
+{% endblock %}
+
+{% block footer %}
+<div class="sofia-footer">
+  <div class="container text-center">
+    <p class="mb-0">
+      SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} ·
+      <a href="https://www.slopezza.com" target="_blank" class="footer-link">slopezza.com</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

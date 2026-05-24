@@ -1,22 +1,8 @@
-<!doctype html>
-<html lang="{{ lang }}">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/css/styles.css">
-  <title>SofIA — {% if lang == 'es' %}Mentores voluntarios{% else %}Volunteer Mentors{% endif %}</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
-  <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
-  <div>
-    <a href="/mentors?lang=en" class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
-    <a href="/mentors?lang=es" class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
-  </div>
-</nav>
+{% block title %}SofIA — {% if lang == 'es' %}Mentores voluntarios{% else %}Volunteer Mentors{% endif %}{% endblock %}
 
+{% block hero %}
 <div class="hero">
   <div class="container text-center">
     <h1>{% if lang == 'es' %}Mentores voluntarios{% else %}Volunteer Mentors{% endif %}</h1>
@@ -26,8 +12,9 @@
     </p>
   </div>
 </div>
+{% endblock %}
 
-<div class="container mt-5">
+{% block content %}
 
   <!-- Gratitude section -->
   <div class="row mb-5">
@@ -60,7 +47,6 @@
           <div class="mentor-city">
             📍 {{ mentor.city }}{% if mentor.country_of_origin %} · {% if lang == 'es' %}de{% else %}from{% endif %} {{ mentor.country_of_origin }}{% endif %}
           </div>
-
           {% if mentor.languages %}
           <div class="mt-2">
             {% for l in mentor.languages %}
@@ -72,37 +58,30 @@
             {% endfor %}
           </div>
           {% endif %}
-
           {% if mentor.bio %}
           <p class="mentor-bio">{{ mentor.bio }}</p>
           {% else %}
           <p class="mentor-bio"></p>
           {% endif %}
-
           <div class="mt-auto">
             {% if mentor.contact_preference == 'linkedin' and mentor.linkedin %}
-            <a href="{{ mentor.linkedin }}" target="_blank" class="btn btn-sm btn-teal mr-1">
-              LinkedIn
-            </a>
+            <a href="{{ mentor.linkedin }}" target="_blank" class="btn btn-sm btn-teal mr-1">LinkedIn</a>
             {% elif mentor.contact_preference == 'email' and mentor.email %}
             <a href="mailto:{{ mentor.email }}" class="btn btn-sm btn-teal mr-1">
               {% if lang == 'es' %}Escribir{% else %}Email{% endif %}
             </a>
             {% endif %}
-
             {% if mentor.calendly %}
             <a href="{{ mentor.calendly }}" target="_blank" class="btn btn-sm btn-outline-secondary">
               {% if lang == 'es' %}Agendar café{% else %}Book a chat{% endif %}
             </a>
             {% endif %}
           </div>
-
         </div>
       </div>
     </div>
     {% endfor %}
   </div>
-
   {% else %}
   <div class="row mb-5">
     <div class="col-md-8 offset-md-2 text-center">
@@ -136,7 +115,10 @@
                 </li>
                 <li class="mb-3">
                   <strong>{% if lang == 'es' %}✉️ Escribe con claridad{% else %}✉️ Reach out clearly{% endif %}</strong><br>
-                  <span class="section-note">{% if lang == 'es' %}Preséntate en una o dos frases: quién eres, en qué momento de tu transición estás y qué esperas aprender de ellos. Cuéntales que encontraste su perfil en SofIA, les da contexto y les recuerda que eligieron estar aquí.{% else %}Introduce yourself in one or two sentences: who you are, where you are in your transition, and what you're hoping to learn from them. Let them know you found their profile on SofIA, it gives them context and reminds them they chose to be here.{% endif %}</span>
+                  <span class="section-note">
+                    {% if lang == 'es' %}Preséntate en una o dos frases: quién eres, en qué momento de tu transición estás y qué esperas aprender de ellos. Cuéntales que encontraste su perfil en SofIA — les da contexto y les recuerda que eligieron estar aquí.
+                    {% else %}Introduce yourself in one or two sentences: who you are, where you are in your transition, and what you're hoping to learn from them. Let them know you found their profile on SofIA — it gives them context and reminds them they chose to be here.{% endif %}
+                  </span>
                 </li>
                 <li class="mb-3">
                   <strong>{% if lang == 'es' %}⏱️ Respeta los 30 minutos{% else %}⏱️ Respect the 30 minutes{% endif %}</strong><br>
@@ -181,15 +163,4 @@
     </div>
   </div>
 
-</div>
-
-<div class="sofia-footer">
-  <div class="container text-center">
-    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · <a href="https://www.slopezza.com" target="_blank" class="footer-link">slopezza.com</a></p>
-  </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-</body>
-</html>
+{% endblock %}
