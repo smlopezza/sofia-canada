@@ -242,7 +242,7 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
     logger.info("update_state called for %s: %s", phone, tool_inputs)
 
     new_contact_data = tool_inputs.get("new_contact")
-    if new_contact_data and not contact:
+    if new_contact_data:
         contact = ContactDoc(
             name=new_contact_data.get("name", ""),
             role=new_contact_data.get("role", ""),
@@ -254,9 +254,7 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
         contact_id = str(uuid.uuid4())
         user.has_contacts = True
         user.contact_count += 1
-        logger.info("New contact created for %s: %s at %s", phone, contact.name, contact.scheduled_chat_at)
-    elif new_contact_data and contact:
-        logger.info("new_contact skipped for %s — contact already exists: %s", phone, contact.name)
+        logger.info("New contact created for %s: %s", phone, contact.name)
 
     new_state = tool_inputs.get("new_state")
     if new_state and new_state != user.current_state:
