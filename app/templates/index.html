@@ -50,8 +50,8 @@
         <div class="step-number">1</div>
         <div class="step-title">{% if lang == 'es' %}Aplica{% else %}Apply{% endif %}</div>
         <p class="step-desc">
-          {% if lang == 'es' %}Llena el formulario abajo. Te contactamos en 48 horas.
-          {% else %}Fill the form below. We'll reach out within 48 hours.{% endif %}
+          {% if lang == 'es' %}Llena el formulario abajo. Si eres seleccionado, te contactamos.
+          {% else %}Fill the form below. If selected, we'll reach out.{% endif %}
         </p>
       </div>
     </div>
@@ -143,17 +143,28 @@
         <div class="stat-number mb-2">🎉</div>
         <h4>{% if lang == 'es' %}¡Listo!{% else %}You're in!{% endif %}</h4>
         <p class="text-muted">
-          {% if lang == 'es' %}Recibimos tu solicitud. Te contactamos en menos de 48 horas.
-          {% else %}We received your application. We'll be in touch within 48 hours.{% endif %}
+          {% if lang == 'es' %}Recibimos tu solicitud. Si eres seleccionado, te contactamos pronto.
+          {% else %}We received your application. If selected, we'll be in touch soon.{% endif %}
         </p>
       </div>
+
+      {% elif already_waitlisted %}
+      <div class="card p-4 text-center">
+        <div class="stat-number mb-2">👋</div>
+        <h4>{% if lang == 'es' %}¡Ya estás en la lista!{% else %}You're already on the list!{% endif %}</h4>
+        <p class="text-muted">
+          {% if lang == 'es' %}Tu email ya está registrado. Te contactamos pronto.
+          {% else %}Your email is already registered. We'll be in touch soon.{% endif %}
+        </p>
+      </div>
+
       {% else %}
       <div class="card">
         <div class="card-body">
           <p class="section-title">{% if lang == 'es' %}Únete a la beta{% else %}Join the beta{% endif %}</p>
           <p class="section-note">
-            {% if lang == 'es' %}Estamos en beta cerrada. Aplica abajo y te escribimos en 48 horas.
-            {% else %}We're in closed beta. Apply below and we'll reach out within 48 hours.{% endif %}
+            {% if lang == 'es' %}Estamos en beta cerrada. Aplica abajo — si eres seleccionado, te contactamos.
+            {% else %}We're in closed beta. Apply below — if selected, we'll reach out.{% endif %}
           </p>
           <form method="POST" action="/waitlist">
             <input type="hidden" name="lang" value="{{ lang }}">

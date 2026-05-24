@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from app.clients.firestore_client import get_active_mentors, save_waitlist_entry
+from app.clients.firestore_client import get_active_mentors, get_waitlist_by_email, save_waitlist_entry
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 
 @router.get("/", response_class=HTMLResponse)
-def index(request: Request, lang: str = "en", submitted: bool = False):
+def index(request: Request, lang: str = "en", submitted: bool = False, already_waitlisted: bool = False):
     lang = lang if lang in ("en", "es") else "en"
     try:
         mentors = get_active_mentors()[:3]
@@ -27,6 +27,7 @@ def index(request: Request, lang: str = "en", submitted: bool = False):
         "request": request,
         "lang": lang,
         "submitted": submitted,
+        "already_waitlisted": already_waitlisted,
         "mentors": mentors,
     })
 
@@ -50,6 +51,8 @@ async def join_waitlist(
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
     try:
+        if get_waitlist_by_email(email.strip().lower()):
+            return RedirectResponse(url=f"/?already_waitlisted=true&lang={lang}", status_code=303)
         save_waitlist_entry(entry)
         logger.info("Waitlist entry saved: %s", email)
     except Exception:

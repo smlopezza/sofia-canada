@@ -168,6 +168,11 @@ def save_waitlist_entry(entry: dict) -> str:
     return ref.id
 
 
+def get_waitlist_by_email(email: str) -> bool:
+    docs = list(get_db().collection("waitlist").where(filter=FieldFilter("email", "==", email.lower())).stream())
+    return len(docs) > 0
+
+
 def count_active_users() -> int:
     return sum(1 for _ in get_db().collection("users").stream())
 
