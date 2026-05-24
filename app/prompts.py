@@ -115,6 +115,32 @@ TOOLS = [
                         "unless the user says their goals have changed."
                     )
                 },
+                "milestones": {
+                    "type": "array",
+                    "description": (
+                        "List of milestones to save to the user's profile. Use when the user "
+                        "asks to save their achievements, or when summarizing progress reveals "
+                        "milestones not yet recorded. Only include milestones not already saved."
+                    ),
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "key": {
+                                "type": "string",
+                                "description": "Short snake_case identifier, e.g. 'five_chats_juanita'"
+                            },
+                            "label": {
+                                "type": "string",
+                                "description": "Human-readable label in the user's language, e.g. '5 conversaciones con Juanita (TD Bank)'"
+                            },
+                            "note": {
+                                "type": "string",
+                                "description": "Optional context or insight about this milestone."
+                            }
+                        },
+                        "required": ["key", "label"]
+                    }
+                },
                 "new_learning": {
                     "type": "object",
                     "description": (
@@ -1229,10 +1255,10 @@ Call update_state when:
 - User names a specific person with at least name + role + company → call new_contact
   IMMEDIATELY, before asking any follow-up questions. Do not wait for the conversation
   to conclude. The LinkedIn URL and extra context can be added later via contact_updates.
-- User asks to list their achievements / logros / progreso → after responding, call
-  update_state to save any milestones not yet recorded. Use key = a short snake_case
-  identifier, label = a human-readable description in the user's language, note = any
-  relevant context. Only save milestones not already in the user's milestone list.
+- User asks to save or list their achievements / logros / progreso → call update_state
+  with the milestones array. Each entry needs key (snake_case) and label (in user's language).
+  Only include milestones not already recorded. NEVER say "guardado" without actually
+  calling update_state — do not confirm an action you did not take.
 - New contact registered → new_state: first_contact_registered
 - Chat date confirmed → new_state: first_chat_scheduled
 - User reports back after chat → first_chat_completed (or building_momentum if 3+)

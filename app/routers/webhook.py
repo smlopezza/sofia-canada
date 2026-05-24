@@ -319,6 +319,22 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
             if g not in existing:
                 user.goals.append(g)
 
+    milestones_to_save = tool_inputs.get("milestones")
+    if milestones_to_save and isinstance(milestones_to_save, list):
+        existing_keys = {m.get("key") for m in (user.milestones or []) if isinstance(m, dict)}
+        for m in milestones_to_save:
+            key = m.get("key", "").strip()
+            label = m.get("label", "").strip()
+            if key and label and key not in existing_keys:
+                user.milestones.append({
+                    "key": key,
+                    "label": label,
+                    "achieved_at": datetime.utcnow().isoformat(),
+                    "note": m.get("note", ""),
+                })
+                existing_keys.add(key)
+                logger.info("Milestone explicitly saved for %s: %s", phone, key)
+
     new_learning = tool_inputs.get("new_learning")
     if new_learning and isinstance(new_learning, dict):
         insight = new_learning.get("insight", "").strip()
