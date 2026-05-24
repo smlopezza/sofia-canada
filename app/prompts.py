@@ -118,9 +118,14 @@ TOOLS = [
                 "milestones": {
                     "type": "array",
                     "description": (
-                        "List of milestones to save to the user's profile. Use when the user "
-                        "asks to save their achievements, or when summarizing progress reveals "
-                        "milestones not yet recorded. Only include milestones not already saved."
+                        "List of milestones to save to the user's profile. Milestones are things "
+                        "the user DID — actions, events, achievements (e.g. attended a networking "
+                        "event, had a first coffee chat, got an interview). "
+                        "Use ONLY when the user asks to save their achievements/logros/progreso, "
+                        "or when a concrete action they took is not yet recorded. "
+                        "NEVER use milestones for cultural insights or things they learned — "
+                        "use new_learning for those instead. "
+                        "Only include milestones not already saved."
                     ),
                     "items": {
                         "type": "object",
@@ -145,8 +150,10 @@ TOOLS = [
                     "type": "object",
                     "description": (
                         "Save a specific insight the user just learned about Canadian professional "
-                        "culture or job search. Only call this when you just explained a concrete, "
-                        "transferable norm — not for general encouragement or emotional support. "
+                        "culture or job search. Use this — NOT milestones — for cultural norms, "
+                        "workplace insights, or job search knowledge. "
+                        "Only call this when you just explained a concrete, transferable norm — "
+                        "not for general encouragement or emotional support. "
                         "Max 1 per conversation turn."
                     ),
                     "properties": {
@@ -162,7 +169,11 @@ TOOLS = [
                             "type": "string",
                             "description": (
                                 "The key insight in 1-2 sentences in the user's language. "
-                                "Specific and actionable — phrased as the user would remember it."
+                                "Specific and actionable — written in second person ('tú'), "
+                                "as if the user is recalling it themselves. "
+                                "In Spanish use 'Descubriste', 'Aprendiste', 'Notaste', etc. "
+                                "In English use 'You learned', 'You discovered', etc. "
+                                "Never use third person ('Descubrió', 'She learned')."
                             )
                         },
                         "confidence": {
