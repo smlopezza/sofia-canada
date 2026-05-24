@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}{% if lang == 'es' %}SofIA — Editar aprendizajes{% else %}SofIA — Edit learnings{% endif %}{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <a href="/" class="navbar-brand mb-0 h1">SofIA - Tu Aliada en Canadá</a>
+  <div>
+    <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
+      {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
+    </a>
+    <a href="/export/learnings/edit?token={{ token }}&lang=en"
+       class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/export/learnings/edit?token={{ token }}&lang=es"
+       class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+
+    <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
+      <i class="bi bi-arrow-left"></i> {% if lang == 'es' %}Volver{% else %}Back{% endif %}
+    </a>
+
+    <h5 class="mb-4">{% if lang == 'es' %}Lo que aprendiste{% else %}What you learned{% endif %}</h5>
+
+    {% if learnings %}
+    {% for l in learnings %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <small class="text-muted text-uppercase d-block mb-2">{{ l.topic | replace("_", " ") }}</small>
+        <form method="POST" action="/export/learnings/{{ loop.index0 }}">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <div class="form-group mb-2">
+            <label>{% if lang == 'es' %}Aprendizaje{% else %}Insight{% endif %}</label>
+            <textarea class="form-control" name="insight" rows="3">{{ l.insight }}</textarea>
+          </div>
+          <div class="form-group mb-3">
+            <label>{% if lang == 'es' %}Confianza{% else %}Confidence{% endif %}</label>
+            <select class="form-control" name="confidence">
+              <option value="high" {% if l.confidence == 'high' %}selected{% endif %}>{% if lang == 'es' %}Alta{% else %}High{% endif %}</option>
+              <option value="medium" {% if l.confidence == 'medium' or not l.confidence %}selected{% endif %}>{% if lang == 'es' %}Media{% else %}Medium{% endif %}</option>
+              <option value="uncertain" {% if l.confidence == 'uncertain' %}selected{% endif %}>{% if lang == 'es' %}Incierto{% else %}Uncertain{% endif %}</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-teal btn-sm">{% if lang == 'es' %}Guardar{% else %}Save{% endif %}</button>
+        </form>
+        <form method="POST" action="/export/learnings/{{ loop.index0 }}/delete" class="mt-2"
+              onsubmit="return confirm('{% if lang == 'es' %}¿Seguro?{% else %}Are you sure?{% endif %}')">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <button type="submit" class="btn btn-outline-danger btn-sm">{% if lang == 'es' %}Eliminar{% else %}Delete{% endif %}</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="text-muted">{% if lang == 'es' %}No hay aprendizajes registrados aún.{% else %}No learnings recorded yet.{% endif %}</p>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

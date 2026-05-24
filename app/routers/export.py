@@ -274,3 +274,113 @@ def export_learnings_csv(token: str):
         media_type="text/csv",
         headers={"Content-Disposition": "attachment; filename=sofia_learnings.csv"}
     )
+
+
+@router.get("/export/milestones/edit", response_class=HTMLResponse)
+def milestones_edit_form(request: Request, token: str, lang: str = "es"):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    return templates.TemplateResponse("milestones_edit.html", {
+        "request": request,
+        "milestones": user.milestones or [],
+        "token": token,
+        "lang": lang,
+    })
+
+
+@router.post("/export/milestones/{milestone_index}")
+async def milestone_save(
+    milestone_index: int,
+    token: str = Form(...),
+    lang: str = Form("es"),
+    label: str = Form(""),
+    note: str = Form(""),
+):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    milestones = user.milestones or []
+    if milestone_index >= len(milestones):
+        return HTMLResponse("<p>Milestone not found.</p>", status_code=404)
+    milestones[milestone_index]["label"] = label.strip()
+    milestones[milestone_index]["note"] = note.strip()
+    save_user(user)
+    logger.info("Milestone %d updated for %s", milestone_index, token_obj.phone)
+    return RedirectResponse(url=f"/export/milestones/edit?token={token}&lang={lang}", status_code=303)
+
+
+@router.post("/export/milestones/{milestone_index}/delete")
+async def milestone_delete(
+    milestone_index: int,
+    token: str = Form(...),
+    lang: str = Form("es"),
+):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    milestones = user.milestones or []
+    if milestone_index >= len(milestones):
+        return HTMLResponse("<p>Milestone not found.</p>", status_code=404)
+    milestones.pop(milestone_index)
+    save_user(user)
+    logger.info("Milestone %d deleted for %s", milestone_index, token_obj.phone)
+    return RedirectResponse(url=f"/export/milestones/edit?token={token}&lang={lang}", status_code=303)
+
+
+@router.get("/export/learnings/edit", response_class=HTMLResponse)
+def learnings_edit_form(request: Request, token: str, lang: str = "es"):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    return templates.TemplateResponse("learnings_edit.html", {
+        "request": request,
+        "learnings": user.learnings or [],
+        "token": token,
+        "lang": lang,
+    })
+
+
+@router.post("/export/learnings/{learning_index}")
+async def learning_save(
+    learning_index: int,
+    token: str = Form(...),
+    lang: str = Form("es"),
+    insight: str = Form(""),
+    confidence: str = Form("medium"),
+):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    learnings = user.learnings or []
+    if learning_index >= len(learnings):
+        return HTMLResponse("<p>Learning not found.</p>", status_code=404)
+    learnings[learning_index]["insight"] = insight.strip()
+    learnings[learning_index]["confidence"] = confidence
+    save_user(user)
+    logger.info("Learning %d updated for %s", learning_index, token_obj.phone)
+    return RedirectResponse(url=f"/export/learnings/edit?token={token}&lang={lang}", status_code=303)
+
+
+@router.post("/export/learnings/{learning_index}/delete")
+async def learning_delete(
+    learning_index: int,
+    token: str = Form(...),
+    lang: str = Form("es"),
+):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    learnings = user.learnings or []
+    if learning_index >= len(learnings):
+        return HTMLResponse("<p>Learning not found.</p>", status_code=404)
+    learnings.pop(learning_index)
+    save_user(user)
+    logger.info("Learning %d deleted for %s", learning_index, token_obj.phone)
+    return RedirectResponse(url=f"/export/learnings/edit?token={token}&lang={lang}", status_code=303)

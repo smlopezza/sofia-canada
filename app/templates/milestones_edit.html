@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{% if lang == 'es' %}SofIA — Editar progreso{% else %}SofIA — Edit progress{% endif %}{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <a href="/" class="navbar-brand mb-0 h1">SofIA - Tu Aliada en Canadá</a>
+  <div>
+    <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
+      {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
+    </a>
+    <a href="/export/milestones/edit?token={{ token }}&lang=en"
+       class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/export/milestones/edit?token={{ token }}&lang=es"
+       class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+
+    <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
+      <i class="bi bi-arrow-left"></i> {% if lang == 'es' %}Volver{% else %}Back{% endif %}
+    </a>
+
+    <h5 class="mb-4">{% if lang == 'es' %}Tu progreso{% else %}Your progress{% endif %}</h5>
+
+    {% if milestones %}
+    {% for m in milestones %}
+    <div class="card mb-3">
+      <div class="card-body">
+        <form method="POST" action="/export/milestones/{{ loop.index0 }}">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <div class="form-group mb-2">
+            <label>{% if lang == 'es' %}Logro{% else %}Achievement{% endif %}</label>
+            <input type="text" class="form-control" name="label" value="{{ m.label or m.key }}">
+          </div>
+          <div class="form-group mb-3">
+            <label>{% if lang == 'es' %}Nota{% else %}Note{% endif %} <span class="text-muted">({% if lang == 'es' %}opcional{% else %}optional{% endif %})</span></label>
+            <input type="text" class="form-control" name="note" value="{{ m.note or '' }}">
+          </div>
+          <button type="submit" class="btn btn-teal btn-sm">{% if lang == 'es' %}Guardar{% else %}Save{% endif %}</button>
+        </form>
+        <form method="POST" action="/export/milestones/{{ loop.index0 }}/delete" class="mt-2"
+              onsubmit="return confirm('{% if lang == 'es' %}¿Seguro?{% else %}Are you sure?{% endif %}')">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <button type="submit" class="btn btn-outline-danger btn-sm">{% if lang == 'es' %}Eliminar{% else %}Delete{% endif %}</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p class="text-muted">{% if lang == 'es' %}No hay logros registrados aún.{% else %}No achievements recorded yet.{% endif %}</p>
+    {% endif %}
+
+  </div>
+</div>
+{% endblock %}

@@ -2,6 +2,21 @@
 
 {% block title %}{% if lang == 'es' %}SofIA — Editar contacto{% else %}SofIA — Edit contact{% endif %}{% endblock %}
 
+{% block navbar %}
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <a href="/" class="navbar-brand mb-0 h1">SofIA - Tu Aliada en Canadá</a>
+  <div>
+    <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
+      {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
+    </a>
+    <a href="/export/contacts/{{ contact_id }}?token={{ token }}&lang=en"
+       class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/export/contacts/{{ contact_id }}?token={{ token }}&lang=es"
+       class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
+</nav>
+{% endblock %}
+
 {% block content %}
 <div class="row">
   <div class="col-md-8 offset-md-2">
