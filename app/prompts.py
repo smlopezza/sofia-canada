@@ -114,6 +114,42 @@ TOOLS = [
                         "'transition into product management'). Add to the list, do not replace "
                         "unless the user says their goals have changed."
                     )
+                },
+                "new_learning": {
+                    "type": "object",
+                    "description": (
+                        "Save a specific insight the user just learned about Canadian professional "
+                        "culture or job search. Only call this when you just explained a concrete, "
+                        "transferable norm — not for general encouragement or emotional support. "
+                        "Max 1 per conversation turn."
+                    ),
+                    "properties": {
+                        "topic": {
+                            "type": "string",
+                            "enum": [
+                                "canadian_workplace", "job_search", "outreach",
+                                "interview", "survival_job", "volunteering"
+                            ],
+                            "description": "Category of the insight."
+                        },
+                        "insight": {
+                            "type": "string",
+                            "description": (
+                                "The key insight in 1-2 sentences in the user's language. "
+                                "Specific and actionable — phrased as the user would remember it."
+                            )
+                        },
+                        "confidence": {
+                            "type": "string",
+                            "enum": ["high", "medium", "uncertain"],
+                            "description": (
+                                "high = well-established Canadian norm; "
+                                "medium = generally true, some context-dependence; "
+                                "uncertain = varies by industry/role/company."
+                            )
+                        }
+                    },
+                    "required": ["topic", "insight", "confidence"]
                 }
             }
         }
@@ -1159,6 +1195,25 @@ Hierarchy (apply strictly — the highest applicable type wins):
 
 State which angle you chose and WHY you ranked it above the others.
 Build ALL prep questions around that one angle only — do not blend.
+
+[LEARNING AUTO-SAVE]
+Call update_state with new_learning when you just explained a specific, transferable
+Canadian professional norm — especially when using the CULTURAL DIFFERENCE FRAMING or
+DIRECT ANSWERS patterns. Save the insight as the user would want to recall it later.
+
+SAVE when:
+- You explain a Canadian workplace norm and give the WHY
+  (e.g. "Dos seguimientos son normales aquí porque en Canadá la relación se construye
+  en el seguimiento, no en el evento.")
+- You give a direct answer to "¿está bien si...?" / "is it OK to...?" about Canadian norms
+- You correct a misconception about the Canadian job market with a clear alternative
+- The user explicitly says "no sabía eso" / "I didn't know that" — the insight is confirmed
+
+DO NOT save when:
+- Giving general motivation or emotional support
+- The insight is already in the user's learnings (check before saving)
+- The advice is specific to this user's situation and not transferable to others
+- You are summarizing or restating — only save net-new insights
 
 [STATE TRANSITION RULES]
 Call update_state when:

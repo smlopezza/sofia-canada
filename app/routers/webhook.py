@@ -56,6 +56,35 @@ ERROR_MSG = {
 
 MAX_USERS = int(os.getenv("MAX_USERS", "50"))
 
+MILESTONE_LABELS = {
+    "en": {
+        "first_contact_registered": "First contact registered",
+        "first_chat_scheduled": "First coffee chat scheduled",
+        "first_chat_completed": "First coffee chat completed",
+        "building_momentum": "Building momentum",
+        "deepening_relationships": "Deepening relationships",
+        "mentor_identified": "Mentor identified ⭐",
+        "interview_stage": "First interview",
+        "advancing_in_interviews": "Advancing in interviews",
+        "job_offer_received": "Job offer received",
+        "job_landed": "Job landed! 🎉",
+        "first_90_days": "First 90 days on the job",
+    },
+    "es": {
+        "first_contact_registered": "Primer contacto registrado",
+        "first_chat_scheduled": "Primer coffee chat agendado",
+        "first_chat_completed": "Primer coffee chat completado",
+        "building_momentum": "Construyendo momentum",
+        "deepening_relationships": "Profundizando relaciones",
+        "mentor_identified": "Mentor identificado ⭐",
+        "interview_stage": "Primera entrevista",
+        "advancing_in_interviews": "Avanzando en entrevistas",
+        "job_offer_received": "Oferta recibida",
+        "job_landed": "¡Trabajo conseguido! 🎉",
+        "first_90_days": "Primeros 90 días en el trabajo",
+    },
+}
+
 WAITLIST_MSG = (
     "Hola / Hi! 👋\n\n"
     "SofIA está en beta cerrada por ahora — SofIA is currently in closed beta.\n\n"
@@ -230,7 +259,20 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
         logger.info("new_contact skipped for %s — contact already exists: %s", phone, contact.name)
 
     new_state = tool_inputs.get("new_state")
-    if new_state:
+    if new_state and new_state != user.current_state:
+        user.current_state = new_state
+        labels = MILESTONE_LABELS.get(user.language or "es", MILESTONE_LABELS["en"])
+        if new_state in labels:
+            existing_keys = {m.get("key") for m in (user.milestones or []) if isinstance(m, dict)}
+            if new_state not in existing_keys:
+                user.milestones.append({
+                    "key": new_state,
+                    "label": labels[new_state],
+                    "achieved_at": datetime.utcnow().isoformat(),
+                    "note": "",
+                })
+                logger.info("Milestone saved for %s: %s", phone, new_state)
+    elif new_state:
         user.current_state = new_state
 
     about_me = tool_inputs.get("about_me")
@@ -278,6 +320,26 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
         for g in goals:
             if g not in existing:
                 user.goals.append(g)
+
+    new_learning = tool_inputs.get("new_learning")
+    if new_learning and isinstance(new_learning, dict):
+        insight = new_learning.get("insight", "").strip()
+        topic = new_learning.get("topic", "")
+        if insight and topic:
+            existing_insights = {
+                m.get("insight") for m in (user.learnings or []) if isinstance(m, dict)
+            }
+            if insight not in existing_insights:
+                user.learnings.append({
+                    "id": str(uuid.uuid4()),
+                    "topic": topic,
+                    "insight": insight,
+                    "confidence": new_learning.get("confidence", "medium"),
+                    "saved_at": datetime.utcnow().isoformat(),
+                    "source_context": "",
+                    "user_flagged": False,
+                })
+                logger.info("Learning saved for %s: [%s] %s", phone, topic, insight[:60])
 
     if tool_inputs.get("export_requested"):
         from app.routers.export import generate_export_token
