@@ -13,6 +13,9 @@
 <nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
   <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
   <div>
+    <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
+      {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
+    </a>
     <a href="{{ request.url.path }}?lang=en"
        class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
     <a href="{{ request.url.path }}?lang=es"

@@ -91,6 +91,17 @@ body { background-color: #f8f9fa; }
 .lang-badge { display: inline-block; background-color: var(--teal-light); color: var(--teal-dark);
               border-radius: 20px; padding: 0.15rem 0.6rem; font-size: 0.75rem; margin: 0.1rem; }
 
+/* Guide page — chat bubbles */
+.chat-example { margin-bottom: 1.5rem; }
+.bubble-wrap { display: flex; margin-bottom: 0.4rem; }
+.bubble-wrap.user { justify-content: flex-end; }
+.bubble-wrap.sofia { justify-content: flex-start; }
+.bubble { max-width: 80%; padding: 0.6rem 0.9rem; border-radius: 16px; font-size: 0.9rem; line-height: 1.4; }
+.bubble.user { background-color: #dcf8c6; color: #212529; border-radius: 16px 16px 4px 16px; }
+.bubble.sofia { background-color: var(--teal-light); color: #212529; border-radius: 16px 16px 16px 4px; }
+.bubble-label { font-size: 0.75rem; color: #adb5bd; margin-bottom: 0.2rem; }
+.feature-icon { font-size: 1.4rem; margin-bottom: 0.4rem; }
+
 /* Landing page */
 .step-card { text-align: center; padding: 1.5rem 1rem; }
 .step-number { font-size: 2.5rem; font-weight: 700; color: var(--teal); line-height: 1; }

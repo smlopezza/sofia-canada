@@ -56,3 +56,9 @@ async def join_waitlist(
         logger.exception("Failed to save waitlist entry for %s", email)
 
     return RedirectResponse(url=f"/?submitted=true&lang={lang}", status_code=303)
+
+
+@router.get("/guide", response_class=HTMLResponse)
+def guide(request: Request, lang: str = "en"):
+    lang = lang if lang in ("en", "es") else "en"
+    return templates.TemplateResponse("guide.html", {"request": request, "lang": lang})

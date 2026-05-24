@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+
+{% block title %}SofIA — {% if lang == 'es' %}Tu guía{% else %}Your Guide{% endif %}{% endblock %}
+
+{% block hero %}
+<div class="hero">
+  <div class="container text-center">
+    <h1>{% if lang == 'es' %}Tu guía de SofIA{% else %}Your SofIA Guide{% endif %}</h1>
+    <p class="mt-2">
+      {% if lang == 'es' %}Cómo aprovecharla al máximo — y cómo saber cuándo ya no la necesitas
+      {% else %}How to get the most out of it — and how to know when you no longer need it{% endif %}
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+  <!-- Philosophy -->
+  <div class="row mb-5">
+    <div class="col-md-10 offset-md-1">
+      <div class="mission-box">
+        <p class="section-title">{% if lang == 'es' %}La filosofía: graduarse{% else %}The philosophy: graduating{% endif %}</p>
+        <p class="mission-text mb-3">
+          {% if lang == 'es' %}
+            El objetivo de SofIA es hacerse innecesaria.
+            No está diseñada para ser tu compañera para siempre — está diseñada para acompañarte en la parte más difícil de tu transición, hasta que ya no la necesites.
+          {% else %}
+            SofIA's goal is to make herself unnecessary.
+            She's not designed to be your companion forever — she's designed to walk with you through the hardest part of your transition, until you no longer need her.
+          {% endif %}
+        </p>
+        <p class="mission-text mb-3">
+          {% if lang == 'es' %}
+            Sabrás que te estás graduando cuando conectas con otros sin pensarlo dos veces, cuando tienes personas que conocen tu nombre y tu historia, cuando el trabajo por el que viniste está al alcance.
+            Ese momento — no tu primer coffee chat, sino el día que dejas de necesitar que alguien te recuerde hacerlo — es el éxito.
+          {% else %}
+            You'll know you're graduating when you reach out to people without thinking twice, when you have people who know your name and your story, when the job you came here for is within reach.
+            That moment — not your first coffee chat, but the day you stop needing someone to remind you to do it — is success.
+          {% endif %}
+        </p>
+        <p class="mission-text mb-0">
+          {% if lang == 'es' %}
+            SofIA celebra ese día. No te retiene.
+          {% else %}
+            SofIA celebrates that day. She doesn't hold on.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- What you can ask -->
+  <p class="section-title">{% if lang == 'es' %}Qué puedes pedirle a SofIA{% else %}What you can ask SofIA{% endif %}</p>
+  <div class="row mb-5">
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="feature-icon">📇</div>
+          <p class="section-title mb-1">{% if lang == 'es' %}Contactos y coffee chats{% else %}Contacts & coffee chats{% endif %}</p>
+          <ul class="section-note pl-3 mb-0">
+            {% if lang == 'es' %}
+            <li>Registrar a alguien que conociste</li>
+            <li>Agendar o confirmar un coffee chat</li>
+            <li>Prepararte para una conversación</li>
+            <li>Reflexionar después de un encuentro</li>
+            <li>Ver todos tus contactos</li>
+            {% else %}
+            <li>Register someone you met</li>
+            <li>Schedule or confirm a coffee chat</li>
+            <li>Prepare for an upcoming conversation</li>
+            <li>Reflect after a meeting</li>
+            <li>See all your contacts</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="feature-icon">🎯</div>
+          <p class="section-title mb-1">{% if lang == 'es' %}Metas y progreso{% else %}Goals & progress{% endif %}</p>
+          <ul class="section-note pl-3 mb-0">
+            {% if lang == 'es' %}
+            <li>Definir una meta profesional</li>
+            <li>Ver en qué etapa de tu transición estás</li>
+            <li>Pedir motivación o reflexión</li>
+            <li>Revisar tu avance desde que empezaste</li>
+            {% else %}
+            <li>Set a professional goal</li>
+            <li>See where you are in your journey</li>
+            <li>Ask for motivation or reflection</li>
+            <li>Review your progress since you started</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="feature-icon">📊</div>
+          <p class="section-title mb-1">{% if lang == 'es' %}Tu información{% else %}Your data{% endif %}</p>
+          <ul class="section-note pl-3 mb-0">
+            {% if lang == 'es' %}
+            <li>Ver tu perfil y la historia de tus contactos</li>
+            <li>Exportar tus contactos y notas a CSV</li>
+            <li>Ver el historial de cada coffee chat</li>
+            {% else %}
+            <li>View your profile and contact history</li>
+            <li>Export your contacts and notes to CSV</li>
+            <li>See the history of each coffee chat</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="feature-icon">🍁</div>
+          <p class="section-title mb-1">{% if lang == 'es' %}Cultura laboral canadiense{% else %}Canadian workplace culture{% endif %}</p>
+          <ul class="section-note pl-3 mb-0">
+            {% if lang == 'es' %}
+            <li>Entender normas y expectativas del trabajo en Canadá</li>
+            <li>Cómo escribir un mensaje en LinkedIn</li>
+            <li>Qué esperar en una entrevista canadiense</li>
+            <li>Cómo hacer seguimiento sin parecer insistente</li>
+            {% else %}
+            <li>Understand Canadian workplace norms and expectations</li>
+            <li>How to write a LinkedIn message</li>
+            <li>What to expect in a Canadian interview</li>
+            <li>How to follow up without seeming pushy</li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Example conversations -->
+  <p class="section-title">{% if lang == 'es' %}Ejemplos de conversación{% else %}Example conversations{% endif %}</p>
+  <p class="section-note mb-4">
+    {% if lang == 'es' %}Así se ve hablar con SofIA en WhatsApp.{% else %}This is what talking to SofIA on WhatsApp looks like.{% endif %}
+  </p>
+
+  <div class="row mb-5">
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <p class="section-title mb-3">{% if lang == 'es' %}Registrar un contacto{% else %}Registering a contact{% endif %}</p>
+          <div class="chat-example">
+            <div class="bubble-wrap user">
+              <div>
+                <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
+                <div class="bubble user">
+                  {% if lang == 'es' %}Conocí a María hoy, es gerente de proyectos en Deloitte. La conocí en un evento de la cámara de comercio latina.
+                  {% else %}I met María today, she's a project manager at Deloitte. I met her at a Latin chamber of commerce event.{% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="bubble-wrap sofia">
+              <div>
+                <div class="bubble-label">SofIA</div>
+                <div class="bubble sofia">
+                  {% if lang == 'es' %}¡Qué buena conexión! Registré a María. ¿Ya tienen algo agendado o quieres que te ayude a escribirle para proponer un café?
+                  {% else %}Great connection! I've registered María. Do you have something scheduled already or would you like help writing to propose a coffee chat?{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <p class="section-title mb-3">{% if lang == 'es' %}Prepararte para un café{% else %}Preparing for a chat{% endif %}</p>
+          <div class="chat-example">
+            <div class="bubble-wrap user">
+              <div>
+                <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
+                <div class="bubble user">
+                  {% if lang == 'es' %}Tengo café chat con John mañana. Es director de ingeniería en una startup. No sé bien cómo empezar.
+                  {% else %}I have a coffee chat with John tomorrow. He's an engineering director at a startup. I'm not sure how to start.{% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="bubble-wrap sofia">
+              <div>
+                <div class="bubble-label">SofIA</div>
+                <div class="bubble sofia">
+                  {% if lang == 'es' %}Empieza preguntándole cómo llegó a ese rol — en Canadá valoran mucho la curiosidad genuina. ¿Ya tienes 2 o 3 preguntas específicas preparadas?
+                  {% else %}Start by asking how he got to that role — Canadians really value genuine curiosity. Do you already have 2 or 3 specific questions ready?{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <p class="section-title mb-3">{% if lang == 'es' %}Exportar tus contactos{% else %}Exporting your contacts{% endif %}</p>
+          <div class="chat-example">
+            <div class="bubble-wrap user">
+              <div>
+                <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
+                <div class="bubble user">
+                  {% if lang == 'es' %}Quiero ver todos mis contactos y descargarlos.
+                  {% else %}I want to see all my contacts and download them.{% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="bubble-wrap sofia">
+              <div>
+                <div class="bubble-label">SofIA</div>
+                <div class="bubble sofia">
+                  {% if lang == 'es' %}Aquí tienes el enlace a tu perfil con todos tus contactos y notas. Desde ahí también puedes descargarlos en CSV.
+                  {% else %}Here's the link to your profile with all your contacts and notes. From there you can also download them as a CSV.{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <p class="section-title mb-3">{% if lang == 'es' %}Cultura canadiense{% else %}Canadian culture{% endif %}</p>
+          <div class="chat-example">
+            <div class="bubble-wrap user">
+              <div>
+                <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
+                <div class="bubble user">
+                  {% if lang == 'es' %}Mandé un email de seguimiento hace 2 semanas y no me han respondido. ¿Lo vuelvo a intentar?
+                  {% else %}I sent a follow-up email 2 weeks ago and haven't heard back. Should I try again?{% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="bubble-wrap sofia">
+              <div>
+                <div class="bubble-label">SofIA</div>
+                <div class="bubble sofia">
+                  {% if lang == 'es' %}Sí, un segundo seguimiento es completamente normal aquí. No hacerlo se interpreta como desinterés, no como profesionalismo. Un mensaje corto y directo está bien.
+                  {% else %}Yes, a second follow-up is completely normal here. Not doing it reads as disinterest, not professionalism. A short, direct message is fine.{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Graduation -->
+  <div class="row mb-5">
+    <div class="col-md-10 offset-md-1">
+      <div class="card">
+        <div class="card-body">
+          <p class="section-title">{% if lang == 'es' %}¿Cuándo sabes que te estás graduando?{% else %}How do you know when you're graduating?{% endif %}</p>
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-unstyled">
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}✅ Conectas por tu cuenta{% else %}✅ You reach out on your own{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}Ya no necesitas que SofIA te recuerde hacerlo.{% else %}You no longer need SofIA to remind you.{% endif %}</span>
+                </li>
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}✅ Tienes personas que te conocen{% else %}✅ You have people who know you{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}No solo contactos — personas que saben tu historia y en qué estás trabajando.{% else %}Not just contacts — people who know your story and what you're working on.{% endif %}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-unstyled">
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}✅ Agradeces sin que te lo digan{% else %}✅ You follow up with thanks naturally{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}El mensaje de agradecimiento después de un café ya es un hábito.{% else %}The thank-you message after a coffee chat is already a habit.{% endif %}</span>
+                </li>
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}✅ El trabajo está al alcance{% else %}✅ The job is within reach{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}Estás en proceso de entrevistas o ya lo conseguiste. Ese es el momento.{% else %}You're interviewing or you've already landed it. That's the moment.{% endif %}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="text-center mb-5">
+    <p class="section-note mb-3">
+      {% if lang == 'es' %}¿Lista para empezar? Aplica a la beta.{% else %}Ready to start? Apply for the beta.{% endif %}
+    </p>
+    <a href="/?lang={{ lang }}#waitlist" class="btn btn-teal">
+      {% if lang == 'es' %}Únete a la lista de espera{% else %}Join the waitlist{% endif %}
+    </a>
+  </div>
+
+{% endblock %}
