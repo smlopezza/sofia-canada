@@ -1,6 +1,7 @@
 import os
 import logging
 from google.cloud import firestore
+from google.cloud.firestore_v1.base_query import FieldFilter
 from app.models import UserDoc, ContactDoc, ExportToken
 
 _db = None
@@ -177,7 +178,7 @@ def save_mentor(mentor_id: str, mentor: dict):
 
 def get_active_mentors() -> list[dict]:
     results = []
-    for doc in get_db().collection("mentors").where("active", "==", True).stream():
+    for doc in get_db().collection("mentors").where(filter=FieldFilter("active", "==", True)).stream():
         data = doc.to_dict()
         data["id"] = doc.id
         results.append(data)
@@ -185,7 +186,7 @@ def get_active_mentors() -> list[dict]:
 
 
 def get_mentor_by_token(token: str) -> tuple[str | None, dict | None]:
-    docs = list(get_db().collection("mentors").where("opt_out_token", "==", token).stream())
+    docs = list(get_db().collection("mentors").where(filter=FieldFilter("opt_out_token", "==", token)).stream())
     if docs:
         return docs[0].id, docs[0].to_dict()
     return None, None
@@ -200,7 +201,7 @@ def update_mentor(mentor_id: str, updates: dict):
 
 
 def get_mentor_by_email(email: str) -> tuple[str | None, dict | None]:
-    docs = list(get_db().collection("mentors").where("email", "==", email.lower()).stream())
+    docs = list(get_db().collection("mentors").where(filter=FieldFilter("email", "==", email.lower())).stream())
     if docs:
         return docs[0].id, docs[0].to_dict()
     return None, None
