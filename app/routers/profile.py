@@ -42,7 +42,7 @@ def generate_export_token(phone: str) -> tuple[str, str]:
         expires_at=(now + timedelta(hours=24)).isoformat(),
     )
     save_export_token(token_id, token)
-    link = f"{BASE_URL}/export?token={token_id}"
+    link = f"{BASE_URL}/profile?token={token_id}"
     return token_id, link
 
 
@@ -56,7 +56,7 @@ def _validate_token(token_id: str) -> tuple[ExportToken | None, str | None]:
     return token, None
 
 
-@router.get("/export", response_class=HTMLResponse)
+@router.get("/profile", response_class=HTMLResponse)
 def export_view(request: Request, token: str, lang: str = None):
     token_obj, error = _validate_token(token)
     if error:
@@ -66,7 +66,7 @@ def export_view(request: Request, token: str, lang: str = None):
     contacts_with_chats = get_user_contacts(token_obj.phone)
     resolved_lang = lang or user.language or "es"
 
-    return templates.TemplateResponse("export.html", {
+    return templates.TemplateResponse("profile.html", {
         "request": request,
         "user": user,
         "contacts": contacts_with_chats,
@@ -75,7 +75,7 @@ def export_view(request: Request, token: str, lang: str = None):
     })
 
 
-@router.get("/export/profile/edit", response_class=HTMLResponse)
+@router.get("/profile/edit", response_class=HTMLResponse)
 def profile_edit_form(request: Request, token: str, lang: str = "es"):
     token_obj, error = _validate_token(token)
     if error:
@@ -89,7 +89,7 @@ def profile_edit_form(request: Request, token: str, lang: str = "es"):
     })
 
 
-@router.post("/export/profile/edit")
+@router.post("/profile/edit")
 async def profile_edit_save(
     token: str = Form(...),
     lang: str = Form("es"),
@@ -116,10 +116,10 @@ async def profile_edit_save(
     user.goals = [g.strip() for g in goals.splitlines() if g.strip()]
     save_user(user)
     logger.info("Profile updated for %s", token_obj.phone)
-    return RedirectResponse(url=f"/export?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile?token={token}&lang={lang}", status_code=303)
 
 
-@router.post("/export/profile")
+@router.post("/profile/preferences")
 async def profile_save(
     token: str = Form(...),
     lang: str = Form("es"),
@@ -134,10 +134,10 @@ async def profile_save(
     user.is_volunteering = is_volunteering == "on"
     save_user(user)
     logger.info("Profile settings updated for %s", token_obj.phone)
-    return RedirectResponse(url=f"/export?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile?token={token}&lang={lang}", status_code=303)
 
 
-@router.get("/export/contacts.csv")
+@router.get("/profile/contacts.csv")
 def export_contacts_csv(token: str):
     token_obj, error = _validate_token(token)
     if error:
@@ -174,7 +174,7 @@ def export_contacts_csv(token: str):
     )
 
 
-@router.get("/export/milestones.csv")
+@router.get("/profile/milestones.csv")
 def export_milestones_csv(token: str):
     token_obj, error = _validate_token(token)
     if error:
@@ -200,7 +200,7 @@ def export_milestones_csv(token: str):
     )
 
 
-@router.get("/export/contacts/{contact_id}", response_class=HTMLResponse)
+@router.get("/profile/contacts/{contact_id}", response_class=HTMLResponse)
 def contact_edit_form(request: Request, contact_id: str, token: str, lang: str = "es"):
     token_obj, error = _validate_token(token)
     if error:
@@ -217,7 +217,7 @@ def contact_edit_form(request: Request, contact_id: str, token: str, lang: str =
     })
 
 
-@router.post("/export/contacts/{contact_id}")
+@router.post("/profile/contacts/{contact_id}")
 async def contact_edit_save(
     contact_id: str,
     token: str = Form(...),
@@ -242,21 +242,21 @@ async def contact_edit_save(
     }
     update_contact_fields(token_obj.phone, contact_id, updates)
     logger.info("Contact %s updated for %s", contact_id, token_obj.phone)
-    return RedirectResponse(url=f"/export?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile?token={token}&lang={lang}", status_code=303)
 
 
-@router.post("/export/contacts/{contact_id}/delete")
+@router.post("/profile/contacts/{contact_id}/delete")
 async def contact_delete(contact_id: str, token: str = Form(...), lang: str = Form("es")):
     token_obj, error = _validate_token(token)
     if error:
         return HTMLResponse(f"<p>{error}</p>", status_code=400)
     delete_contact(token_obj.phone, contact_id)
     logger.info("Contact %s deleted for %s", contact_id, token_obj.phone)
-    return RedirectResponse(url=f"/export?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile?token={token}&lang={lang}", status_code=303)
 
 
 
-@router.post("/export/contacts/{contact_id}/chats/{chat_index}")
+@router.post("/profile/contacts/{contact_id}/chats/{chat_index}")
 async def chat_edit_save(
     contact_id: str,
     chat_index: int,
@@ -276,10 +276,10 @@ async def chat_edit_save(
         contact.chats[chat_index]["scheduled_at"] = scheduled_at.strip()
     update_contact_fields(token_obj.phone, contact_id, {"chats": contact.chats})
     logger.info("Chat %d updated for contact %s / %s", chat_index, contact_id, token_obj.phone)
-    return RedirectResponse(url=f"/export/contacts/{contact_id}?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile/contacts/{contact_id}?token={token}&lang={lang}", status_code=303)
 
 
-@router.post("/export/contacts/{contact_id}/chats/{chat_index}/delete")
+@router.post("/profile/contacts/{contact_id}/chats/{chat_index}/delete")
 async def chat_delete(contact_id: str, chat_index: int, token: str = Form(...), lang: str = Form("es")):
     token_obj, error = _validate_token(token)
     if error:
@@ -290,10 +290,10 @@ async def chat_delete(contact_id: str, chat_index: int, token: str = Form(...), 
     contact.chats.pop(chat_index)
     update_contact_fields(token_obj.phone, contact_id, {"chats": contact.chats})
     logger.info("Chat %d deleted for contact %s / %s", chat_index, contact_id, token_obj.phone)
-    return RedirectResponse(url=f"/export/contacts/{contact_id}?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile/contacts/{contact_id}?token={token}&lang={lang}", status_code=303)
 
 
-@router.get("/export/learnings.csv")
+@router.get("/profile/learnings.csv")
 def export_learnings_csv(token: str):
     token_obj, error = _validate_token(token)
     if error:
@@ -320,7 +320,7 @@ def export_learnings_csv(token: str):
     )
 
 
-@router.get("/export/milestones/edit", response_class=HTMLResponse)
+@router.get("/profile/milestones/edit", response_class=HTMLResponse)
 def milestones_edit_form(request: Request, token: str, lang: str = "es"):
     token_obj, error = _validate_token(token)
     if error:
@@ -334,7 +334,7 @@ def milestones_edit_form(request: Request, token: str, lang: str = "es"):
     })
 
 
-@router.post("/export/milestones/{milestone_index}")
+@router.post("/profile/milestones/{milestone_index}")
 async def milestone_save(
     milestone_index: int,
     token: str = Form(...),
@@ -353,10 +353,10 @@ async def milestone_save(
     milestones[milestone_index]["note"] = note.strip()
     save_user(user)
     logger.info("Milestone %d updated for %s", milestone_index, token_obj.phone)
-    return RedirectResponse(url=f"/export/milestones/edit?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile/milestones/edit?token={token}&lang={lang}", status_code=303)
 
 
-@router.post("/export/milestones/{milestone_index}/delete")
+@router.post("/profile/milestones/{milestone_index}/delete")
 async def milestone_delete(
     milestone_index: int,
     token: str = Form(...),
@@ -372,10 +372,10 @@ async def milestone_delete(
     milestones.pop(milestone_index)
     save_user(user)
     logger.info("Milestone %d deleted for %s", milestone_index, token_obj.phone)
-    return RedirectResponse(url=f"/export/milestones/edit?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile/milestones/edit?token={token}&lang={lang}", status_code=303)
 
 
-@router.get("/export/learnings/edit", response_class=HTMLResponse)
+@router.get("/profile/learnings/edit", response_class=HTMLResponse)
 def learnings_edit_form(request: Request, token: str, lang: str = "es"):
     token_obj, error = _validate_token(token)
     if error:
@@ -389,7 +389,7 @@ def learnings_edit_form(request: Request, token: str, lang: str = "es"):
     })
 
 
-@router.post("/export/learnings/{learning_index}")
+@router.post("/profile/learnings/{learning_index}")
 async def learning_save(
     learning_index: int,
     token: str = Form(...),
@@ -408,10 +408,10 @@ async def learning_save(
     learnings[learning_index]["confidence"] = confidence
     save_user(user)
     logger.info("Learning %d updated for %s", learning_index, token_obj.phone)
-    return RedirectResponse(url=f"/export/learnings/edit?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile/learnings/edit?token={token}&lang={lang}", status_code=303)
 
 
-@router.post("/export/learnings/{learning_index}/delete")
+@router.post("/profile/learnings/{learning_index}/delete")
 async def learning_delete(
     learning_index: int,
     token: str = Form(...),
@@ -427,4 +427,4 @@ async def learning_delete(
     learnings.pop(learning_index)
     save_user(user)
     logger.info("Learning %d deleted for %s", learning_index, token_obj.phone)
-    return RedirectResponse(url=f"/export/learnings/edit?token={token}&lang={lang}", status_code=303)
+    return RedirectResponse(url=f"/profile/learnings/edit?token={token}&lang={lang}", status_code=303)

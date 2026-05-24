@@ -361,7 +361,7 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
                 logger.info("Learning saved for %s: [%s] %s", phone, topic, insight[:60])
 
     if tool_inputs.get("export_requested"):
-        from app.routers.export import generate_export_token
+        from app.routers.profile import generate_export_token
         token_id, link = generate_export_token(phone)
         logger.info("Export token generated for %s: %s", phone, token_id)
         user._export_link = link

@@ -9,9 +9,9 @@
     <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
       {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
     </a>
-    <a href="/export?token={{ token }}&lang=en"
+    <a href="/profile?token={{ token }}&lang=en"
        class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
-    <a href="/export?token={{ token }}&lang=es"
+    <a href="/profile?token={{ token }}&lang=es"
        class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
   </div>
 </nav>
@@ -32,8 +32,15 @@
     <div class="mt-3">
       <span class="badge badge-light mr-2">{{ user.field }}</span>
       <span class="badge badge-light mr-2">{{ user.city }}</span>
-      {% if user.time_in_canada %}
-      <span class="badge badge-light">{{ user.time_in_canada }} {% if lang == 'es' %}en Canadá{% else %}in Canada{% endif %}</span>
+      {% if user.transition_stage %}
+      <span class="badge badge-light">
+        {% if user.transition_stage == 'exploring' %}{% if lang == 'es' %}Recién empezando a explorar{% else %}Just starting to explore{% endif %}
+        {% elif user.transition_stage == 'active_search' %}{% if lang == 'es' %}Búsqueda activa en curso{% else %}Actively searching{% endif %}
+        {% elif user.transition_stage == 'applying' %}{% if lang == 'es' %}Aplicando, poca respuesta{% else %}Applying, few responses{% endif %}
+        {% elif user.transition_stage == 'interviewing' %}{% if lang == 'es' %}Consiguiendo entrevistas{% else %}Getting interviews{% endif %}
+        {% elif user.transition_stage == 'employed' %}{% if lang == 'es' %}Tengo trabajo, buscando mi área{% else %}Employed, seeking my field{% endif %}
+        {% else %}{{ user.transition_stage }}{% endif %}
+      </span>
       {% endif %}
     </div>
   </div>
@@ -58,7 +65,7 @@
     <div class="card-body">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <p class="section-title mb-0">{% if lang == 'es' %}Tu perfil{% else %}Your profile{% endif %}</p>
-        <a href="/export/profile/edit?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn">
+        <a href="/profile/edit?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn">
           <i class="bi bi-pencil-fill"></i> {% if lang == 'es' %}Editar{% else %}Edit{% endif %}
         </a>
       </div>
@@ -78,7 +85,14 @@
         {% if user.transition_stage %}
         <div class="col-12 mb-2">
           <small class="text-muted text-uppercase d-block">{% if lang == 'es' %}Momento en la búsqueda{% else %}Journey stage{% endif %}</small>
-          <span>{{ user.transition_stage }}</span>
+          <span>
+            {% if user.transition_stage == 'exploring' %}{% if lang == 'es' %}Recién empezando a explorar{% else %}Just starting to explore{% endif %}
+            {% elif user.transition_stage == 'active_search' %}{% if lang == 'es' %}Búsqueda activa en curso{% else %}Actively searching{% endif %}
+            {% elif user.transition_stage == 'applying' %}{% if lang == 'es' %}Aplicando, poca respuesta{% else %}Applying, few responses{% endif %}
+            {% elif user.transition_stage == 'interviewing' %}{% if lang == 'es' %}Consiguiendo entrevistas{% else %}Getting interviews{% endif %}
+            {% elif user.transition_stage == 'employed' %}{% if lang == 'es' %}Tengo trabajo, buscando mi área{% else %}Employed, seeking my field{% endif %}
+            {% else %}{{ user.transition_stage }}{% endif %}
+          </span>
         </div>
         {% endif %}
         {% if user.city %}
@@ -114,7 +128,7 @@
       </div>
 
       <hr class="my-3">
-      <form method="POST" action="/export/profile">
+      <form method="POST" action="/profile/preferences">
         <input type="hidden" name="token" value="{{ token }}">
         <input type="hidden" name="lang" value="{{ lang }}">
         <p class="section-title mb-2">{% if lang == 'es' %}Preferencias{% else %}Preferences{% endif %}</p>
@@ -142,7 +156,7 @@
   <!-- Contacts -->
   <div class="d-flex justify-content-between align-items-center mb-2">
     <p class="section-title mb-0">{% if lang == 'es' %}Contactos{% else %}Contacts{% endif %} ({{ contacts | length }})</p>
-    <a href="/export/contacts.csv?token={{ token }}" class="btn btn-sm download-btn">
+    <a href="/profile/contacts.csv?token={{ token }}" class="btn btn-sm download-btn">
       {% if lang == 'es' %}Descargar CSV{% else %}Download CSV{% endif %}
     </a>
   </div>
@@ -176,7 +190,7 @@
             <td>{{ c.chats | length }}</td>
             <td>{% if c.is_mentor %}<span class="badge badge-success">{% if lang == 'es' %}Sí{% else %}Yes{% endif %}</span>{% endif %}</td>
             <td>
-              <a href="/export/contacts/{{ cid }}?token={{ token }}&lang={{ lang }}"
+              <a href="/profile/contacts/{{ cid }}?token={{ token }}&lang={{ lang }}"
                  class="btn btn-sm download-btn"
                  onclick="event.stopPropagation()"><i class="bi bi-pencil-fill"></i></a>
             </td>
@@ -219,10 +233,10 @@
     <p class="section-title mb-0">{% if lang == 'es' %}Tu progreso{% else %}Your progress{% endif %}</p>
     {% if user.milestones %}
     <div>
-      <a href="/export/milestones/edit?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mr-1">
+      <a href="/profile/milestones/edit?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mr-1">
         <i class="bi bi-pencil-fill"></i> {% if lang == 'es' %}Editar{% else %}Edit{% endif %}
       </a>
-      <a href="/export/milestones.csv?token={{ token }}" class="btn btn-sm download-btn">
+      <a href="/profile/milestones.csv?token={{ token }}" class="btn btn-sm download-btn">
         {% if lang == 'es' %}Descargar CSV{% else %}Download CSV{% endif %}
       </a>
     </div>
@@ -249,10 +263,10 @@
     <p class="section-title mb-0">{% if lang == 'es' %}Lo que aprendiste{% else %}What you learned{% endif %}</p>
     {% if user.learnings %}
     <div>
-      <a href="/export/learnings/edit?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mr-1">
+      <a href="/profile/learnings/edit?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mr-1">
         <i class="bi bi-pencil-fill"></i> {% if lang == 'es' %}Editar{% else %}Edit{% endif %}
       </a>
-      <a href="/export/learnings.csv?token={{ token }}" class="btn btn-sm download-btn">
+      <a href="/profile/learnings.csv?token={{ token }}" class="btn btn-sm download-btn">
         {% if lang == 'es' %}Descargar CSV{% else %}Download CSV{% endif %}
       </a>
     </div>

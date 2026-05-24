@@ -9,9 +9,9 @@
     <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
       {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
     </a>
-    <a href="/export/learnings/edit?token={{ token }}&lang=en"
+    <a href="/profile/learnings/edit?token={{ token }}&lang=en"
        class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
-    <a href="/export/learnings/edit?token={{ token }}&lang=es"
+    <a href="/profile/learnings/edit?token={{ token }}&lang=es"
        class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
   </div>
 </nav>
@@ -21,7 +21,7 @@
 <div class="row">
   <div class="col-md-8 offset-md-2">
 
-    <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
+    <a href="/profile?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
       <i class="bi bi-arrow-left"></i> {% if lang == 'es' %}Volver{% else %}Back{% endif %}
     </a>
 
@@ -32,7 +32,7 @@
     <div class="card mb-3">
       <div class="card-body">
         <small class="text-muted text-uppercase d-block mb-2">{{ l.topic | replace("_", " ") }}</small>
-        <form method="POST" action="/export/learnings/{{ loop.index0 }}">
+        <form method="POST" action="/profile/learnings/{{ loop.index0 }}">
           <input type="hidden" name="token" value="{{ token }}">
           <input type="hidden" name="lang" value="{{ lang }}">
           <div class="form-group mb-2">
@@ -49,7 +49,7 @@
           </div>
           <button type="submit" class="btn btn-teal btn-sm">{% if lang == 'es' %}Guardar{% else %}Save{% endif %}</button>
         </form>
-        <form method="POST" action="/export/learnings/{{ loop.index0 }}/delete" class="mt-2"
+        <form method="POST" action="/profile/learnings/{{ loop.index0 }}/delete" class="mt-2"
               onsubmit="return confirm('{% if lang == 'es' %}¿Seguro?{% else %}Are you sure?{% endif %}')">
           <input type="hidden" name="token" value="{{ token }}">
           <input type="hidden" name="lang" value="{{ lang }}">

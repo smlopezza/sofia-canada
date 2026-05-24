@@ -9,9 +9,9 @@
     <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
       {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
     </a>
-    <a href="/export/profile/edit?token={{ token }}&lang=en"
+    <a href="/profile/edit?token={{ token }}&lang=en"
        class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
-    <a href="/export/profile/edit?token={{ token }}&lang=es"
+    <a href="/profile/edit?token={{ token }}&lang=es"
        class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
   </div>
 </nav>
@@ -21,7 +21,7 @@
 <div class="row">
   <div class="col-md-8 offset-md-2">
 
-    <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
+    <a href="/profile?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
       <i class="bi bi-arrow-left"></i> {% if lang == 'es' %}Volver{% else %}Back{% endif %}
     </a>
 
@@ -29,7 +29,7 @@
 
     <div class="card">
       <div class="card-body">
-        <form method="POST" action="/export/profile/edit">
+        <form method="POST" action="/profile/edit">
           <input type="hidden" name="token" value="{{ token }}">
           <input type="hidden" name="lang" value="{{ lang }}">
 
@@ -59,9 +59,24 @@
           </div>
           <div class="form-group">
             <label>{% if lang == 'es' %}Momento en la búsqueda{% else %}Journey stage{% endif %}</label>
-            <input type="text" class="form-control" name="transition_stage"
-                   placeholder="{% if lang == 'es' %}Ej: Recién empezando a explorar, Aplicando activamente…{% else %}E.g. Just starting to explore, Actively applying…{% endif %}"
-                   value="{{ user.transition_stage or '' }}">
+            <select class="form-control" name="transition_stage">
+              <option value="">{% if lang == 'es' %}— Selecciona —{% else %}— Select —{% endif %}</option>
+              <option value="exploring" {% if user.transition_stage == 'exploring' %}selected{% endif %}>
+                {% if lang == 'es' %}Recién empezando a explorar{% else %}Just starting to explore{% endif %}
+              </option>
+              <option value="active_search" {% if user.transition_stage == 'active_search' %}selected{% endif %}>
+                {% if lang == 'es' %}Búsqueda activa en curso{% else %}Actively searching{% endif %}
+              </option>
+              <option value="applying" {% if user.transition_stage == 'applying' %}selected{% endif %}>
+                {% if lang == 'es' %}Aplicando, poca respuesta{% else %}Applying, few responses{% endif %}
+              </option>
+              <option value="interviewing" {% if user.transition_stage == 'interviewing' %}selected{% endif %}>
+                {% if lang == 'es' %}Consiguiendo entrevistas{% else %}Getting interviews{% endif %}
+              </option>
+              <option value="employed" {% if user.transition_stage == 'employed' %}selected{% endif %}>
+                {% if lang == 'es' %}Tengo trabajo, buscando mi área{% else %}Employed, seeking my field{% endif %}
+              </option>
+            </select>
           </div>
           <div class="form-group">
             <label>{% if lang == 'es' %}Sobre mí{% else %}About me{% endif %}</label>
@@ -74,7 +89,7 @@
 
           <div class="mt-3">
             <button type="submit" class="btn btn-teal mr-2">{% if lang == 'es' %}Guardar cambios{% else %}Save changes{% endif %}</button>
-            <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-outline-secondary">{% if lang == 'es' %}Cancelar{% else %}Cancel{% endif %}</a>
+            <a href="/profile?token={{ token }}&lang={{ lang }}" class="btn btn-outline-secondary">{% if lang == 'es' %}Cancelar{% else %}Cancel{% endif %}</a>
           </div>
         </form>
       </div>

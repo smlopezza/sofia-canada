@@ -87,14 +87,20 @@ TOOLS = [
                 },
                 "transition_stage": {
                     "type": "string",
+                    "enum": [
+                        "exploring", "active_search", "applying", "interviewing", "employed"
+                    ],
                     "description": (
-                        "Where the user is in their job-transition journey, in their own words. "
+                        "Where the user is in their job-transition journey. "
                         "This is more important than time in Canada — two people can arrive the "
                         "same year but be at completely different stages. "
-                        "Set as soon as the user describes their situation, e.g.: "
-                        "'Recién empezando a explorar opciones', 'Aplicando activamente pero sin respuestas', "
-                        "'Consiguiendo entrevistas, ajustando mi estrategia', 'Tengo trabajo pero busco mi área'. "
-                        "Update if their stage changes. Use the user's own language (ES or EN)."
+                        "Set as soon as the user describes their situation. Update if their stage changes. "
+                        "Values: "
+                        "'exploring' = just starting to think about the job search; "
+                        "'active_search' = actively looking but no traction yet; "
+                        "'applying' = sending applications, few or no responses; "
+                        "'interviewing' = getting interviews, working on strategy; "
+                        "'employed' = has a job (survival or field), still seeking their area."
                     )
                 },
                 "is_volunteering": {

@@ -9,9 +9,9 @@
     <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
       {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
     </a>
-    <a href="/export/contacts/{{ contact_id }}?token={{ token }}&lang=en"
+    <a href="/profile/contacts/{{ contact_id }}?token={{ token }}&lang=en"
        class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
-    <a href="/export/contacts/{{ contact_id }}?token={{ token }}&lang=es"
+    <a href="/profile/contacts/{{ contact_id }}?token={{ token }}&lang=es"
        class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
   </div>
 </nav>
@@ -21,7 +21,7 @@
 <div class="row">
   <div class="col-md-8 offset-md-2">
 
-    <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
+    <a href="/profile?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
       <i class="bi bi-arrow-left"></i> {% if lang == 'es' %}Volver{% else %}Back{% endif %}
     </a>
 
@@ -30,7 +30,7 @@
     <!-- Contact fields -->
     <div class="card mb-4">
       <div class="card-body">
-        <form method="POST" action="/export/contacts/{{ contact_id }}">
+        <form method="POST" action="/profile/contacts/{{ contact_id }}">
           <input type="hidden" name="token" value="{{ token }}">
           <input type="hidden" name="lang" value="{{ lang }}">
 
@@ -65,7 +65,7 @@
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <button type="submit" class="btn btn-teal mr-2">{% if lang == 'es' %}Guardar cambios{% else %}Save changes{% endif %}</button>
-              <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-outline-secondary">{% if lang == 'es' %}Volver{% else %}Back{% endif %}</a>
+              <a href="/profile?token={{ token }}&lang={{ lang }}" class="btn btn-outline-secondary">{% if lang == 'es' %}Volver{% else %}Back{% endif %}</a>
             </div>
           </div>
         </form>
@@ -78,7 +78,7 @@
     {% for chat in contact.chats %}
     <div class="card mb-3">
       <div class="card-body">
-        <form method="POST" action="/export/contacts/{{ contact_id }}/chats/{{ loop.index0 }}">
+        <form method="POST" action="/profile/contacts/{{ contact_id }}/chats/{{ loop.index0 }}">
           <input type="hidden" name="token" value="{{ token }}">
           <input type="hidden" name="lang" value="{{ lang }}">
           <div class="form-row">
@@ -97,7 +97,7 @@
           {% endif %}
           <button type="submit" class="btn btn-teal btn-sm">{% if lang == 'es' %}Guardar{% else %}Save{% endif %}</button>
         </form>
-        <form method="POST" action="/export/contacts/{{ contact_id }}/chats/{{ loop.index0 }}/delete"
+        <form method="POST" action="/profile/contacts/{{ contact_id }}/chats/{{ loop.index0 }}/delete"
               class="mt-2"
               onsubmit="return confirm('{% if lang == 'es' %}¿Seguro?{% else %}Are you sure?{% endif %}')">
           <input type="hidden" name="token" value="{{ token }}">
@@ -114,7 +114,7 @@
       <div class="card-body">
         <p class="section-title text-danger mb-1">{% if lang == 'es' %}Eliminar contacto{% else %}Delete contact{% endif %}</p>
         <p class="section-note mb-3">{% if lang == 'es' %}Esta acción no se puede deshacer.{% else %}This action cannot be undone.{% endif %}</p>
-        <form method="POST" action="/export/contacts/{{ contact_id }}/delete"
+        <form method="POST" action="/profile/contacts/{{ contact_id }}/delete"
               onsubmit="return confirm('{% if lang == 'es' %}¿Seguro que quieres eliminar a {{ contact.name }}?{% else %}Are you sure you want to delete {{ contact.name }}?{% endif %}')">
           <input type="hidden" name="token" value="{{ token }}">
           <input type="hidden" name="lang" value="{{ lang }}">
