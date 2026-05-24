@@ -152,7 +152,7 @@
 
   <div class="row mb-5">
     <div class="col-md-6 mb-4">
-      <div class="card">
+      <div class="card h-100">
         <div class="card-body">
           <p class="section-title mb-3">{% if lang == 'es' %}Registrar un contacto{% else %}Registering a contact{% endif %}</p>
           <div class="chat-example">
@@ -180,7 +180,7 @@
     </div>
 
     <div class="col-md-6 mb-4">
-      <div class="card">
+      <div class="card h-100">
         <div class="card-body">
           <p class="section-title mb-3">{% if lang == 'es' %}Prepararte para un café{% else %}Preparing for a chat{% endif %}</p>
           <div class="chat-example">
@@ -208,16 +208,16 @@
     </div>
 
     <div class="col-md-6 mb-4">
-      <div class="card">
+      <div class="card h-100">
         <div class="card-body">
-          <p class="section-title mb-3">{% if lang == 'es' %}Exportar tus contactos{% else %}Exporting your contacts{% endif %}</p>
+          <p class="section-title mb-3">{% if lang == 'es' %}Ver tu perfil{% else %}See your profile{% endif %}</p>
           <div class="chat-example">
             <div class="bubble-wrap user">
               <div>
                 <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
                 <div class="bubble user">
-                  {% if lang == 'es' %}Quiero ver todos mis contactos y descargarlos.
-                  {% else %}I want to see all my contacts and download them.{% endif %}
+                  {% if lang == 'es' %}Quiero ver mi perfil y mis contactos.
+                  {% else %}I want to see my profile and my contacts.{% endif %}
                 </div>
               </div>
             </div>
@@ -225,8 +225,8 @@
               <div>
                 <div class="bubble-label">SofIA</div>
                 <div class="bubble sofia">
-                  {% if lang == 'es' %}Aquí tienes el enlace a tu perfil con todos tus contactos y notas. Desde ahí también puedes descargarlos en CSV.
-                  {% else %}Here's the link to your profile with all your contacts and notes. From there you can also download them as a CSV.{% endif %}
+                  {% if lang == 'es' %}Aquí tienes tu enlace — desde ahí puedes ver tus contactos, editar tu información, revisar tus aprendizajes y descargar todo en CSV. Es válido por 24 horas.
+                  {% else %}Here's your link — from there you can see your contacts, edit your info, review your learnings, and download everything as CSV. It's valid for 24 hours.{% endif %}
                 </div>
               </div>
             </div>
@@ -236,7 +236,7 @@
     </div>
 
     <div class="col-md-6 mb-4">
-      <div class="card">
+      <div class="card h-100">
         <div class="card-body">
           <p class="section-title mb-3">{% if lang == 'es' %}Cultura canadiense{% else %}Canadian culture{% endif %}</p>
           <div class="chat-example">
@@ -262,6 +262,119 @@
         </div>
       </div>
     </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="section-title mb-3">{% if lang == 'es' %}Después del café chat{% else %}After the coffee chat{% endif %}</p>
+          <div class="chat-example">
+            <div class="bubble-wrap user">
+              <div>
+                <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
+                <div class="bubble user">
+                  {% if lang == 'es' %}Tuve el café chat con María. Fue muy buena conversación.
+                  {% else %}I had the coffee chat with María. It was a really good conversation.{% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="bubble-wrap sofia">
+              <div>
+                <div class="bubble-label">SofIA</div>
+                <div class="bubble sofia">
+                  {% if lang == 'es' %}¡Qué bueno! ¿Hubo algo que dijo que quieres recordar — un momento específico, algo que te sorprendió?
+                  {% else %}So good to hear! Was there something she said you want to remember — a specific moment, something that surprised you?{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="section-title mb-3">{% if lang == 'es' %}Escribir un mensaje en LinkedIn{% else %}Writing a LinkedIn message{% endif %}</p>
+          <div class="chat-example">
+            <div class="bubble-wrap user">
+              <div>
+                <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
+                <div class="bubble user">
+                  {% if lang == 'es' %}Encontré a alguien en LinkedIn que trabaja en datos en TD. ¿Cómo le escribo? No quiero parecer que estoy pidiendo trabajo.
+                  {% else %}I found someone on LinkedIn who works in data at TD. How do I message them? I don't want to seem like I'm asking for a job.{% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="bubble-wrap sofia">
+              <div>
+                <div class="bubble-label">SofIA</div>
+                <div class="bubble sofia">
+                  {% if lang == 'es' %}No lo estás — estás pidiendo una conversación, que es completamente distinto. Son dos mensajes: una nota corta de conexión, y el mensaje completo una vez que acepte. ¿Lo escribimos?
+                  {% else %}You're not — you're asking for a conversation, which is completely different. It's two messages: a short connection note, then the full message once they accept. Want to write them together?{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="section-title mb-3">{% if lang == 'es' %}¿Qué he aprendido?{% else %}What have I learned?{% endif %}</p>
+          <div class="chat-example">
+            <div class="bubble-wrap user">
+              <div>
+                <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
+                <div class="bubble user">
+                  {% if lang == 'es' %}¿Qué he aprendido hasta ahora sobre la cultura laboral acá?
+                  {% else %}What have I learned so far about the workplace culture here?{% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="bubble-wrap sofia">
+              <div>
+                <div class="bubble-label">SofIA</div>
+                <div class="bubble sofia">
+                  {% if lang == 'es' %}Guardé varios aprendizajes contigo — sobre seguimientos, mensajes de LinkedIn y qué esperar en entrevistas. ¿Los repasamos o quieres el enlace a tu perfil para verlos todos?
+                  {% else %}I've saved several learnings with you — about follow-ups, LinkedIn messages, and what to expect in interviews. Want to go through them or would you like the link to your profile?{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="section-title mb-3">{% if lang == 'es' %}Trabajo de supervivencia{% else %}Survival job{% endif %}</p>
+          <div class="chat-example">
+            <div class="bubble-wrap user">
+              <div>
+                <div class="bubble-label text-right">{% if lang == 'es' %}Tú{% else %}You{% endif %}</div>
+                <div class="bubble user">
+                  {% if lang == 'es' %}Llevo 2 años en retail mientras busco en mi área. Me da vergüenza decirlo en entrevistas.
+                  {% else %}I've been in retail for 2 years while looking for work in my field. I'm embarrassed to mention it in interviews.{% endif %}
+                </div>
+              </div>
+            </div>
+            <div class="bubble-wrap sofia">
+              <div>
+                <div class="bubble-label">SofIA</div>
+                <div class="bubble sofia">
+                  {% if lang == 'es' %}No hay nada de qué avergonzarse. Llegaste a un país nuevo y lo primero que hiciste fue asegurarte de poder quedarte. Eso es exactamente la resiliencia que los empleadores canadienses dicen querer ver. ¿Cómo se lo estás contando ahora?
+                  {% else %}Nothing to be embarrassed about. You arrived in a new country and the first thing you did was make sure you could stay. That's exactly the resilience Canadian employers say they want to see. How are you framing it right now?{% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Graduation -->
