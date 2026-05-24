@@ -50,6 +50,8 @@ body { background-color: #f8f9fa; }
 .chat-entry { border-left: 3px solid var(--teal); padding: 0.6rem 1rem; margin-bottom: 0.75rem; }
 .chat-date { font-size: 0.8rem; color: #6c757d; font-weight: 600; }
 .chat-notes { font-size: 0.9rem; color: #495057; margin-top: 0.25rem; }
+.chat-signals { font-size: 0.8rem; color: #6c757d; margin-top: 0.25rem; }
+.chat-history-title { font-size: 0.8rem; text-transform: uppercase; color: var(--teal-dark); font-weight: 600; margin-bottom: 0.5rem; }
 .toggle-icon { float: right; color: var(--teal); font-size: 0.85rem; }
 
 .navbar-sofia { background-color: var(--teal-dark); }

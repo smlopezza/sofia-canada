@@ -19,7 +19,7 @@
     {% if user.goals %}
     <div class="mt-3">
       {% for goal in user.goals %}
-      <span class="badge badge-light mr-1" style="font-size:0.9rem;">{{ goal }}</span>
+      <span class="badge badge-light mr-1">{{ goal }}</span>
       {% endfor %}
     </div>
     {% endif %}
@@ -47,7 +47,7 @@
   <!-- Contacts -->
   <div class="d-flex justify-content-between align-items-center mb-2">
     <p class="section-title mb-0">Contactos ({{ contacts | length }})</p>
-    <a href="/export/contacts.csv?token={{ token }}" class="btn btn-outline-secondary btn-sm download-btn">
+    <a href="/export/contacts.csv?token={{ token }}" class="btn btn-sm download-btn">
       Descargar CSV
     </a>
   </div>
@@ -87,32 +87,26 @@
             </td>
           </tr>
           <tr class="collapse chat-detail" id="chats-{{ loop.index }}">
-            <td colspan="7">
+            <td colspan="8">
               {% if c.chats %}
               <div class="py-2 px-3">
-                <p class="mb-2" style="font-size:0.8rem;text-transform:uppercase;color:#6f42c1;font-weight:600;">
-                  Historial de conversaciones
-                </p>
+                <p class="chat-history-title">Historial de conversaciones</p>
                 {% for chat in c.chats %}
                 <div class="chat-entry">
-                  <div class="chat-date">
-                    {{ chat.get("scheduled_at", "")[:10] or "Fecha desconocida" }}
-                  </div>
+                  <div class="chat-date">{{ chat.get("scheduled_at", "")[:10] or "Fecha desconocida" }}</div>
                   {% if chat.get("notes") %}
                   <div class="chat-notes">{{ chat.get("notes") }}</div>
                   {% else %}
-                  <div class="chat-notes text-muted" style="font-style:italic;">Sin notas registradas</div>
+                  <div class="chat-notes text-muted fst-italic">Sin notas registradas</div>
                   {% endif %}
                   {% if chat.get("depth_signals") %}
-                  <div class="mt-1" style="font-size:0.8rem;color:#6c757d;">
-                    <strong>Señales:</strong> {{ chat.get("depth_signals") }}
-                  </div>
+                  <div class="chat-signals"><strong>Señales:</strong> {{ chat.get("depth_signals") }}</div>
                   {% endif %}
                 </div>
                 {% endfor %}
               </div>
               {% else %}
-              <div class="py-2 px-3 text-muted" style="font-size:0.9rem;">Sin conversaciones registradas.</div>
+              <div class="py-2 px-3 text-muted">Sin conversaciones registradas.</div>
               {% endif %}
             </td>
           </tr>
@@ -129,7 +123,7 @@
   <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
     <p class="section-title mb-0">Tu progreso</p>
     {% if user.milestones %}
-    <a href="/export/milestones.csv?token={{ token }}" class="btn btn-outline-secondary btn-sm download-btn">
+    <a href="/export/milestones.csv?token={{ token }}" class="btn btn-sm download-btn">
       Descargar CSV
     </a>
     {% endif %}
@@ -141,7 +135,7 @@
       <div class="milestone-item">
         <strong>{{ m.label or m.key }}</strong>
         <div class="milestone-date">{{ m.achieved_at[:10] if m.achieved_at else "" }}</div>
-        {% if m.note %}<p class="mb-0 mt-1 text-muted" style="font-size:0.9rem;">{{ m.note }}</p>{% endif %}
+        {% if m.note %}<p class="mb-0 mt-1 text-muted milestone-date">{{ m.note }}</p>{% endif %}
       </div>
       {% endfor %}
     </div>
@@ -154,7 +148,7 @@
   <div class="d-flex justify-content-between align-items-center mt-4 mb-2">
     <p class="section-title mb-0">Lo que aprendiste</p>
     {% if user.learnings %}
-    <a href="/export/learnings.csv?token={{ token }}" class="btn btn-outline-secondary btn-sm download-btn">
+    <a href="/export/learnings.csv?token={{ token }}" class="btn btn-sm download-btn">
       Descargar CSV
     </a>
     {% endif %}
