@@ -169,3 +169,38 @@ def save_waitlist_entry(entry: dict) -> str:
 
 def count_active_users() -> int:
     return sum(1 for _ in get_db().collection("users").stream())
+
+
+def save_mentor(mentor_id: str, mentor: dict):
+    get_db().collection("mentors").document(mentor_id).set(mentor)
+
+
+def get_active_mentors() -> list[dict]:
+    results = []
+    for doc in get_db().collection("mentors").where("active", "==", True).stream():
+        data = doc.to_dict()
+        data["id"] = doc.id
+        results.append(data)
+    return results
+
+
+def get_mentor_by_token(token: str) -> tuple[str | None, dict | None]:
+    docs = list(get_db().collection("mentors").where("opt_out_token", "==", token).stream())
+    if docs:
+        return docs[0].id, docs[0].to_dict()
+    return None, None
+
+
+def optout_mentor(mentor_id: str):
+    get_db().collection("mentors").document(mentor_id).update({"active": False})
+
+
+def update_mentor(mentor_id: str, updates: dict):
+    get_db().collection("mentors").document(mentor_id).update(updates)
+
+
+def get_mentor_by_email(email: str) -> tuple[str | None, dict | None]:
+    docs = list(get_db().collection("mentors").where("email", "==", email.lower()).stream())
+    if docs:
+        return docs[0].id, docs[0].to_dict()
+    return None, None

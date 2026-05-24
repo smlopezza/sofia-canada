@@ -8,3 +8,4 @@ google-cloud-firestore==2.19.0
 python-dotenv==1.0.1
 python-multipart==0.0.9
 langfuse==2.60.0
+resend

@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <title>SofIA — {% if lang == 'es' %}Ser mentor{% else %}Become a mentor{% endif %}</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
+  <div>
+    <a href="/mentors/register?lang=en" class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/mentors/register?lang=es" class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container text-center">
+    <h1>{% if lang == 'es' %}Sé mentor{% else %}Become a mentor{% endif %}</h1>
+    <p class="mt-2">
+      {% if lang == 'es' %}Comparte tu experiencia con recién llegados latinos en su transición profesional
+      {% else %}Share your experience with Latino newcomers in their professional transition{% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+
+      {% if submitted %}
+      <div class="card p-4 text-center mb-4">
+        <div class="stat-number mb-2">🙌</div>
+        <h4>{% if lang == 'es' %}¡Gracias por unirte!{% else %}Thank you for joining!{% endif %}</h4>
+        <p class="text-muted">
+          {% if lang == 'es' %}Tu perfil ya está en el directorio de mentores.
+          {% else %}Your profile is now in the mentor directory.{% endif %}
+        </p>
+        <a href="/mentors?lang={{ lang }}" class="btn btn-teal btn-sm mt-2">
+          {% if lang == 'es' %}Ver el directorio{% else %}View the directory{% endif %}
+        </a>
+
+        <hr class="mt-4">
+        <p class="section-note mb-2">
+          {% if lang == 'es' %}Guarda estos enlaces para gestionar tu perfil:
+          {% else %}Save these links to manage your profile:{% endif %}
+        </p>
+        {% if token %}
+        <div class="mb-1">
+          <small class="text-muted">{% if lang == 'es' %}Editar perfil:{% else %}Edit profile:{% endif %}</small><br>
+          <a href="/mentors/edit?token={{ token }}&lang={{ lang }}" class="section-note">
+            /mentors/edit?token={{ token }}
+          </a>
+        </div>
+        <div class="mt-2">
+          <small class="text-muted">{% if lang == 'es' %}Salir del directorio:{% else %}Leave the directory:{% endif %}</small><br>
+          <a href="/mentors/optout?token={{ token }}&lang={{ lang }}" class="section-note text-danger">
+            /mentors/optout?token={{ token }}
+          </a>
+        </div>
+        {% endif %}
+        <p class="section-note mt-3">
+          {% if lang == 'es' %}¿Perdiste los enlaces? Solicítalos en:
+          {% else %}Lost your links? Request them again at:{% endif %}
+          <a href="/mentors/manage?lang={{ lang }}">/mentors/manage</a>
+        </p>
+      </div>
+
+      {% else %}
+      <div class="card mb-5">
+        <div class="card-body">
+          <p class="section-title">{% if lang == 'es' %}Tu perfil{% else %}Your profile{% endif %}</p>
+          <p class="section-note mb-4">
+            {% if lang == 'es' %}Tu email no se mostrará públicamente. Puedes salir del directorio en cualquier momento.
+            {% else %}Your email won't be shown publicly. You can leave the directory at any time.{% endif %}
+          </p>
+
+          <form method="POST" action="/mentors/register">
+            <input type="hidden" name="lang" value="{{ lang }}">
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>{% if lang == 'es' %}Nombre completo{% else %}Full name{% endif %} *</label>
+                <input type="text" class="form-control" name="name" required>
+              </div>
+              <div class="form-group col-md-6">
+                <label>Email * <span class="text-muted">({% if lang == 'es' %}no público{% else %}not public{% endif %})</span></label>
+                <input type="email" class="form-control" name="email" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>{% if lang == 'es' %}Rol actual{% else %}Current role{% endif %} *</label>
+                <input type="text" class="form-control" name="role" required placeholder="{% if lang == 'es' %}p.ej. Software Engineer{% else %}e.g. Software Engineer{% endif %}">
+              </div>
+              <div class="form-group col-md-6">
+                <label>{% if lang == 'es' %}Empresa{% else %}Company{% endif %} <span class="text-muted">({% if lang == 'es' %}opcional{% else %}optional{% endif %})</span></label>
+                <input type="text" class="form-control" name="company" placeholder="{% if lang == 'es' %}p.ej. RBC{% else %}e.g. RBC{% endif %}">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>{% if lang == 'es' %}Industria{% else %}Industry{% endif %} *</label>
+                <input type="text" class="form-control" name="industry" required placeholder="{% if lang == 'es' %}p.ej. Tecnología{% else %}e.g. Technology{% endif %}">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>{% if lang == 'es' %}Ciudad en Canadá{% else %}City in Canada{% endif %} *</label>
+                <input type="text" class="form-control" name="city" required placeholder="{% if lang == 'es' %}p.ej. Toronto{% else %}e.g. Toronto{% endif %}">
+              </div>
+              <div class="form-group col-md-6">
+                <label>{% if lang == 'es' %}País de origen{% else %}Country of origin{% endif %} <span class="text-muted">({% if lang == 'es' %}opcional{% else %}optional{% endif %})</span></label>
+                <input type="text" class="form-control" name="country_of_origin" placeholder="{% if lang == 'es' %}p.ej. México{% else %}e.g. Mexico{% endif %}">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>{% if lang == 'es' %}Idiomas que hablas{% else %}Languages you speak{% endif %}</label><br>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="languages" value="en" id="lang_en" checked>
+                <label class="form-check-label" for="lang_en">English</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="languages" value="es" id="lang_es">
+                <label class="form-check-label" for="lang_es">Español</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="languages" value="fr" id="lang_fr">
+                <label class="form-check-label" for="lang_fr">Français</label>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>{% if lang == 'es' %}Cómo preferes que te contacten{% else %}How you prefer to be contacted{% endif %}</label>
+              <select class="form-control" name="contact_preference">
+                <option value="linkedin">LinkedIn</option>
+                <option value="email">Email</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>LinkedIn <span class="text-muted">({% if lang == 'es' %}opcional{% else %}optional{% endif %})</span></label>
+              <input type="url" class="form-control" name="linkedin" placeholder="https://linkedin.com/in/...">
+            </div>
+
+            <div class="form-group">
+              <label>Calendly <span class="text-muted">({% if lang == 'es' %}opcional — para que agenden un café contigo{% else %}optional — so people can book a chat with you{% endif %})</span></label>
+              <input type="url" class="form-control" name="calendly" placeholder="https://calendly.com/...">
+            </div>
+
+            <div class="form-group">
+              <label>
+                {% if lang == 'es' %}Sobre ti{% else %}About you{% endif %}
+                <span class="text-muted">({% if lang == 'es' %}opcional, máx. 1000 caracteres{% else %}optional, max 1000 characters{% endif %})</span>
+              </label>
+              <textarea class="form-control" name="bio" rows="3" maxlength="1000"
+                placeholder="{% if lang == 'es' %}Cuéntanos un poco sobre tu experiencia y en qué puedes ayudar{% else %}Tell us a bit about your experience and how you can help{% endif %}"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-teal btn-block">
+              {% if lang == 'es' %}Registrarme como mentor{% else %}Register as a mentor{% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="sofia-footer">
+  <div class="container text-center">
+    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · <a href="https://www.slopezza.com" target="_blank" class="footer-link">slopezza.com</a></p>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

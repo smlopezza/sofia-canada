@@ -154,9 +154,9 @@
             {% if lang == 'es' %}Regístrate como mentor y ayuda a recién llegados en su transición profesional en Canadá.
             {% else %}Register as a mentor and help newcomers navigate their professional transition in Canada.{% endif %}
           </p>
-          <span class="badge badge-secondary">
-            {% if lang == 'es' %}Próximamente{% else %}Coming soon{% endif %}
-          </span>
+          <a href="/mentors/register?lang={{ lang }}" class="btn btn-outline-secondary btn-sm">
+            {% if lang == 'es' %}Ser mentor{% else %}Become a mentor{% endif %}
+          </a>
         </div>
       </div>
     </div>

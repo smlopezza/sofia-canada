@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <title>SofIA — {% if lang == 'es' %}Gestionar perfil{% else %}Manage your profile{% endif %}</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
+</nav>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+
+      {% if sent %}
+      <div class="card p-4 text-center">
+        <div class="stat-number mb-2">📬</div>
+        <h5>{% if lang == 'es' %}¡Listo!{% else %}Done!{% endif %}</h5>
+        <p class="text-muted">
+          {% if lang == 'es' %}Si tu email está registrado, recibirás los enlaces en unos minutos.
+          {% else %}If your email is registered, you'll receive the links in a few minutes.{% endif %}
+        </p>
+        <a href="/mentors?lang={{ lang }}" class="btn btn-teal btn-sm mt-2">
+          {% if lang == 'es' %}Ver el directorio{% else %}View the directory{% endif %}
+        </a>
+      </div>
+
+      {% else %}
+      <div class="card">
+        <div class="card-body">
+          <p class="section-title">
+            {% if lang == 'es' %}Gestionar tu perfil de mentor{% else %}Manage your mentor profile{% endif %}
+          </p>
+          <p class="section-note mb-4">
+            {% if lang == 'es' %}Te enviamos los enlaces para editar o salir del directorio al email con el que te registraste.
+            {% else %}We'll send your edit and opt-out links to the email you registered with.{% endif %}
+          </p>
+          <form method="POST" action="/mentors/manage">
+            <input type="hidden" name="lang" value="{{ lang }}">
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+            <button type="submit" class="btn btn-teal btn-block">
+              {% if lang == 'es' %}Enviarme mis enlaces{% else %}Send me my links{% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="sofia-footer mt-5">
+  <div class="container text-center">
+    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · <a href="https://www.slopezza.com" target="_blank" class="footer-link">slopezza.com</a></p>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

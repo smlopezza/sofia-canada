@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <title>SofIA — {% if lang == 'es' %}Mentores voluntarios{% else %}Volunteer Mentors{% endif %}</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
+  <div>
+    <a href="/mentors?lang=en" class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/mentors?lang=es" class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container text-center">
+    <h1>{% if lang == 'es' %}Mentores voluntarios{% else %}Volunteer Mentors{% endif %}</h1>
+    <p class="mt-2">
+      {% if lang == 'es' %}Profesionales en Canadá que se ofrecieron a compartir su experiencia con recién llegados
+      {% else %}Professionals in Canada who volunteered to share their experience with newcomers{% endif %}
+    </p>
+  </div>
+</div>
+
+<div class="container mt-5">
+
+  {% if mentors %}
+  <div class="row">
+    {% for mentor in mentors %}
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <div class="mentor-avatar">{{ mentor.name[0] | upper }}</div>
+          <div class="mentor-name">{{ mentor.name }}</div>
+          <div class="mentor-role">{{ mentor.role }}{% if mentor.company %} at {{ mentor.company }}{% endif %}</div>
+          <div class="mentor-role">{% if mentor.industry %}{{ mentor.industry }}{% endif %}</div>
+          <div class="mentor-city">
+            📍 {{ mentor.city }}{% if mentor.country_of_origin %} · {% if lang == 'es' %}de{% else %}from{% endif %} {{ mentor.country_of_origin }}{% endif %}
+          </div>
+
+          {% if mentor.languages %}
+          <div class="mt-2">
+            {% for l in mentor.languages %}
+              {% if l == 'en' %}<span class="lang-badge">English</span>
+              {% elif l == 'es' %}<span class="lang-badge">Español</span>
+              {% elif l == 'fr' %}<span class="lang-badge">Français</span>
+              {% else %}<span class="lang-badge">{{ l }}</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          {% if mentor.bio %}
+          <p class="mentor-bio">{{ mentor.bio }}</p>
+          {% else %}
+          <p class="mentor-bio"></p>
+          {% endif %}
+
+          <div class="mt-auto">
+            {% if mentor.contact_preference == 'linkedin' and mentor.linkedin %}
+            <a href="{{ mentor.linkedin }}" target="_blank" class="btn btn-sm btn-teal mr-1">
+              LinkedIn
+            </a>
+            {% elif mentor.contact_preference == 'email' and mentor.email %}
+            <a href="mailto:{{ mentor.email }}" class="btn btn-sm btn-teal mr-1">
+              {% if lang == 'es' %}Escribir{% else %}Email{% endif %}
+            </a>
+            {% endif %}
+
+            {% if mentor.calendly %}
+            <a href="{{ mentor.calendly }}" target="_blank" class="btn btn-sm btn-outline-secondary">
+              {% if lang == 'es' %}Agendar café{% else %}Book a chat{% endif %}
+            </a>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  {% else %}
+  <div class="row mb-5">
+    <div class="col-md-8 offset-md-2 text-center">
+      <p class="text-muted">
+        {% if lang == 'es' %}El directorio de mentores estará disponible pronto.
+        {% else %}The mentor directory is coming soon.{% endif %}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- CTA to register -->
+  <div class="row mt-3 mb-5">
+    <div class="col-md-8 offset-md-2">
+      <div class="mission-box">
+        <p class="mb-2 mission-text">
+          {% if lang == 'es' %}¿Eres profesional en Canadá y quieres apoyar a recién llegados?
+          {% else %}Are you a professional in Canada and want to support newcomers?{% endif %}
+        </p>
+        <a href="/mentors/register?lang={{ lang }}" class="btn btn-teal btn-sm">
+          {% if lang == 'es' %}Regístrate como mentor{% else %}Register as a mentor{% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="sofia-footer">
+  <div class="container text-center">
+    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · <a href="https://www.slopezza.com" target="_blank" class="footer-link">slopezza.com</a></p>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

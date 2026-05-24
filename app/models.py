@@ -22,6 +22,29 @@ class Learning:
 
 
 @dataclass
+class MentorDoc:
+    name: str
+    email: str
+    role: str = ""
+    company: str = ""
+    industry: str = ""
+    city: str = ""
+    country_of_origin: str = ""
+    linkedin: str = ""
+    calendly: str = ""
+    contact_preference: str = "linkedin"  # "linkedin" | "email"
+    languages: Optional[list] = None
+    bio: str = ""
+    active: bool = True
+    opt_out_token: str = ""
+    created_at: str = ""
+
+    def __post_init__(self):
+        if self.languages is None:
+            self.languages = []
+
+
+@dataclass
 class ExportToken:
     phone: str
     created_at: str
