@@ -87,6 +87,42 @@
     </div>
   </div>
 
+  <!-- Mentor teaser -->
+  {% if mentors %}
+  <div class="row mb-2 align-items-center">
+    <div class="col">
+      <p class="section-title mb-0">{% if lang == 'es' %}Conoce a algunos mentores{% else %}Meet some of our mentors{% endif %}</p>
+    </div>
+    <div class="col-auto">
+      <a href="/mentors?lang={{ lang }}" class="section-note">{% if lang == 'es' %}Ver todos{% else %}See all{% endif %} →</a>
+    </div>
+  </div>
+  <div class="row mb-5">
+    {% for mentor in mentors %}
+    <div class="col-md-4 mb-3">
+      <div class="card h-100">
+        <div class="card-body text-center">
+          <div class="mentor-avatar">{{ mentor.name[0] | upper }}</div>
+          <div class="mentor-name">{{ mentor.name }}</div>
+          <div class="mentor-role">{{ mentor.role }}{% if mentor.company %} at {{ mentor.company }}{% endif %}</div>
+          <div class="mentor-city">📍 {{ mentor.city }}</div>
+          {% if mentor.languages %}
+          <div class="mt-2">
+            {% for l in mentor.languages %}
+              {% if l == 'en' %}<span class="lang-badge">English</span>
+              {% elif l == 'es' %}<span class="lang-badge">Español</span>
+              {% elif l == 'fr' %}<span class="lang-badge">Français</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
   <!-- Waitlist form -->
   <div class="row mb-5" id="waitlist">
     <div class="col-md-8 offset-md-2">

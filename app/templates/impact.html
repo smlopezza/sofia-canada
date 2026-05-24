@@ -126,8 +126,35 @@
     </div>
   </div>
 
-  <!-- Mentors -->
-  <p class="section-title">{% if lang == 'es' %}Mentores identificados{% else %}Mentors identified{% endif %}</p>
+  <!-- Volunteer mentors (registered via form) -->
+  <p class="section-title">{% if lang == 'es' %}Mentores voluntarios registrados{% else %}Volunteer mentors registered{% endif %}</p>
+  <p class="section-note mb-3">{% if lang == 'es' %}Profesionales que se registraron para apoyar a recién llegados.{% else %}Professionals who signed up to support newcomers.{% endif %} <a href="/mentors">{% if lang == 'es' %}Ver directorio{% else %}View directory{% endif %} →</a></p>
+  <div class="row mb-5">
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.volunteer_mentors.all }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.volunteer_mentors.year }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.year }}</div>
+      </div>
+    </div>
+    <div class="col-6 col-md-4">
+      <div class="card stat-card">
+        <div class="stat-number">{{ stats.volunteer_mentors.month }}</div>
+        <div class="stat-label">{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.month }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mentors identified in conversations -->
+  <p class="section-title">{% if lang == 'es' %}Mentores identificados en conversaciones{% else %}Mentors identified in conversations{% endif %}</p>
+  <p class="section-note mb-3">{% if lang == 'es' %}Contactos que los usuarios identificaron como posibles mentores al hablar con SofIA.{% else %}Contacts that users identified as potential mentors during their SofIA conversations.{% endif %}</p>
   <div class="row mb-5">
     <div class="col-6 col-md-4">
       <div class="card stat-card">

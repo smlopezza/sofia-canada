@@ -8,7 +8,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from app.firestore_client import get_all_contacts, get_all_users
+from app.firestore_client import get_active_mentors, get_all_contacts, get_all_users
 from app.twilio_client import get_client as get_twilio_client
 
 router = APIRouter()
@@ -100,10 +100,15 @@ def _build_stats(lang: str) -> dict:
     contacts_year = [(p, i, c) for p, i, c in contacts_all if _in_window(c.created_at, one_year_ago)]
     contacts_month = [(p, i, c) for p, i, c in contacts_all if _in_window(c.created_at, one_month_ago)]
 
-    # Mentors
+    # Mentors identified in conversations (is_mentor=True on contact docs)
     mentors_all = [(p, i, c) for p, i, c in contacts_all if c.is_mentor]
     mentors_year = [(p, i, c) for p, i, c in mentors_all if _in_window(c.created_at, one_year_ago)]
     mentors_month = [(p, i, c) for p, i, c in mentors_all if _in_window(c.created_at, one_month_ago)]
+
+    # Volunteer mentors registered via the web form
+    reg_mentors = get_active_mentors()
+    reg_mentors_year = [m for m in reg_mentors if _in_window(m.get("created_at"), one_year_ago)]
+    reg_mentors_month = [m for m in reg_mentors if _in_window(m.get("created_at"), one_month_ago)]
 
     # Coffee chats
     def count_chats(contact_list, threshold=None):
@@ -166,6 +171,11 @@ def _build_stats(lang: str) -> dict:
             "all": len(contacts_all),
             "year": len(contacts_year),
             "month": len(contacts_month),
+        },
+        "volunteer_mentors": {
+            "all": len(reg_mentors),
+            "year": len(reg_mentors_year),
+            "month": len(reg_mentors_month),
         },
         "mentors": {
             "all": len(mentors_all),

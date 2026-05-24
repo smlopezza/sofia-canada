@@ -21,14 +21,32 @@
   <div class="container text-center">
     <h1>{% if lang == 'es' %}Mentores voluntarios{% else %}Volunteer Mentors{% endif %}</h1>
     <p class="mt-2">
-      {% if lang == 'es' %}Profesionales en Canadá que se ofrecieron a compartir su experiencia con recién llegados
-      {% else %}Professionals in Canada who volunteered to share their experience with newcomers{% endif %}
+      {% if lang == 'es' %}Profesionales en Canadá que eligieron dar de su tiempo para apoyar a quienes recién llegan
+      {% else %}Professionals in Canada who chose to give their time to support those just arriving{% endif %}
     </p>
   </div>
 </div>
 
 <div class="container mt-5">
 
+  <!-- Gratitude section -->
+  <div class="row mb-5">
+    <div class="col-md-10 offset-md-1">
+      <div class="mission-box">
+        <p class="mb-0 mission-text">
+          {% if lang == 'es' %}
+            Estos mentores no tienen ninguna obligación de estar aquí — lo hacen porque recuerdan lo que fue llegar a un país nuevo y quieren que la experiencia de otros sea diferente.
+            Un café de 30 minutos puede cambiar la trayectoria profesional de alguien. Gracias a cada uno de ellos.
+          {% else %}
+            These mentors have no obligation to be here — they're here because they remember what it felt like to arrive in a new country and want to make someone else's journey a little easier.
+            A 30-minute coffee chat can change someone's professional trajectory. Thank you to each of them.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mentor cards -->
   {% if mentors %}
   <div class="row">
     {% for mentor in mentors %}
@@ -96,8 +114,60 @@
   </div>
   {% endif %}
 
-  <!-- CTA to register -->
-  <div class="row mt-3 mb-5">
+  <!-- How to prepare guide -->
+  <div class="row mt-4 mb-5">
+    <div class="col-md-10 offset-md-1">
+      <div class="card">
+        <div class="card-body">
+          <p class="section-title">
+            {% if lang == 'es' %}Cómo prepararte para aprovechar al máximo la conversación
+            {% else %}How to make the most of your conversation{% endif %}
+          </p>
+          <p class="section-note mb-3">
+            {% if lang == 'es' %}Estos mentores están dando su tiempo voluntariamente. Llegar preparado es la mejor forma de agradecérselos.
+            {% else %}These mentors are giving their time voluntarily. Coming prepared is the best way to honor that.{% endif %}
+          </p>
+          <div class="row">
+            <div class="col-md-6">
+              <ul class="list-unstyled">
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}📋 Investiga antes{% else %}📋 Do your research first{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}Revisa su LinkedIn. Conoce su industria y trayectoria antes de escribirles.{% else %}Check their LinkedIn. Know their industry and background before reaching out.{% endif %}</span>
+                </li>
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}✉️ Escribe con claridad{% else %}✉️ Reach out clearly{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}Preséntate, explica brevemente tu situación y lo que esperas aprender. Una o dos frases es suficiente.{% else %}Introduce yourself, briefly explain your situation and what you hope to learn. One or two sentences is enough.{% endif %}</span>
+                </li>
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}⏱️ Respeta los 30 minutos{% else %}⏱️ Respect the 30 minutes{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}Llega puntual y termina a tiempo. Si el mentor quiere seguir, él o ella lo dirá.{% else %}Arrive on time and wrap up on time. If they want to continue, they'll say so.{% endif %}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="list-unstyled">
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}🎯 Ten preguntas específicas{% else %}🎯 Come with specific questions{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}Prepara 2 o 3 preguntas concretas. Las conversaciones vagas no aprovechan el tiempo de nadie.{% else %}Prepare 2–3 concrete questions. Vague conversations don't serve anyone's time well.{% endif %}</span>
+                </li>
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}🤝 No pidas empleo en el primer contacto{% else %}🤝 Don't ask for a job referral first time{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}El objetivo es aprender y construir una relación genuina. Las oportunidades llegan cuando hay confianza.{% else %}The goal is to learn and build a genuine relationship. Opportunities come with trust.{% endif %}</span>
+                </li>
+                <li class="mb-3">
+                  <strong>{% if lang == 'es' %}💌 Agradece siempre{% else %}💌 Always follow up with thanks{% endif %}</strong><br>
+                  <span class="section-note">{% if lang == 'es' %}Envía un mensaje de agradecimiento después. Cuéntales qué fue lo más útil. Les importa saber que ayudaron.{% else %}Send a thank-you message after. Tell them what was most useful. They care to know they helped.{% endif %}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA to register as mentor -->
+  <div class="row mb-5">
     <div class="col-md-8 offset-md-2">
       <div class="mission-box">
         <p class="mb-2 mission-text">

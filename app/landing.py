@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from app.firestore_client import save_waitlist_entry
+from app.firestore_client import get_active_mentors, save_waitlist_entry
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -19,10 +19,15 @@ templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 @router.get("/", response_class=HTMLResponse)
 def index(request: Request, lang: str = "en", submitted: bool = False):
     lang = lang if lang in ("en", "es") else "en"
+    try:
+        mentors = get_active_mentors()[:3]
+    except Exception:
+        mentors = []
     return templates.TemplateResponse("index.html", {
         "request": request,
         "lang": lang,
         "submitted": submitted,
+        "mentors": mentors,
     })
 
 

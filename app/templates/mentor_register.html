@@ -31,7 +31,27 @@
   <div class="row">
     <div class="col-md-8 offset-md-2">
 
-      {% if submitted %}
+      {% if already_registered %}
+      <div class="card p-4 text-center mb-4">
+        <div class="stat-number mb-2">👋</div>
+        <h4>{% if lang == 'es' %}¡Ya estás registrado!{% else %}You're already registered!{% endif %}</h4>
+        <p class="text-muted">
+          {% if lang == 'es' %}Encontramos tu perfil. Te enviamos los enlaces para editarlo o salir del directorio a tu email.
+          {% else %}We found your profile. We've sent your edit and opt-out links to your email.{% endif %}
+        </p>
+        {% if token %}
+        <a href="/mentors/edit?token={{ token }}&lang={{ lang }}" class="btn btn-teal btn-sm mt-2">
+          {% if lang == 'es' %}Editar mi perfil{% else %}Edit my profile{% endif %}
+        </a>
+        {% endif %}
+        <div class="mt-3">
+          <a href="/mentors?lang={{ lang }}" class="section-note">
+            {% if lang == 'es' %}Ver el directorio{% else %}View directory{% endif %} →
+          </a>
+        </div>
+      </div>
+
+      {% elif submitted %}
       <div class="card p-4 text-center mb-4">
         <div class="stat-number mb-2">🙌</div>
         <h4>{% if lang == 'es' %}¡Gracias por unirte!{% else %}Thank you for joining!{% endif %}</h4>

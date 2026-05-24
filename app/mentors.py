@@ -41,13 +41,15 @@ def mentor_directory(request: Request, lang: str = "en"):
 
 
 @router.get("/mentors/register", response_class=HTMLResponse)
-def mentor_register_form(request: Request, lang: str = "en", submitted: bool = False, token: str = ""):
+def mentor_register_form(request: Request, lang: str = "en", submitted: bool = False,
+                         token: str = "", already_registered: bool = False):
     lang = lang if lang in ("en", "es") else "en"
     return templates.TemplateResponse("mentor_register.html", {
         "request": request,
         "lang": lang,
         "submitted": submitted,
         "token": token,
+        "already_registered": already_registered,
     })
 
 
@@ -87,6 +89,20 @@ async def mentor_register_submit(
         "opt_out_token": token,
         "created_at": datetime.now(timezone.utc).isoformat(),
     }
+    # Prevent duplicate registration
+    existing_id, existing = get_mentor_by_email(email.strip().lower())
+    if existing_id and existing:
+        send_mentor_links_email(
+            name=existing.get("name", ""),
+            email=existing.get("email", ""),
+            token=existing.get("opt_out_token", ""),
+            lang=lang,
+        )
+        return RedirectResponse(
+            url=f"/mentors/register?already_registered=true&token={existing.get('opt_out_token', '')}&lang={lang}",
+            status_code=303,
+        )
+
     try:
         save_mentor(mentor_id, mentor)
         logger.info("Mentor registered: %s", email)
