@@ -1,35 +1,35 @@
 {% extends "base.html" %}
 
-{% block title %}SofIA — Editar contacto{% endblock %}
-
-{% block navbar %}
-<nav class="navbar navbar-dark navbar-sofia">
-  <span class="navbar-brand mb-0 h1">SofIA — Tu aliada en Canadá</span>
-</nav>
-{% endblock %}
+{% block title %}{% if lang == 'es' %}SofIA — Editar contacto{% else %}SofIA — Edit contact{% endif %}{% endblock %}
 
 {% block content %}
 <div class="row">
   <div class="col-md-8 offset-md-2">
 
-    <h5 class="mb-4">Editar contacto</h5>
+    <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
+      <i class="bi bi-arrow-left"></i> {% if lang == 'es' %}Volver{% else %}Back{% endif %}
+    </a>
 
+    <h5 class="mb-4">{% if lang == 'es' %}Editar contacto{% else %}Edit contact{% endif %}</h5>
+
+    <!-- Contact fields -->
     <div class="card mb-4">
       <div class="card-body">
         <form method="POST" action="/export/contacts/{{ contact_id }}">
           <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
 
           <div class="form-group">
-            <label>Nombre *</label>
+            <label>{% if lang == 'es' %}Nombre{% else %}Name{% endif %} *</label>
             <input type="text" class="form-control" name="name" required value="{{ contact.name }}">
           </div>
           <div class="form-row">
             <div class="form-group col-md-6">
-              <label>Rol</label>
+              <label>{% if lang == 'es' %}Rol{% else %}Role{% endif %}</label>
               <input type="text" class="form-control" name="role" value="{{ contact.role }}">
             </div>
             <div class="form-group col-md-6">
-              <label>Empresa</label>
+              <label>{% if lang == 'es' %}Empresa{% else %}Company{% endif %}</label>
               <input type="text" class="form-control" name="company" value="{{ contact.company }}">
             </div>
           </div>
@@ -38,7 +38,7 @@
             <input type="url" class="form-control" name="linkedin_url" value="{{ contact.linkedin_url or '' }}">
           </div>
           <div class="form-group">
-            <label>Notas</label>
+            <label>{% if lang == 'es' %}Notas generales{% else %}General notes{% endif %}</label>
             <textarea class="form-control" name="post_call_notes" rows="3">{{ contact.post_call_notes or '' }}</textarea>
           </div>
           <div class="form-check mb-4">
@@ -49,23 +49,61 @@
 
           <div class="d-flex justify-content-between align-items-center">
             <div>
-              <button type="submit" class="btn btn-teal mr-2">Guardar cambios</button>
-              <a href="/export?token={{ token }}" class="btn btn-outline-secondary">Cancelar</a>
+              <button type="submit" class="btn btn-teal mr-2">{% if lang == 'es' %}Guardar cambios{% else %}Save changes{% endif %}</button>
+              <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-outline-secondary">{% if lang == 'es' %}Volver{% else %}Back{% endif %}</a>
             </div>
           </div>
         </form>
       </div>
     </div>
 
-    <!-- Delete -->
-    <div class="card border-danger">
+    <!-- Chats -->
+    {% if contact.chats %}
+    <p class="section-title mt-4 mb-3">{% if lang == 'es' %}Conversaciones{% else %}Conversations{% endif %}</p>
+    {% for chat in contact.chats %}
+    <div class="card mb-3">
       <div class="card-body">
-        <p class="section-title text-danger mb-1">Eliminar contacto</p>
-        <p class="section-note mb-3">Esta acción no se puede deshacer.</p>
-        <form method="POST" action="/export/contacts/{{ contact_id }}/delete"
-              onsubmit="return confirm('¿Seguro que quieres eliminar a {{ contact.name }}? Esta acción no se puede deshacer.')">
+        <form method="POST" action="/export/contacts/{{ contact_id }}/chats/{{ loop.index0 }}">
           <input type="hidden" name="token" value="{{ token }}">
-          <button type="submit" class="btn btn-danger btn-sm">Eliminar contacto</button>
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label>{% if lang == 'es' %}Fecha{% else %}Date{% endif %}</label>
+              <input type="date" class="form-control" name="scheduled_at"
+                     value="{{ chat.get('scheduled_at', '')[:10] }}">
+            </div>
+            <div class="form-group col-md-8">
+              <label>{% if lang == 'es' %}Notas{% else %}Notes{% endif %}</label>
+              <textarea class="form-control" name="notes" rows="2">{{ chat.get('notes') or '' }}</textarea>
+            </div>
+          </div>
+          {% if chat.get('depth_signals') %}
+          <p class="chat-signals mb-2"><strong>{% if lang == 'es' %}Señales{% else %}Signals{% endif %}:</strong> {{ chat.get('depth_signals') }}</p>
+          {% endif %}
+          <button type="submit" class="btn btn-teal btn-sm">{% if lang == 'es' %}Guardar{% else %}Save{% endif %}</button>
+        </form>
+        <form method="POST" action="/export/contacts/{{ contact_id }}/chats/{{ loop.index0 }}/delete"
+              class="mt-2"
+              onsubmit="return confirm('{% if lang == 'es' %}¿Seguro?{% else %}Are you sure?{% endif %}')">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <button type="submit" class="btn btn-outline-danger btn-sm">{% if lang == 'es' %}Eliminar{% else %}Delete{% endif %}</button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Delete contact -->
+    <div class="card border-danger mt-4">
+      <div class="card-body">
+        <p class="section-title text-danger mb-1">{% if lang == 'es' %}Eliminar contacto{% else %}Delete contact{% endif %}</p>
+        <p class="section-note mb-3">{% if lang == 'es' %}Esta acción no se puede deshacer.{% else %}This action cannot be undone.{% endif %}</p>
+        <form method="POST" action="/export/contacts/{{ contact_id }}/delete"
+              onsubmit="return confirm('{% if lang == 'es' %}¿Seguro que quieres eliminar a {{ contact.name }}?{% else %}Are you sure you want to delete {{ contact.name }}?{% endif %}')">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+          <button type="submit" class="btn btn-danger btn-sm">{% if lang == 'es' %}Eliminar contacto{% else %}Delete contact{% endif %}</button>
         </form>
       </div>
     </div>

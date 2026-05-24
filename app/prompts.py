@@ -54,6 +54,11 @@ TOOLS = [
                         "Update fields on the active contact. "
                         "Use 'add_chat' to log a coffee chat: "
                         "{\"add_chat\": {\"scheduled_at\": \"ISO datetime\", \"notes\": \"...\", \"depth_signals\": \"...\"}}. "
+                        "'depth_signals' captures 1-2 observations about the quality of the conversation — "
+                        "written in second person ('tú') as if the user is recalling it. "
+                        "In Spanish: 'Llegaste preparada', 'Hiciste preguntas estratégicas', 'Mostraste vulnerabilidad'. "
+                        "In English: 'You came prepared', 'You asked strategic questions'. "
+                        "Never use third person ('Sandra llegó', 'Llegó con preguntas'). "
                         "Set 'is_mentor: true' when the user explicitly says this person is their mentor. "
                         "Other fields: post_call_notes, depth_signals, topics_of_interest, linkedin_url."
                     )

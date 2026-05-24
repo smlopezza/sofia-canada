@@ -18,6 +18,7 @@ from app.clients.firestore_client import (
     load_user,
     mark_export_token_used,
     save_export_token,
+    save_user,
     update_contact_fields,
 )
 from app.models import ExportToken
@@ -56,20 +57,40 @@ def _validate_token(token_id: str) -> tuple[ExportToken | None, str | None]:
 
 
 @router.get("/export", response_class=HTMLResponse)
-def export_view(request: Request, token: str):
+def export_view(request: Request, token: str, lang: str = None):
     token_obj, error = _validate_token(token)
     if error:
         return HTMLResponse(f"<p>{error}</p>", status_code=400)
 
     user = load_user(token_obj.phone)
     contacts_with_chats = get_user_contacts(token_obj.phone)
+    resolved_lang = lang or user.language or "es"
 
     return templates.TemplateResponse("export.html", {
         "request": request,
         "user": user,
         "contacts": contacts_with_chats,
         "token": token,
+        "lang": resolved_lang,
     })
+
+
+@router.post("/export/profile")
+async def profile_save(
+    token: str = Form(...),
+    lang: str = Form("es"),
+    opt_out_nudges: str = Form("off"),
+    is_volunteering: str = Form("off"),
+):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    user.opt_out_nudges = opt_out_nudges == "on"
+    user.is_volunteering = is_volunteering == "on"
+    save_user(user)
+    logger.info("Profile settings updated for %s", token_obj.phone)
+    return RedirectResponse(url=f"/export?token={token}&lang={lang}", status_code=303)
 
 
 @router.get("/export/contacts.csv")
@@ -136,7 +157,7 @@ def export_milestones_csv(token: str):
 
 
 @router.get("/export/contacts/{contact_id}", response_class=HTMLResponse)
-def contact_edit_form(request: Request, contact_id: str, token: str):
+def contact_edit_form(request: Request, contact_id: str, token: str, lang: str = "es"):
     token_obj, error = _validate_token(token)
     if error:
         return HTMLResponse(f"<p>{error}</p>", status_code=400)
@@ -148,6 +169,7 @@ def contact_edit_form(request: Request, contact_id: str, token: str):
         "contact": contact,
         "contact_id": contact_id,
         "token": token,
+        "lang": lang,
     })
 
 
@@ -155,6 +177,7 @@ def contact_edit_form(request: Request, contact_id: str, token: str):
 async def contact_edit_save(
     contact_id: str,
     token: str = Form(...),
+    lang: str = Form("es"),
     name: str = Form(...),
     role: str = Form(""),
     company: str = Form(""),
@@ -175,17 +198,55 @@ async def contact_edit_save(
     }
     update_contact_fields(token_obj.phone, contact_id, updates)
     logger.info("Contact %s updated for %s", contact_id, token_obj.phone)
-    return RedirectResponse(url=f"/export?token={token}", status_code=303)
+    return RedirectResponse(url=f"/export?token={token}&lang={lang}", status_code=303)
 
 
 @router.post("/export/contacts/{contact_id}/delete")
-async def contact_delete(contact_id: str, token: str = Form(...)):
+async def contact_delete(contact_id: str, token: str = Form(...), lang: str = Form("es")):
     token_obj, error = _validate_token(token)
     if error:
         return HTMLResponse(f"<p>{error}</p>", status_code=400)
     delete_contact(token_obj.phone, contact_id)
     logger.info("Contact %s deleted for %s", contact_id, token_obj.phone)
-    return RedirectResponse(url=f"/export?token={token}", status_code=303)
+    return RedirectResponse(url=f"/export?token={token}&lang={lang}", status_code=303)
+
+
+
+@router.post("/export/contacts/{contact_id}/chats/{chat_index}")
+async def chat_edit_save(
+    contact_id: str,
+    chat_index: int,
+    token: str = Form(...),
+    lang: str = Form("es"),
+    scheduled_at: str = Form(""),
+    notes: str = Form(""),
+):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    contact = load_contact(token_obj.phone, contact_id)
+    if not contact or chat_index >= len(contact.chats):
+        return HTMLResponse("<p>Chat not found.</p>", status_code=404)
+    contact.chats[chat_index]["notes"] = notes.strip()
+    if scheduled_at.strip():
+        contact.chats[chat_index]["scheduled_at"] = scheduled_at.strip()
+    update_contact_fields(token_obj.phone, contact_id, {"chats": contact.chats})
+    logger.info("Chat %d updated for contact %s / %s", chat_index, contact_id, token_obj.phone)
+    return RedirectResponse(url=f"/export/contacts/{contact_id}?token={token}&lang={lang}", status_code=303)
+
+
+@router.post("/export/contacts/{contact_id}/chats/{chat_index}/delete")
+async def chat_delete(contact_id: str, chat_index: int, token: str = Form(...), lang: str = Form("es")):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    contact = load_contact(token_obj.phone, contact_id)
+    if not contact or chat_index >= len(contact.chats):
+        return HTMLResponse("<p>Chat not found.</p>", status_code=404)
+    contact.chats.pop(chat_index)
+    update_contact_fields(token_obj.phone, contact_id, {"chats": contact.chats})
+    logger.info("Chat %d deleted for contact %s / %s", chat_index, contact_id, token_obj.phone)
+    return RedirectResponse(url=f"/export/contacts/{contact_id}?token={token}&lang={lang}", status_code=303)
 
 
 @router.get("/export/learnings.csv")
