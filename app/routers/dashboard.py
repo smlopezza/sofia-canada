@@ -161,6 +161,20 @@ def _build_stats(lang: str) -> dict:
         vals = [v for v in vals if v is not None]
         return round(sum(vals), 2) if vals else None
 
+    # Community donations (Buy Me a Coffee — updated manually)
+    donations = {
+        "last_month": _safe_float(os.getenv("BMAC_LAST_MONTH")),
+        "last_year": _safe_float(os.getenv("BMAC_LAST_YEAR")),
+        "all_time": _safe_float(os.getenv("BMAC_TOTAL")),
+    }
+
+    def _net_cost(period):
+        total = _total_cost(period)
+        donated = donations.get(period)
+        if total is None:
+            return None
+        return round(total - (donated or 0), 2)
+
     return {
         "users": {
             "all": len(active_all),
@@ -195,6 +209,11 @@ def _build_stats(lang: str) -> dict:
         "total_cost": {
             "last_month": _total_cost("last_month"),
             "last_year": _total_cost("last_year"),
+        },
+        "donations": donations,
+        "net_cost": {
+            "last_month": _net_cost("last_month"),
+            "last_year": _net_cost("last_year"),
         },
         "date_ranges": date_ranges,
     }

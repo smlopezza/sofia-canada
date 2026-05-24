@@ -147,6 +147,7 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.mentors.all }}</div>
         <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.all }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
@@ -221,13 +222,17 @@
   </div>
 
   <!-- Costs -->
-  <p class="section-title">{% if lang == 'es' %}Costo del proyecto{% else %}Project cost{% endif %}</p>
-  <div class="card mb-5">
+  <p class="section-title">{% if lang == 'es' %}Transparencia financiera{% else %}Financial transparency{% endif %}</p>
+  <p class="section-note mb-3">
+    {% if lang == 'es' %}SofIA es un proyecto de código abierto sostenido por la comunidad. Aquí están los números reales.
+    {% else %}SofIA is a community-supported open project. Here are the real numbers.{% endif %}
+  </p>
+  <div class="card mb-4">
     <div class="table-responsive">
       <table class="table mb-0">
         <thead class="thead-light">
           <tr>
-            <th>{% if lang == 'es' %}Servicio{% else %}Service{% endif %}</th>
+            <th>{% if lang == 'es' %}Costos de operación{% else %}Running costs{% endif %}</th>
             <th>{% if lang == 'es' %}Último mes{% else %}Last month{% endif %}</th>
             <th>{% if lang == 'es' %}Último año{% else %}Last year{% endif %}</th>
           </tr>
@@ -249,14 +254,34 @@
             <td>{% if stats.costs.gcp.last_year %}${{ stats.costs.gcp.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
           </tr>
           <tr class="cost-total-row">
-            <td>Total</td>
+            <td>{% if lang == 'es' %}Total costos{% else %}Total costs{% endif %}</td>
             <td>{% if stats.total_cost.last_month is not none %}${{ stats.total_cost.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
             <td>{% if stats.total_cost.last_year is not none %}${{ stats.total_cost.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          </tr>
+          <tr style="color: #28a745;">
+            <td>
+              {% if lang == 'es' %}Contribuciones de la comunidad{% else %}Community contributions{% endif %}
+              <small class="text-muted d-block">
+                {% if lang == 'es' %}vía Buy Me a Coffee · {% else %}via Buy Me a Coffee · {% endif %}
+                {% if stats.donations.all_time is not none %}${{ stats.donations.all_time }} {% if lang == 'es' %}recibido en total{% else %}received all time{% endif %}{% endif %}
+              </small>
+            </td>
+            <td>{% if stats.donations.last_month is not none %}- ${{ stats.donations.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td>{% if stats.donations.last_year is not none %}- ${{ stats.donations.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+          </tr>
+          <tr class="cost-total-row">
+            <td>{% if lang == 'es' %}Costo neto (cubierto por Sandra){% else %}Net cost (covered by Sandra){% endif %}</td>
+            <td>{% if stats.net_cost.last_month is not none %}${{ stats.net_cost.last_month }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
+            <td>{% if stats.net_cost.last_year is not none %}${{ stats.net_cost.last_year }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+  <p class="section-note mb-5">
+    {% if lang == 'es' %}El 100% de las contribuciones va directamente a cubrir los costos de operación para mantener SofIA gratuita para recién llegados.
+    {% else %}100% of contributions go directly toward running costs to keep SofIA free for newcomers.{% endif %}
+  </p>
 
   <!-- CTA -->
   <div class="text-center mb-5">
