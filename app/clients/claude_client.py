@@ -166,8 +166,8 @@ def generate_summary(user: UserDoc) -> str:
     existing = f"Existing summary:\n{user.conversation_summary}\n\n" if user.conversation_summary else ""
     content = f"{existing}New messages to incorporate:\n{str(user.messages)}"
     response = get_client().messages.create(
-        model=HAIKU,
-        max_tokens=750,
+        model=SONNET,
+        max_tokens=1024,
         system=(
             "Update the conversation summary by incorporating the new messages. "
             "If an existing summary is provided, build on it — do not replace it. "
@@ -183,7 +183,7 @@ def generate_summary(user: UserDoc) -> str:
     )
 
     langfuse_context.update_current_observation(
-          model=HAIKU,
+          model=SONNET,
           input=user.messages,
           output=response.content[0].text,
           usage={
