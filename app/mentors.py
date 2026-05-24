@@ -8,8 +8,8 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from app.email_client import send_mentor_links_email
-from app.firestore_client import (
+from app.clients.email_client import send_mentor_links_email
+from app.clients.firestore_client import (
     get_active_mentors,
     get_mentor_by_email,
     get_mentor_by_token,

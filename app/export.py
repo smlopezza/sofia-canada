@@ -10,7 +10,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 
-from app.firestore_client import (
+from app.clients.firestore_client import (
     get_export_token,
     get_user_contacts,
     load_user,

@@ -39,11 +39,7 @@
           {% if lang == 'es' %}Encontramos tu perfil. Te enviamos los enlaces para editarlo o salir del directorio a tu email.
           {% else %}We found your profile. We've sent your edit and opt-out links to your email.{% endif %}
         </p>
-        {% if token %}
-        <a href="/mentors/edit?token={{ token }}&lang={{ lang }}" class="btn btn-teal btn-sm mt-2">
-          {% if lang == 'es' %}Editar mi perfil{% else %}Edit my profile{% endif %}
-        </a>
-        {% endif %}
+        
         <div class="mt-3">
           <a href="/mentors?lang={{ lang }}" class="section-note">
             {% if lang == 'es' %}Ver el directorio{% else %}View directory{% endif %} →

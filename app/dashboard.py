@@ -8,8 +8,8 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from app.firestore_client import get_active_mentors, get_all_contacts, get_all_users
-from app.twilio_client import get_client as get_twilio_client
+from app.clients.firestore_client import get_active_mentors, get_all_contacts, get_all_users
+from app.clients.twilio_client import get_client as get_twilio_client
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

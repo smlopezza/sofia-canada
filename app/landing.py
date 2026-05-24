@@ -7,7 +7,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from app.firestore_client import get_active_mentors, save_waitlist_entry
+from app.clients.firestore_client import get_active_mentors, save_waitlist_entry
 
 router = APIRouter()
 logger = logging.getLogger(__name__)

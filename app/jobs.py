@@ -4,9 +4,9 @@ from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Header, HTTPException
 
-from app.claude_client import HAIKU, SONNET, call_claude_simple
-from app.firestore_client import get_all_contacts, get_all_users, load_user, save_contact, save_user
-from app.twilio_client import send_message
+from app.clients.claude_client import HAIKU, SONNET, call_claude_simple
+from app.clients.firestore_client import get_all_contacts, get_all_users, load_user, save_contact, save_user
+from app.clients.twilio_client import send_message
 from app.utils import is_sendable, local_hour
 
 router = APIRouter()

@@ -9,14 +9,14 @@ from fastapi import APIRouter, BackgroundTasks, Request
 from fastapi.responses import Response
 
 from app.models import ContactDoc
-from app.claude_client import (
+from app.clients.claude_client import (
     SONNET,
     build_context,
     call_claude,
     continue_with_tool_result,
     generate_summary,
 )
-from app.firestore_client import (
+from app.clients.firestore_client import (
     count_active_users,
     get_active_contact,
     get_user_contacts,
@@ -26,7 +26,7 @@ from app.firestore_client import (
     save_user,
 )
 from app.prompts import SYSTEM_PROMPT
-from app.twilio_client import send_message
+from app.clients.twilio_client import send_message
 from langfuse import Langfuse
 
 router = APIRouter()

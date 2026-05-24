@@ -39,7 +39,7 @@ load_dotenv(dotenv_path=".env")
 from fastapi.testclient import TestClient
 from app.main import app
 from app.webhook import _process
-from app.firestore_client import get_active_contact, save_contact, get_db
+from app.clients.firestore_client import get_active_contact, save_contact, get_db
 
 client = TestClient(app)
 SECRET = os.getenv("CLOUD_SCHEDULER_SECRET", "")

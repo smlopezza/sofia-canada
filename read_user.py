@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from app.firestore_client import get_db, get_all_users, load_user, get_active_contact
+from app.clients.firestore_client import get_db, get_all_users, load_user, get_active_contact
 
 SEPARATOR = "-" * 60
 
