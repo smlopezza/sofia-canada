@@ -75,6 +75,12 @@
           <span>{{ user.country_of_origin }}</span>
         </div>
         {% endif %}
+        {% if user.transition_stage %}
+        <div class="col-12 mb-2">
+          <small class="text-muted text-uppercase d-block">{% if lang == 'es' %}Momento en la búsqueda{% else %}Journey stage{% endif %}</small>
+          <span>{{ user.transition_stage }}</span>
+        </div>
+        {% endif %}
         {% if user.city %}
         <div class="col-sm-6 mb-2">
           <small class="text-muted text-uppercase d-block">{% if lang == 'es' %}Ciudad actual{% else %}Current city{% endif %}</small>

@@ -58,6 +58,12 @@
             </div>
           </div>
           <div class="form-group">
+            <label>{% if lang == 'es' %}Momento en la búsqueda{% else %}Journey stage{% endif %}</label>
+            <input type="text" class="form-control" name="transition_stage"
+                   placeholder="{% if lang == 'es' %}Ej: Recién empezando a explorar, Aplicando activamente…{% else %}E.g. Just starting to explore, Actively applying…{% endif %}"
+                   value="{{ user.transition_stage or '' }}">
+          </div>
+          <div class="form-group">
             <label>{% if lang == 'es' %}Sobre mí{% else %}About me{% endif %}</label>
             <textarea class="form-control" name="about_me" rows="3">{{ user.about_me or '' }}</textarea>
           </div>

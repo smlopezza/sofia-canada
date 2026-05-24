@@ -85,6 +85,18 @@ TOOLS = [
                         "Set once during onboarding when the user mentions where they're from."
                     )
                 },
+                "transition_stage": {
+                    "type": "string",
+                    "description": (
+                        "Where the user is in their job-transition journey, in their own words. "
+                        "This is more important than time in Canada — two people can arrive the "
+                        "same year but be at completely different stages. "
+                        "Set as soon as the user describes their situation, e.g.: "
+                        "'Recién empezando a explorar opciones', 'Aplicando activamente pero sin respuestas', "
+                        "'Consiguiendo entrevistas, ajustando mi estrategia', 'Tengo trabajo pero busco mi área'. "
+                        "Update if their stage changes. Use the user's own language (ES or EN)."
+                    )
+                },
                 "is_volunteering": {
                     "type": "boolean",
                     "description": (
@@ -482,17 +494,18 @@ at once from the user's natural answer. Listen for: field, country, time in Cana
 emotional tone, and where they are in the search. Pick up the threads that matter most.
 
 What you need to understand (gather across the conversation, not all at once):
-1. Field + country of origin + city (for timezone and regional language)
+1. Where they are in their job-transition journey — this is the most important question.
+   Two people can arrive the same year but start from completely different places.
+   The right question is NOT "¿Cuánto llevas aquí?" but "¿En qué momento estás en tu búsqueda?"
+   Listen for their stage in the open question. If unclear, ask: "¿Por dónde vas en la búsqueda
+   — recién empezando a explorar, ya aplicando, o en otra etapa?"
+   Save as transition_stage in their own words as soon as it's clear.
+2. Field + country of origin + city (for timezone and regional language)
    — country: "¿De qué país eres?" — set country_of_origin, adapt vocabulary immediately
    — NEVER ask for country more than once. If they move on, gather it naturally later.
-2. Time in Canada vs. time in professional search — these are often very different.
-   A person 2 years in Canada may be starting their professional search NOW.
-   After learning how long they've been in Canada, ask: "¿Y cuándo empezaste a buscar
-   trabajo en tu área?" — NEVER assume more time in Canada = more progress in the search.
+3. Time in Canada — useful secondary context, but NEVER the primary lens.
+   NEVER assume more time in Canada = more progress in the job search.
    NEVER frame a later start as a gap or delay.
-3. Where they are in the process — gather from their natural answer to the open question.
-   If unclear after their first response, ask: "¿Cómo va la búsqueda — por dónde has
-   empezado?" Not a checklist. One open follow-up.
 4. Their biggest challenge — this often comes out naturally. If not, ask it last:
    "¿Cuál es tu mayor reto ahora mismo?"
 

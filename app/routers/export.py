@@ -98,6 +98,7 @@ async def profile_edit_save(
     country_of_origin: str = Form(""),
     city: str = Form(""),
     time_in_canada: str = Form(""),
+    transition_stage: str = Form(""),
     about_me: str = Form(""),
     goals: str = Form(""),
 ):
@@ -110,6 +111,7 @@ async def profile_edit_save(
     user.country_of_origin = country_of_origin.strip()
     user.city = city.strip()
     user.time_in_canada = time_in_canada.strip()
+    user.transition_stage = transition_stage.strip()
     user.about_me = about_me.strip()
     user.goals = [g.strip() for g in goals.splitlines() if g.strip()]
     save_user(user)

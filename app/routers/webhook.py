@@ -286,6 +286,11 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
     if country_of_origin and not user.country_of_origin:
         user.country_of_origin = country_of_origin
 
+    transition_stage = tool_inputs.get("transition_stage")
+    if transition_stage:
+        user.transition_stage = transition_stage
+        logger.info("transition_stage set for %s: %s", phone, transition_stage)
+
     contact_updates = tool_inputs.get("contact_updates")
     if contact_updates and contact:
         add_chat = contact_updates.get("add_chat")

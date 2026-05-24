@@ -84,6 +84,7 @@ class UserDoc:
     field: str = ""
     language: str = "es"
     time_in_canada: str = ""
+    transition_stage: str = ""
     city: str = ""
     country_of_origin: str = ""
     timezone: str = "America/Toronto"
