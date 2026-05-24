@@ -62,3 +62,9 @@ async def join_waitlist(
 def guide(request: Request, lang: str = "en"):
     lang = lang if lang in ("en", "es") else "en"
     return templates.TemplateResponse("guide.html", {"request": request, "lang": lang})
+
+
+@router.get("/privacy", response_class=HTMLResponse)
+def privacy(request: Request, lang: str = "en"):
+    lang = lang if lang in ("en", "es") else "en"
+    return templates.TemplateResponse("privacy.html", {"request": request, "lang": lang})

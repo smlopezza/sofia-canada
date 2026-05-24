@@ -168,6 +168,10 @@
             <button type="submit" class="btn btn-teal btn-block">
               {% if lang == 'es' %}Registrarme como mentor{% else %}Register as a mentor{% endif %}
             </button>
+            <p class="section-note text-center mt-2">
+              {% if lang == 'es' %}Al registrarte aceptas ser contactado por el equipo de SofIA. Puedes darte de baja en cualquier momento. <a href="/privacy?lang={{ lang }}">Privacidad</a>.
+              {% else %}By registering you agree to be contacted by the SofIA team. You can opt out at any time. <a href="/privacy?lang={{ lang }}">Privacy policy</a>.{% endif %}
+            </p>
           </form>
         </div>
       </div>
