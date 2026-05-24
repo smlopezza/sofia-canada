@@ -57,7 +57,7 @@ def load_user(phone: str) -> UserDoc:
 
 
 def save_user(user: UserDoc):
-    data = {k: v for k, v in user.__dict__.items() if k != "phone"}
+    data = {k: v for k, v in user.__dict__.items() if k != "phone" and not k.startswith("_")}
     get_db().collection("users").document(user.phone).set(data, merge=True)
 
 
