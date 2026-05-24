@@ -27,7 +27,7 @@ load_dotenv()
 os.environ["CLOUD_SCHEDULER_SECRET"] = "test-secret"
 
 from app.models import ContactDoc, UserDoc
-from app.jobs import post_chat_checkin, thank_you_nudge, pre_chat_nudge
+from app.routers.jobs import post_chat_checkin, thank_you_nudge, pre_chat_nudge
 
 SEPARATOR = "-" * 60
 

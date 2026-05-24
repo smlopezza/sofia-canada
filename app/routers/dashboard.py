@@ -14,7 +14,7 @@ from app.clients.twilio_client import get_client as get_twilio_client
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-TEMPLATES_DIR = Path(__file__).parent / "templates"
+TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 STATE_LABELS = {

@@ -280,7 +280,7 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
                 user.goals.append(g)
 
     if tool_inputs.get("export_requested"):
-        from app.export import generate_export_token
+        from app.routers.export import generate_export_token
         token_id, link = generate_export_token(phone)
         logger.info("Export token generated for %s: %s", phone, token_id)
         user._export_link = link

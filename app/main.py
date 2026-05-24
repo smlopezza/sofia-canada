@@ -4,12 +4,12 @@ load_dotenv()
 from pathlib import Path
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from app.webhook import router as webhook_router
-from app.jobs import router as jobs_router
-from app.export import router as export_router
-from app.dashboard import router as dashboard_router
-from app.landing import router as landing_router
-from app.mentors import router as mentors_router
+from app.routers.webhook import router as webhook_router
+from app.routers.jobs import router as jobs_router
+from app.routers.export import router as export_router
+from app.routers.dashboard import router as dashboard_router
+from app.routers.landing import router as landing_router
+from app.routers.mentors import router as mentors_router
 
 app = FastAPI()
 

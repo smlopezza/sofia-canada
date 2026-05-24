@@ -22,7 +22,7 @@ from app.models import ExportToken
 router = APIRouter()
 logger = logging.getLogger(__name__)
 
-TEMPLATES_DIR = Path(__file__).parent / "templates"
+TEMPLATES_DIR = Path(__file__).parent.parent / "templates"
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
 BASE_URL = os.getenv("BASE_URL", "https://sofia-qhgvxxwh5q-nn.a.run.app")

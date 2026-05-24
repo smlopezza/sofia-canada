@@ -16,7 +16,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from app.webhook import _process
+from app.routers.webhook import _process
 
 SEPARATOR = "-" * 60
 
