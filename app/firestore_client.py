@@ -159,3 +159,13 @@ def get_export_token(token_id: str) -> ExportToken | None:
 
 def mark_export_token_used(token_id: str):
     get_db().collection("export_tokens").document(token_id).update({"used": True})
+
+
+def save_waitlist_entry(entry: dict) -> str:
+    ref = get_db().collection("waitlist").document()
+    ref.set(entry)
+    return ref.id
+
+
+def count_active_users() -> int:
+    return sum(1 for _ in get_db().collection("users").stream())

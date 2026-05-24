@@ -10,10 +10,10 @@
 <body>
 
 <nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
-  <span class="navbar-brand mb-0 h1">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %}</span>
+  <a href="/" class="navbar-brand mb-0 h1">SofIA</a>
   <div>
-    <a href="/?lang=en" class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
-    <a href="/?lang=es" class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+    <a href="/impact?lang=en" class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/impact?lang=es" class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
   </div>
 </nav>
 
@@ -38,12 +38,12 @@
           {% if lang == 'es' %}
             SofIA es una compañera de IA bilingüe para recién llegados latinos en Canadá que aún no trabajan en su profesión.
             Vive en WhatsApp — sin aplicaciones que descargar, sin formularios.
-            Los acompaña desde el miedo ante el networking profesional hasta la confianza, conexiones genuinas y momentum real.
+            Los acompaña desde el miedo a conectar con otros profesionales hasta la confianza, conexiones genuinas y momentum real.
             No reemplaza a coaches, mentores o terapeutas — los anima a buscarlos.
           {% else %}
             SofIA is a bilingual AI companion for Latino newcomers in Canada who haven't yet found work in their profession.
             She lives on WhatsApp — no app to download, no forms to fill.
-            She walks with them from fear of professional networking to genuine confidence, real connections, and momentum.
+            She walks with them from fear of reaching out to other professionals to genuine confidence, real connections, and momentum.
             She doesn't replace coaches, mentors, or therapists — she encourages users to seek them out.
           {% endif %}
         </p>
@@ -246,18 +246,18 @@
 
   <!-- CTA -->
   <div class="text-center mb-5">
-    <p class="section-title">{% if lang == 'es' %}¿Quieres apoyar este proyecto?{% else %}Want to support this project?{% endif %}</p>
+    <p class="section-title">{% if lang == 'es' %}SofIA es de la comunidad, para la comunidad{% else %}SofIA is by the community, for the community{% endif %}</p>
     <p class="text-muted">
       {% if lang == 'es' %}
-        SofIA está siendo construida para escalar a más comunidades de recién llegados.<br>
-        Si representas una organización de asentamiento, fundación, o empresa — escríbenos.
+        SofIA se sostiene gracias a personas que creen en apoyar a quienes recién llegan.<br>
+        Si SofIA te ayudó en tu transición, o simplemente crees en este proyecto, considera contribuir.
       {% else %}
-        SofIA is being built to scale to more newcomer communities.<br>
-        If you represent a settlement organization, foundation, or company — reach out.
+        SofIA is community-funded by people who believe in supporting newcomers.<br>
+        If SofIA helped you in your transition, or you simply believe in this project, consider contributing.
       {% endif %}
     </p>
-    <a href="mailto:slopezza@outlook.com" class="btn btn-lg btn-teal">
-      {% if lang == 'es' %}Conectemos{% else %}Let's connect{% endif %}
+    <a href="https://buymeacoffee.com/sofia_canada" target="_blank" class="btn btn-lg btn-teal">
+      {% if lang == 'es' %}Quiero contribuir{% else %}I want to contribute{% endif %}
     </a>
   </div>
 

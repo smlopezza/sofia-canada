@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <title>SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %}</title>
+</head>
+<body>
+
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <span class="navbar-brand mb-0 h1">SofIA</span>
+  <div>
+    <a href="/?lang=en" class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/?lang=es" class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container text-center">
+    <img src="/static/images/sofia_avatar.png" alt="SofIA" class="hero-avatar">
+    <h1>{% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %}</h1>
+    <p class="mt-2">
+      {% if lang == 'es' %}Tu compañera de IA en tu transición profesional en Canadá
+      {% else %}Your AI companion for your job transition in Canada{% endif %}
+    </p>
+    <a href="#waitlist" class="btn btn-lg btn-light mt-3">
+      {% if lang == 'es' %}Únete a la lista de espera{% else %}Join the waitlist{% endif %}
+    </a>
+  </div>
+</div>
+
+<div class="container mt-5">
+
+  <!-- What is SofIA -->
+  <div class="row mb-5">
+    <div class="col-md-10 offset-md-1">
+      <div class="mission-box">
+        <p class="mb-0 mission-text">
+          {% if lang == 'es' %}
+            SofIA es una compañera de IA bilingüe para recién llegados latinos en Canadá que aún no trabajan en su profesión.
+            Vive en WhatsApp: sin aplicaciones que descargar, sin formularios.
+            Te acompaña desde el miedo a conectar con otros profesionales hasta que logres construir confianza, conexiones genuinas y momentum real.
+          {% else %}
+            SofIA is a bilingual AI companion for Latino newcomers in Canada who haven't yet found work in their profession.
+            She lives on WhatsApp: no app to download, no forms to fill.
+            She walks with you from fear of reaching out to other professionals to genuine confidence, real connections, and momentum.
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <p class="section-title text-center">{% if lang == 'es' %}¿Cómo funciona?{% else %}How it works{% endif %}</p>
+  <div class="row mb-5">
+    <div class="col-md-4 mb-3">
+      <div class="card step-card h-100">
+        <div class="step-number">1</div>
+        <div class="step-title">{% if lang == 'es' %}Aplica{% else %}Apply{% endif %}</div>
+        <p class="step-desc">
+          {% if lang == 'es' %}Llena el formulario abajo. Te contactamos en 48 horas.
+          {% else %}Fill the form below. We'll reach out within 48 hours.{% endif %}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card step-card h-100">
+        <div class="step-number">2</div>
+        <div class="step-title">{% if lang == 'es' %}Empieza en WhatsApp{% else %}Start on WhatsApp{% endif %}</div>
+        <p class="step-desc">
+          {% if lang == 'es' %}Sin apps que descargar. SofIA te escribe para conocerte.
+          {% else %}No apps to download. SofIA messages you to get started.{% endif %}
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card step-card h-100">
+        <div class="step-number">3</div>
+        <div class="step-title">{% if lang == 'es' %}Construye tu red{% else %}Build your network{% endif %}</div>
+        <p class="step-desc">
+          {% if lang == 'es' %}Coffee chats, contactos, mentores — con apoyo en cada paso.
+          {% else %}Coffee chats, contacts, mentors — with support at every step.{% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Waitlist form -->
+  <div class="row mb-5" id="waitlist">
+    <div class="col-md-8 offset-md-2">
+      {% if submitted %}
+      <div class="card p-4 text-center">
+        <div class="stat-number mb-2">🎉</div>
+        <h4>{% if lang == 'es' %}¡Listo!{% else %}You're in!{% endif %}</h4>
+        <p class="text-muted">
+          {% if lang == 'es' %}Recibimos tu solicitud. Te contactamos en menos de 48 horas.
+          {% else %}We received your application. We'll be in touch within 48 hours.{% endif %}
+        </p>
+      </div>
+      {% else %}
+      <div class="card">
+        <div class="card-body">
+          <p class="section-title">{% if lang == 'es' %}Únete a la beta{% else %}Join the beta{% endif %}</p>
+          <p class="section-note">
+            {% if lang == 'es' %}Estamos en beta cerrada. Aplica abajo y te escribimos en 48 horas.
+            {% else %}We're in closed beta. Apply below and we'll reach out within 48 hours.{% endif %}
+          </p>
+          <form method="POST" action="/waitlist">
+            <input type="hidden" name="lang" value="{{ lang }}">
+            <div class="form-group">
+              <label>{% if lang == 'es' %}Nombre{% else %}Name{% endif %} *</label>
+              <input type="text" class="form-control" name="name" required>
+            </div>
+            <div class="form-group">
+              <label>Email *</label>
+              <input type="email" class="form-control" name="email" required>
+            </div>
+            <div class="form-group">
+              <label>
+                LinkedIn
+                <span class="text-muted">({% if lang == 'es' %}opcional{% else %}optional{% endif %})</span>
+              </label>
+              <input type="url" class="form-control" name="linkedin" placeholder="https://linkedin.com/in/...">
+            </div>
+            <div class="form-group">
+              <label>
+                {% if lang == 'es' %}Tu historia en una línea{% else %}Your story in one line{% endif %}
+                <span class="text-muted">({% if lang == 'es' %}opcional{% else %}optional{% endif %})</span>
+              </label>
+              <input type="text" class="form-control" name="story"
+                placeholder="{% if lang == 'es' %}Soy [profesión] de [país], llegué a [ciudad] en [año]{% else %}I'm a [profession] from [country], recently moved to [city]{% endif %}">
+            </div>
+            <button type="submit" class="btn btn-teal btn-block">
+              {% if lang == 'es' %}Enviar solicitud{% else %}Apply for access{% endif %}
+            </button>
+          </form>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- For mentors + For supporters -->
+  <div class="row mb-5">
+    <div class="col-md-5 mb-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="section-title">
+            {% if lang == 'es' %}¿Eres profesional en Canadá?{% else %}Are you a Canadian professional?{% endif %}
+          </p>
+          <p class="section-note">
+            {% if lang == 'es' %}Regístrate como mentor y ayuda a recién llegados en su transición profesional en Canadá.
+            {% else %}Register as a mentor and help newcomers navigate their professional transition in Canada.{% endif %}
+          </p>
+          <span class="badge badge-secondary">
+            {% if lang == 'es' %}Próximamente{% else %}Coming soon{% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5 offset-md-2 mb-3">
+      <div class="card h-100">
+        <div class="card-body">
+          <p class="section-title">
+            {% if lang == 'es' %}¿Crees en este proyecto?{% else %}Believe in this project?{% endif %}
+          </p>
+          <p class="section-note">
+            {% if lang == 'es' %}SofIA se sostiene gracias a la comunidad — no a corporaciones. Si quieres contribuir o ver el impacto, escríbenos.
+            {% else %}SofIA is community-funded — not corporate. If you want to contribute or see the impact, reach out.{% endif %}
+          </p>
+          <a href="/impact" class="btn btn-outline-secondary btn-sm mr-2">
+            {% if lang == 'es' %}Ver impacto{% else %}View impact{% endif %}
+          </a>
+          <a href="https://buymeacoffee.com/sofia_canada" target="_blank" class="btn btn-outline-secondary btn-sm">
+            {% if lang == 'es' %}Contribuir{% else %}Contribute{% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="sofia-footer">
+  <div class="container text-center">
+    <p class="mb-0">SofIA — {% if lang == 'es' %}Tu aliada en Canadá{% else %}Your Ally in Canada{% endif %} · <a href="https://www.slopezza.com" target="_blank" class="footer-link">slopezza.com</a></p>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

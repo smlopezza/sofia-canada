@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import time
 import uuid
@@ -16,6 +17,7 @@ from app.claude_client import (
     generate_summary,
 )
 from app.firestore_client import (
+    count_active_users,
     get_active_contact,
     get_user_contacts,
     is_duplicate,
@@ -37,12 +39,12 @@ RATE_LIMITS = {"free": 30, "contributor": 50, "org_sponsored": 99999}
 RATE_LIMIT_MSG = {
     "es": (
         "Ya usaste tus mensajes de hoy — vuelve mañana. "
-        "Si quieres acceso ilimitado, puedes contribuir a la comunidad: [link]. "
+        "Si quieres acceso ilimitado, puedes contribuir a la comunidad: buymeacoffee.com/sofia_canada "
         "Si no puedes, está bien."
     ),
     "en": (
         "You've used today's messages — come back tomorrow. "
-        "If you'd like unlimited access, you can support the community here: [link]. "
+        "If you'd like unlimited access, you can support the community here: buymeacoffee.com/sofia_canada. "
         "No pressure if not."
     ),
 }
@@ -51,6 +53,16 @@ ERROR_MSG = {
     "es": "Algo salió mal de mi lado — intenta de nuevo en un momento.",
     "en": "Something went wrong on my end — try again in a moment.",
 }
+
+MAX_USERS = int(os.getenv("MAX_USERS", "50"))
+
+WAITLIST_MSG = (
+    "Hola / Hi! 👋\n\n"
+    "SofIA está en beta cerrada por ahora — SofIA is currently in closed beta.\n\n"
+    "Únete a la lista de espera / Join the waitlist:\n"
+    "👉 https://sofia-qhgvxxwh5q-nn.a.run.app\n\n"
+    "Te avisaremos cuando haya espacio. We'll reach out when a spot opens up. 🌟"
+)
 
 
 @router.post("/webhook/twilio")
@@ -90,6 +102,12 @@ def _process(phone: str, text: str, message_sid: str):
         return
 
     user = load_user(phone)
+
+    # Bounce new users if beta is full
+    if user.last_active is None and count_active_users() >= MAX_USERS:
+        logger.info("Beta full — bouncing new user %s to waitlist", phone)
+        send_message(phone, WAITLIST_MSG)
+        return
     now = datetime.utcnow()
 
     if not _check_and_increment_rate_limit(user, now):

@@ -197,8 +197,8 @@ def _safe_float(val) -> float | None:
         return None
 
 
-@router.get("/", response_class=HTMLResponse)
-def home(request: Request, lang: str = "en"):
+@router.get("/impact", response_class=HTMLResponse)
+def impact(request: Request, lang: str = "en"):
     lang = lang if lang in ("en", "es") else "en"
     try:
         stats = _build_stats(lang)
@@ -212,8 +212,3 @@ def home(request: Request, lang: str = "en"):
         "lang": lang,
         "date_ranges": stats.get("date_ranges", {}),
     })
-
-
-@router.get("/impact")
-def impact_redirect():
-    return RedirectResponse(url="/")
