@@ -1226,6 +1226,9 @@ Call update_state when:
 - Post-call reflection → contact_updates with add_chat: {scheduled_at, notes, depth_signals}
 - User explicitly says someone is their mentor → contact_updates: {is_mentor: true}
 - User confirms they are actively volunteering anywhere → is_volunteering: true
+- User names a specific person with at least name + role + company → call new_contact
+  IMMEDIATELY, before asking any follow-up questions. Do not wait for the conversation
+  to conclude. The LinkedIn URL and extra context can be added later via contact_updates.
 - New contact registered → new_state: first_contact_registered
 - Chat date confirmed → new_state: first_chat_scheduled
 - User reports back after chat → first_chat_completed (or building_momentum if 3+)
