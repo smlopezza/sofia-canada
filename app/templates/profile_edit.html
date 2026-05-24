@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}{% if lang == 'es' %}SofIA — Editar perfil{% else %}SofIA — Edit profile{% endif %}{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
+  <a href="/" class="navbar-brand mb-0 h1">SofIA - Tu Aliada en Canadá</a>
+  <div>
+    <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
+      {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
+    </a>
+    <a href="/export/profile/edit?token={{ token }}&lang=en"
+       class="btn btn-sm {% if lang == 'en' %}btn-light{% else %}btn-outline-light{% endif %} mr-1">EN</a>
+    <a href="/export/profile/edit?token={{ token }}&lang=es"
+       class="btn btn-sm {% if lang == 'es' %}btn-light{% else %}btn-outline-light{% endif %}">ES</a>
+  </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+
+    <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-sm download-btn mb-3">
+      <i class="bi bi-arrow-left"></i> {% if lang == 'es' %}Volver{% else %}Back{% endif %}
+    </a>
+
+    <h5 class="mb-4">{% if lang == 'es' %}Editar perfil{% else %}Edit profile{% endif %}</h5>
+
+    <div class="card">
+      <div class="card-body">
+        <form method="POST" action="/export/profile/edit">
+          <input type="hidden" name="token" value="{{ token }}">
+          <input type="hidden" name="lang" value="{{ lang }}">
+
+          <div class="form-group">
+            <label>{% if lang == 'es' %}Nombre{% else %}Name{% endif %}</label>
+            <input type="text" class="form-control" name="name" value="{{ user.name or '' }}">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>{% if lang == 'es' %}Profesión{% else %}Profession{% endif %}</label>
+              <input type="text" class="form-control" name="field" value="{{ user.field or '' }}">
+            </div>
+            <div class="form-group col-md-6">
+              <label>{% if lang == 'es' %}País de origen{% else %}Country of origin{% endif %}</label>
+              <input type="text" class="form-control" name="country_of_origin" value="{{ user.country_of_origin or '' }}">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>{% if lang == 'es' %}Ciudad actual{% else %}Current city{% endif %}</label>
+              <input type="text" class="form-control" name="city" value="{{ user.city or '' }}">
+            </div>
+            <div class="form-group col-md-6">
+              <label>{% if lang == 'es' %}Tiempo en Canadá{% else %}Time in Canada{% endif %}</label>
+              <input type="text" class="form-control" name="time_in_canada" value="{{ user.time_in_canada or '' }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>{% if lang == 'es' %}Sobre mí{% else %}About me{% endif %}</label>
+            <textarea class="form-control" name="about_me" rows="3">{{ user.about_me or '' }}</textarea>
+          </div>
+          <div class="form-group">
+            <label>{% if lang == 'es' %}Metas{% else %}Goals{% endif %} <span class="text-muted">({% if lang == 'es' %}una por línea{% else %}one per line{% endif %})</span></label>
+            <textarea class="form-control" name="goals" rows="4">{{ (user.goals or []) | join('\n') }}</textarea>
+          </div>
+
+          <div class="mt-3">
+            <button type="submit" class="btn btn-teal mr-2">{% if lang == 'es' %}Guardar cambios{% else %}Save changes{% endif %}</button>
+            <a href="/export?token={{ token }}&lang={{ lang }}" class="btn btn-outline-secondary">{% if lang == 'es' %}Cancelar{% else %}Cancel{% endif %}</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

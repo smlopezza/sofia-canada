@@ -75,6 +75,48 @@ def export_view(request: Request, token: str, lang: str = None):
     })
 
 
+@router.get("/export/profile/edit", response_class=HTMLResponse)
+def profile_edit_form(request: Request, token: str, lang: str = "es"):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    return templates.TemplateResponse("profile_edit.html", {
+        "request": request,
+        "user": user,
+        "token": token,
+        "lang": lang,
+    })
+
+
+@router.post("/export/profile/edit")
+async def profile_edit_save(
+    token: str = Form(...),
+    lang: str = Form("es"),
+    name: str = Form(""),
+    field: str = Form(""),
+    country_of_origin: str = Form(""),
+    city: str = Form(""),
+    time_in_canada: str = Form(""),
+    about_me: str = Form(""),
+    goals: str = Form(""),
+):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    user = load_user(token_obj.phone)
+    user.name = name.strip()
+    user.field = field.strip()
+    user.country_of_origin = country_of_origin.strip()
+    user.city = city.strip()
+    user.time_in_canada = time_in_canada.strip()
+    user.about_me = about_me.strip()
+    user.goals = [g.strip() for g in goals.splitlines() if g.strip()]
+    save_user(user)
+    logger.info("Profile updated for %s", token_obj.phone)
+    return RedirectResponse(url=f"/export?token={token}&lang={lang}", status_code=303)
+
+
 @router.post("/export/profile")
 async def profile_save(
     token: str = Form(...),
