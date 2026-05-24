@@ -6,16 +6,19 @@ import uuid
 from datetime import datetime, timedelta
 from pathlib import Path
 
-from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi import APIRouter, Form, Request
+from fastapi.responses import HTMLResponse, RedirectResponse, StreamingResponse
 from fastapi.templating import Jinja2Templates
 
 from app.clients.firestore_client import (
+    delete_contact,
     get_export_token,
     get_user_contacts,
+    load_contact,
     load_user,
     mark_export_token_used,
     save_export_token,
+    update_contact_fields,
 )
 from app.models import ExportToken
 
@@ -64,7 +67,7 @@ def export_view(request: Request, token: str):
     return templates.TemplateResponse("export.html", {
         "request": request,
         "user": user,
-        "contacts": [c for _, c in contacts_with_chats],
+        "contacts": contacts_with_chats,
         "token": token,
     })
 
@@ -130,6 +133,59 @@ def export_milestones_csv(token: str):
         media_type="text/csv",
         headers={"Content-Disposition": "attachment; filename=sofia_milestones.csv"}
     )
+
+
+@router.get("/export/contacts/{contact_id}", response_class=HTMLResponse)
+def contact_edit_form(request: Request, contact_id: str, token: str):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    contact = load_contact(token_obj.phone, contact_id)
+    if not contact:
+        return HTMLResponse("<p>Contact not found.</p>", status_code=404)
+    return templates.TemplateResponse("contact_edit.html", {
+        "request": request,
+        "contact": contact,
+        "contact_id": contact_id,
+        "token": token,
+    })
+
+
+@router.post("/export/contacts/{contact_id}")
+async def contact_edit_save(
+    contact_id: str,
+    token: str = Form(...),
+    name: str = Form(...),
+    role: str = Form(""),
+    company: str = Form(""),
+    linkedin_url: str = Form(""),
+    post_call_notes: str = Form(""),
+    is_mentor: str = Form("off"),
+):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    updates = {
+        "name": name.strip(),
+        "role": role.strip(),
+        "company": company.strip(),
+        "linkedin_url": linkedin_url.strip(),
+        "post_call_notes": post_call_notes.strip(),
+        "is_mentor": is_mentor == "on",
+    }
+    update_contact_fields(token_obj.phone, contact_id, updates)
+    logger.info("Contact %s updated for %s", contact_id, token_obj.phone)
+    return RedirectResponse(url=f"/export?token={token}", status_code=303)
+
+
+@router.post("/export/contacts/{contact_id}/delete")
+async def contact_delete(contact_id: str, token: str = Form(...)):
+    token_obj, error = _validate_token(token)
+    if error:
+        return HTMLResponse(f"<p>{error}</p>", status_code=400)
+    delete_contact(token_obj.phone, contact_id)
+    logger.info("Contact %s deleted for %s", contact_id, token_obj.phone)
+    return RedirectResponse(url=f"/export?token={token}", status_code=303)
 
 
 @router.get("/export/learnings.csv")

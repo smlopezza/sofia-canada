@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}SofIA — Editar contacto{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-dark navbar-sofia">
+  <span class="navbar-brand mb-0 h1">SofIA — Tu aliada en Canadá</span>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+
+    <h5 class="mb-4">Editar contacto</h5>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <form method="POST" action="/export/contacts/{{ contact_id }}">
+          <input type="hidden" name="token" value="{{ token }}">
+
+          <div class="form-group">
+            <label>Nombre *</label>
+            <input type="text" class="form-control" name="name" required value="{{ contact.name }}">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Rol</label>
+              <input type="text" class="form-control" name="role" value="{{ contact.role }}">
+            </div>
+            <div class="form-group col-md-6">
+              <label>Empresa</label>
+              <input type="text" class="form-control" name="company" value="{{ contact.company }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>LinkedIn</label>
+            <input type="url" class="form-control" name="linkedin_url" value="{{ contact.linkedin_url or '' }}">
+          </div>
+          <div class="form-group">
+            <label>Notas</label>
+            <textarea class="form-control" name="post_call_notes" rows="3">{{ contact.post_call_notes or '' }}</textarea>
+          </div>
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" name="is_mentor" id="is_mentor"
+              {% if contact.is_mentor %}checked{% endif %}>
+            <label class="form-check-label" for="is_mentor">Mentor</label>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <button type="submit" class="btn btn-teal mr-2">Guardar cambios</button>
+              <a href="/export?token={{ token }}" class="btn btn-outline-secondary">Cancelar</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete -->
+    <div class="card border-danger">
+      <div class="card-body">
+        <p class="section-title text-danger mb-1">Eliminar contacto</p>
+        <p class="section-note mb-3">Esta acción no se puede deshacer.</p>
+        <form method="POST" action="/export/contacts/{{ contact_id }}/delete"
+              onsubmit="return confirm('¿Seguro que quieres eliminar a {{ contact.name }}? Esta acción no se puede deshacer.')">
+          <input type="hidden" name="token" value="{{ token }}">
+          <button type="submit" class="btn btn-danger btn-sm">Eliminar contacto</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

@@ -64,10 +64,11 @@
             <th>Último contacto</th>
             <th>Chats</th>
             <th>Mentor</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
-          {% for c in contacts %}
+          {% for cid, c in contacts %}
           {% set last_chat = c.chats[-1] if c.chats else none %}
           {% set first_date = c.created_at[:10] if c.created_at else "—" %}
           {% set last_date = last_chat.get("scheduled_at", "")[:10] if last_chat else "—" %}
@@ -79,6 +80,11 @@
             <td>{{ last_date }}</td>
             <td>{{ c.chats | length }}</td>
             <td>{% if c.is_mentor %}<span class="badge badge-success">Sí</span>{% endif %}</td>
+            <td>
+              <a href="/export/contacts/{{ cid }}?token={{ token }}"
+                 class="btn btn-sm btn-outline-secondary"
+                 onclick="event.stopPropagation()">✏️</a>
+            </td>
           </tr>
           <tr class="collapse chat-detail" id="chats-{{ loop.index }}">
             <td colspan="7">

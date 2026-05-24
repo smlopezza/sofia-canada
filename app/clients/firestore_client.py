@@ -111,6 +111,16 @@ def save_contact(phone: str, contact_id: str, contact: ContactDoc):
         .collection("contacts").document(contact_id).set(contact.__dict__, merge=True)
 
 
+def update_contact_fields(phone: str, contact_id: str, updates: dict):
+    get_db().collection("users").document(phone)\
+        .collection("contacts").document(contact_id).update(updates)
+
+
+def delete_contact(phone: str, contact_id: str):
+    get_db().collection("users").document(phone)\
+        .collection("contacts").document(contact_id).delete()
+
+
 def is_duplicate(message_sid: str) -> bool:
     doc = get_db().collection("processed_messages").document(message_sid).get()
     if doc.exists:
