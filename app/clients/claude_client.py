@@ -37,6 +37,7 @@ def build_context(user: UserDoc, contact: ContactDoc | None, all_contacts: list[
         f"Country of origin: {user.country_of_origin}",
         f"Current challenge: {user.current_challenge}",
         f"Current state: {user.current_state}",
+        f"Contact count: {user.contact_count}",
     ]
     if user.about_me:
         parts.append(f"About me: {user.about_me}")

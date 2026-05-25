@@ -58,6 +58,7 @@ MAX_USERS = int(os.getenv("MAX_USERS", "20"))
 
 MILESTONE_LABELS = {
     "en": {
+        "active_job_search": "Actively applying",
         "first_contact_registered": "First contact registered",
         "first_chat_scheduled": "First coffee chat scheduled",
         "first_chat_completed": "First coffee chat completed",
@@ -71,6 +72,7 @@ MILESTONE_LABELS = {
         "first_90_days": "First 90 days on the job",
     },
     "es": {
+        "active_job_search": "Aplicando activamente",
         "first_contact_registered": "Primer contacto registrado",
         "first_chat_scheduled": "Primer coffee chat agendado",
         "first_chat_completed": "Primer coffee chat completado",
