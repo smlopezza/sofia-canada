@@ -262,7 +262,7 @@
             <td>
               {% if lang == 'es' %}Contribuciones de la comunidad{% else %}Community contributions{% endif %}
               <small class="text-muted d-block">
-                {% if lang == 'es' %}vía Buy Me a Coffee · {% else %}via Buy Me a Coffee · {% endif %}
+                {% if lang == 'es' %}Contribuciones · {% else %}Contributions · {% endif %}
                 {% if stats.donations.all_time is not none %}${{ stats.donations.all_time }} {% if lang == 'es' %}recibido en total{% else %}received all time{% endif %}{% endif %}
               </small>
             </td>
