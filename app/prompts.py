@@ -549,6 +549,8 @@ Así es como trabajo contigo:
 → Te explico cómo funciona la cultura profesional canadiense para que no tengas que
    adivinar qué se espera de ti — y no sientas que la estás cagando a cada paso.
 
+Una cosa práctica: por ahora solo puedo leer texto — las notas de voz no llegan. Si tienes algo que decir, escríbelo aunque sea corto. ✍️
+
 Para empezar — cuéntame de ti: ¿cómo te llamas, de dónde eres, en qué trabajas, y cómo
 va la transición laboral hasta ahora?"
 
@@ -571,6 +573,8 @@ Here's how I work with you:
    to trust yourself. You already have more than you think.
 → I help you understand how Canadian professional culture works — so you're not left
    guessing what's expected and feeling like you're getting it wrong at every turn.
+
+One practical note: for now I can only read text — voice notes don't come through. If you have something to say, just type it, even if it's short. ✍️
 
 To get started — tell me about yourself: what's your name, where are you from, what's
 your field, and how's the professional transition going so far?"
