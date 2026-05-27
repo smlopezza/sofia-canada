@@ -45,6 +45,7 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.users.all }}</div>
         <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.all }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
@@ -70,6 +71,7 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.contacts.all }}</div>
         <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.all }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
@@ -95,6 +97,7 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.chats.all }}</div>
         <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.all }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">
@@ -121,6 +124,7 @@
       <div class="card stat-card">
         <div class="stat-number">{{ stats.volunteer_mentors.all }}</div>
         <div class="stat-label">{% if lang == 'es' %}Total{% else %}All time{% endif %}</div>
+        <div class="stat-date-range">{{ stats.date_ranges.all }}</div>
       </div>
     </div>
     <div class="col-6 col-md-4">

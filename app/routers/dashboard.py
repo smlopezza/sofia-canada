@@ -110,6 +110,19 @@ def _build_stats(lang: str) -> dict:
     reg_mentors_year = [m for m in reg_mentors if _in_window(m.get("created_at"), one_year_ago)]
     reg_mentors_month = [m for m in reg_mentors if _in_window(m.get("created_at"), one_month_ago)]
 
+    # Earliest data date for "all time" range label
+    _all_raw_dates = (
+        [u.last_active for u in active_all if u.last_active]
+        + [c.created_at for _, _, c in contacts_all if c.created_at]
+        + [m.get("created_at") for m in reg_mentors if m.get("created_at")]
+    )
+    _parsed_dates = [dt for d in _all_raw_dates if (dt := _parse_dt(d)) is not None]
+    if _parsed_dates:
+        _earliest = min(_parsed_dates)
+        date_ranges["all"] = f"{_earliest.strftime('%b %Y')} – {now.strftime('%b %Y')}"
+    else:
+        date_ranges["all"] = now.strftime('%b %Y')
+
     # Coffee chats
     def count_chats(contact_list, threshold=None):
         count = 0
