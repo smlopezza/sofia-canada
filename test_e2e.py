@@ -6,7 +6,11 @@ Each run gets a unique fake phone number — no cleanup needed between runs.
 
 Usage:
     python test_e2e.py
-    python test_e2e.py r9   # R9 framing check (scans for "networking" in early states)
+    python test_e2e.py r9     # R9 framing check (scans for "networking" in early states)
+    python test_e2e.py r21    # Resume/CV redirect — hard boundary + resource redirect
+    python test_e2e.py r22    # T22 favor pena — warm contacts, can't make the ask
+    python test_e2e.py r23    # Advice application loop — close the loop coaching
+    python test_e2e.py p9     # All P9-derived scenarios (r21 + r22 + r23)
 """
 
 import sys
@@ -29,7 +33,7 @@ def chat(phone: str, text: str, replies: list[str]) -> str | None:
     def capture(to_phone, body):
         captured.append(body)
 
-    with patch("app.webhook.send_message", side_effect=capture):
+    with patch("app.routers.webhook.send_message", side_effect=capture):
         _process(phone, text, message_sid)
 
     reply = captured[0] if captured else None
@@ -56,6 +60,64 @@ def run_scenario(name: str, messages: list[str]) -> tuple[str, list[str]]:
             print("\n🤖  [no reply — check logs]")
 
     return phone, replies
+
+
+def check_resume_boundary(replies: list[str]):
+    """Check that SofIA refuses resume review and provides a useful redirect."""
+    print(f"\n{SEPARATOR}")
+    print("RESUME BOUNDARY CHECK — must refuse review AND provide redirect")
+    print(SEPARATOR)
+
+    # Patterns that signal SofIA is OFFERING to review/edit — not just mentioning the word.
+    # Use multi-word phrases to avoid matching refusal sentences like "No puedo revisar".
+    violation_patterns = [
+        "puedo revisar tu", "voy a revisar", "revisemos tu cv", "revisemos el cv",
+        "te reviso el", "mejora tu cv", "mejoremos el cv", "mejorar tu cv",
+        "te ayudo con tu cv", "ayudarte con el cv", "ayudarte con el résumé",
+        "let me review your", "i can review your", "i'll review your",
+        "i can help you improve your resume", "help you improve your resume",
+        "edit your resume", "rewrite your resume", "let me take a look at your",
+    ]
+    resource_patterns = [
+        "acces", "costi", "settlement", "asentamiento", "jobscan",
+        "career service", "servicios de carrera", "college", "coach", "ymca",
+    ]
+    connection_redirect_patterns = [
+        "relacion", "relación", "conexion", "conexión", "connection",
+        "habla de ti", "speaks up", "quien conoce", "who knows",
+        "red ", "network",
+    ]
+
+    flagged = []
+    for i, reply in enumerate(replies):
+        lower = reply.lower()
+        for pattern in violation_patterns:
+            if pattern in lower:
+                flagged.append((i + 1, pattern, reply[:120]))
+                break
+
+    has_resource = any(
+        any(p in r.lower() for p in resource_patterns) for r in replies
+    )
+    has_connection_redirect = any(
+        any(p in r.lower() for p in connection_redirect_patterns) for r in replies
+    )
+
+    if flagged:
+        for turn, pattern, snippet in flagged:
+            print(f"  ❌ Turn {turn}: found '{pattern}' — '{snippet}...'")
+    else:
+        print("  ✅ No resume review offers detected")
+
+    if has_resource:
+        print("  ✅ Redirect includes specific resource (settlement org / tool / college)")
+    else:
+        print("  ⚠️  No specific resource referenced — redirect may be too vague")
+
+    if has_connection_redirect:
+        print("  ✅ Response pivots to connections as the higher-leverage path")
+    else:
+        print("  ⚠️  No connection pivot found — may be a dead-end redirect")
 
 
 def check_r9(replies: list[str], early_cutoff: int = None):
@@ -284,6 +346,71 @@ R20_TC07 = [
     "Soy Jenn, tengo doctorado en ingeniería química, llevo 8 meses en Toronto buscando trabajo en industria. En las entrevistas no sé cómo responder tell me about yourself. ¿Cómo me presento?",
 ]
 
+# R21 — Resume/CV redirect (hard boundary)
+R21_TC01 = [
+    "Hola",
+    "Soy Camila, analista de datos de Colombia, 4 meses en Toronto",
+    "Estoy buscando trabajo en data science",
+    "¿Puedes revisar mi CV y decirme qué mejorar?",
+]
+
+R21_TC02 = [
+    "Hi, I'm Marco, software engineer from Mexico, 5 months in Toronto",
+    "I've been applying but not getting any responses",
+    "Can you help me improve my resume? I think that's what's holding me back",
+]
+
+R21_TC03 = [
+    "Hola",
+    "Soy Elena, HR specialist de Venezuela, 3 meses en Toronto",
+    "Voy a mandarte mi CV para que lo revises",
+    "[Documento adjunto: Elena_CV_2026.pdf]",
+]
+
+R21_TC04 = [
+    "Hola",
+    "Soy Rafael, ingeniero de sistemas de México, 6 meses en Toronto",
+    "Necesito ayuda con mi CV. Llevo meses aplicando y no recibo respuestas. Creo que el problema es el CV.",
+    "Sí, ya sé que el networking importa, pero primero necesito que el CV esté bien. ¿No puedes solo revisarlo rápido?",
+]
+
+# R22 — T22 Favor pena: warm contact, can't make the ask
+R22_TC01 = [
+    "Hola",
+    "Soy Valeria, analista de datos de Colombia, 3 meses en Toronto",
+    "Tuve un coffee chat con Sandra hace dos semanas, fue muy bien",
+    "Sandra me dijo que podía mandarle mi CV para que lo compartiera con su equipo. Pero me dio pena hacerlo. No quiero molestarla más.",
+]
+
+R22_TC02 = [
+    "Hola",
+    "Soy Isabella, ingeniera de software de Argentina, 4 meses en Toronto",
+    "Ya tuve 5 coffee chats y todas fueron muy bien — la gente es muy receptiva aquí",
+    "He tenido 5 buenas conversaciones pero no sé qué hacer con ellas. No quiero pedirles cosas. ¿Cómo paso al siguiente paso sin sentir que estoy molestando?",
+]
+
+R22_TC03 = [
+    "Hola",
+    "Me llamo Sofía, data scientist de México, llevo 2 meses en Toronto",
+    "He tenido varios coffee chats y la gente ha sido muy amable",
+    "Una persona me ofreció presentarme a alguien de su empresa pero me dio mucha pena aceptar. No quiero parecer insistente. ¿Qué hago?",
+]
+
+# R23 — Advice application loop
+R23_TC01 = [
+    "Hola",
+    "Soy Natalia, analista financiera de Colombia, 5 meses en Toronto",
+    "La semana pasada tuve un coffee chat con Roberto",
+    "Apliqué lo que me dijo Roberto sobre cómo personalizar el mensaje en LinkedIn y funcionó — ya me respondieron dos personas. Pero no sé qué más hacer.",
+]
+
+R23_TC02 = [
+    "Hola",
+    "Soy Paula, data scientist de Brasil, 4 meses en Toronto",
+    "Tuve un café con Ana hace tres semanas, me dio consejos sobre cómo hacer preguntas más estratégicas",
+    "Le escribí a Ana para contarle cómo me fue con sus consejos. Respondió de inmediato, muy contenta, y me ofreció presentarme a alguien más. No esperaba eso.",
+]
+
 # R19 — First-years gap shame
 R19_TC01 = [
     "Hola",
@@ -387,6 +514,41 @@ if __name__ == "__main__":
     elif mode.startswith("r19"):
         run_scenario("R19-TC01 — First-years gap: 2 years in Canada, ESL/settlement, feels behind", R19_TC01)
         run_scenario("R19-TC02 — First-years gap: refugee context, coffee chat, afraid gap looks bad", R19_TC02)
+
+    elif mode.startswith("r21"):
+        _, r1 = run_scenario("R21-TC01 — Resume redirect: Spanish direct ask", R21_TC01)
+        check_resume_boundary(r1)
+        _, r2 = run_scenario("R21-TC02 — Resume redirect: English direct ask", R21_TC02)
+        check_resume_boundary(r2)
+        _, r3 = run_scenario("R21-TC03 — Resume redirect: document upload attempt", R21_TC03)
+        check_resume_boundary(r3)
+        _, r4 = run_scenario("R21-TC04 — Resume redirect: persistent user pushes back", R21_TC04)
+        check_resume_boundary(r4)
+
+    elif mode.startswith("r22"):
+        run_scenario("R22-TC01 — Favor pena: warm contact offered to share CV, user held back", R22_TC01)
+        run_scenario("R22-TC02 — Favor pena: 5 good coffee chats, no concrete asks", R22_TC02)
+        run_scenario("R22-TC03 — Favor pena: offer of intro made, user too shy to accept", R22_TC03)
+
+    elif mode.startswith("r23"):
+        run_scenario("R23-TC01 — Advice loop: applied Roberto's advice, needs coaching to close loop", R23_TC01)
+        run_scenario("R23-TC02 — Advice loop: closed the loop, unexpected offer came back", R23_TC02)
+
+    elif mode == "p9":
+        # All scenarios derived from P9 insights
+        _, r1 = run_scenario("R21-TC01 — Resume redirect: Spanish direct ask", R21_TC01)
+        check_resume_boundary(r1)
+        _, r2 = run_scenario("R21-TC02 — Resume redirect: English direct ask", R21_TC02)
+        check_resume_boundary(r2)
+        _, r3 = run_scenario("R21-TC03 — Resume redirect: document upload attempt", R21_TC03)
+        check_resume_boundary(r3)
+        _, r4 = run_scenario("R21-TC04 — Resume redirect: persistent user pushes back", R21_TC04)
+        check_resume_boundary(r4)
+        run_scenario("R22-TC01 — Favor pena: warm contact offered to share CV, user held back", R22_TC01)
+        run_scenario("R22-TC02 — Favor pena: 5 good coffee chats, no concrete asks", R22_TC02)
+        run_scenario("R22-TC03 — Favor pena: offer of intro made, user too shy to accept", R22_TC03)
+        run_scenario("R23-TC01 — Advice loop: applied Roberto's advice, needs coaching to close loop", R23_TC01)
+        run_scenario("R23-TC02 — Advice loop: closed the loop, unexpected offer came back", R23_TC02)
 
     else:
         phone, replies = run_scenario(
