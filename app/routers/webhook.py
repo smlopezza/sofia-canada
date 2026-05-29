@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 
 _langfuse = Langfuse()
 
-RATE_LIMITS = {"free": 30, "contributor": 50, "org_sponsored": 99999}
+RATE_LIMITS = {"free": 30, "contributor": 50, "org_sponsored": 99999, "test": 99999}
 
 RATE_LIMIT_MSG = {
     "es": (
@@ -134,7 +134,7 @@ def _process(phone: str, text: str, message_sid: str):
     user = load_user(phone)
 
     # Bounce new users if beta is full
-    if user.last_active is None and count_active_users() >= MAX_USERS:
+    if user.last_active is None and user.tier != "test" and count_active_users() >= MAX_USERS:
         logger.info("Beta full — bouncing new user %s to waitlist", phone)
         send_message(phone, WAITLIST_MSG)
         return

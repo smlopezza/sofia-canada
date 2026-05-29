@@ -87,8 +87,10 @@ def _build_stats(lang: str) -> dict:
         "month": f"{one_month_ago.strftime('%b %d')} – {now.strftime('%b %d, %Y')}",
     }
 
-    users = get_all_users()
-    all_contacts = get_all_contacts()
+    all_users_raw = get_all_users()
+    test_phones = {u.phone for u in all_users_raw if u.tier == "test"}
+    users = [u for u in all_users_raw if u.tier != "test"]
+    all_contacts = [(p, i, c) for p, i, c in get_all_contacts() if p not in test_phones]
 
     # Users
     active_all = [u for u in users if u.last_active]
