@@ -288,6 +288,26 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
     if country_of_origin and not user.country_of_origin:
         user.country_of_origin = country_of_origin
 
+    city = tool_inputs.get("city")
+    if city and not user.city:
+        user.city = city
+        logger.info("City set for %s: %s", phone, city)
+
+    field = tool_inputs.get("field")
+    if field and not user.field:
+        user.field = field
+        logger.info("Field set for %s: %s", phone, field)
+
+    time_in_canada = tool_inputs.get("time_in_canada")
+    if time_in_canada and not user.time_in_canada:
+        user.time_in_canada = time_in_canada
+        logger.info("Time in Canada set for %s: %s", phone, time_in_canada)
+
+    language = tool_inputs.get("language")
+    if language:
+        user.language = language
+        logger.info("Language set for %s: %s", phone, language)
+
     transition_stage = tool_inputs.get("transition_stage")
     if transition_stage:
         user.transition_stage = transition_stage

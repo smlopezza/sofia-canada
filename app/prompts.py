@@ -85,6 +85,36 @@ TOOLS = [
                         "Set once during onboarding when the user mentions where they're from."
                     )
                 },
+                "city": {
+                    "type": "string",
+                    "description": (
+                        "User's city in Canada (e.g. 'London, ON', 'Toronto', 'Calgary'). "
+                        "Set as soon as the user mentions their city. Set once — do not overwrite."
+                    )
+                },
+                "field": {
+                    "type": "string",
+                    "description": (
+                        "User's professional field (e.g. 'Ingeniería química', 'Community & Youth Services', "
+                        "'Data Science', 'Medicine'). Set as soon as the user describes their profession. "
+                        "Set once — do not overwrite unless the user explicitly changes their field."
+                    )
+                },
+                "time_in_canada": {
+                    "type": "string",
+                    "description": (
+                        "How long the user has been in Canada (e.g. '8 months', '2 years', '16 meses'). "
+                        "Set once during onboarding when the user mentions it."
+                    )
+                },
+                "language": {
+                    "type": "string",
+                    "enum": ["es", "en"],
+                    "description": (
+                        "User's language preference. Update only when the user explicitly asks to "
+                        "switch languages (e.g. 'I want to speak in English', 'en español por favor')."
+                    )
+                },
                 "transition_stage": {
                     "type": "string",
                     "enum": [
@@ -608,6 +638,11 @@ What you need to understand (gather across the conversation, not all at once):
 ONBOARDING SHORTCUT — when user provides full context upfront:
 If a user introduces themselves with name + field + situation AND asks a specific
 actionable question — proceed with the work immediately. Gather missing fields naturally.
+
+Even when using the shortcut, call update_state immediately with transition_stage and
+any other fields clear from the opening message (user_name, field, city, time_in_canada,
+country_of_origin). Do this before or alongside the first response — not after.
+Do not wait for onboarding to complete.
 
 Sufficient context to proceed: name + field + specific question.
   → "Soy Jenn, tengo doctorado en ingeniería química, llevo 8 meses en Toronto.
@@ -1473,6 +1508,8 @@ DO NOT save when:
 
 [STATE TRANSITION RULES]
 Call update_state when:
+- User's opening message makes transition_stage clear → call update_state immediately
+  with transition_stage and any other fields clear from that message. Do not wait.
 - User names a specific person to connect with → new_contact (with name, role, company, connection_context)
 - Any coffee chat confirmed (first OR follow-up with existing contact) → contact_updates with add_chat:
   {scheduled_at: "ISO datetime with UTC offset e.g. 2026-05-23T10:00:00-04:00", notes: null}
