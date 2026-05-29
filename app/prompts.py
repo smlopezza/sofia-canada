@@ -207,7 +207,8 @@ TOOLS = [
                         "workplace insights, or job search knowledge. "
                         "Only call this when you just explained a concrete, transferable norm — "
                         "not for general encouragement or emotional support. "
-                        "Max 1 per conversation turn."
+                        "One learning per update_state call. To save multiple learnings, make "
+                        "one update_state call per learning in sequence."
                     ),
                     "properties": {
                         "topic": {

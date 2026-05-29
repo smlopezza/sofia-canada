@@ -13,7 +13,6 @@ from app.clients.claude_client import (
     SONNET,
     build_context,
     call_claude,
-    continue_with_tool_result,
     generate_summary,
 )
 from app.clients.firestore_client import (
@@ -190,11 +189,16 @@ def _call_with_retry(user, contact, contact_id, phone, claude_messages) -> str:
 
 
 def _call_claude_and_apply(user, contact, contact_id, phone, claude_messages) -> str:
-    reply, assistant_content, tool_use_id, tool_inputs = call_claude(
-        SYSTEM_PROMPT, claude_messages, model=SONNET
-    )
+    messages = list(claude_messages)
 
-    if tool_inputs and tool_use_id:
+    for _ in range(5):
+        reply, assistant_content, tool_use_id, tool_inputs = call_claude(
+            SYSTEM_PROMPT, messages, model=SONNET
+        )
+
+        if not (tool_inputs and tool_use_id):
+            return reply
+
         contact, contact_id = _apply_tool_use(user, contact, contact_id, phone, tool_inputs)
         save_user(user)
         if contact and contact_id:
@@ -206,11 +210,12 @@ def _call_claude_and_apply(user, contact, contact_id, phone, claude_messages) ->
             tool_result_content = f"ok. Export link generated: {export_link}"
             del user._export_link
 
-        reply = continue_with_tool_result(
-            SYSTEM_PROMPT, claude_messages, assistant_content, tool_use_id,
-            tool_result=tool_result_content, model=SONNET
-        )
+        messages = messages + [
+            {"role": "assistant", "content": assistant_content},
+            {"role": "user", "content": [{"type": "tool_result", "tool_use_id": tool_use_id, "content": tool_result_content}]},
+        ]
 
+    reply, _, _, _ = call_claude(SYSTEM_PROMPT, messages, model=SONNET)
     return reply
 
 
