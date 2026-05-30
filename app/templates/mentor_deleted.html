@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}SofIA — {% if lang == 'es' %}Perfil eliminado{% else %}Profile deleted{% endif %}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-6 offset-md-3 text-center">
+      <div class="card p-4">
+        <p class="stat-number mb-2">✓</p>
+        <p class="mission-text">
+          {% if lang == 'es' %}
+            Tu perfil ha sido eliminado del directorio.
+          {% else %}
+            Your profile has been removed from the directory.
+          {% endif %}
+        </p>
+        <p class="section-note mt-2">
+          {% if lang == 'es' %}
+            Gracias por haber estado aquí. Si algún día quieres volver, siempre serás bienvenido.
+          {% else %}
+            Thank you for being part of this. If you ever want to come back, you're always welcome.
+          {% endif %}
+        </p>
+        <a href="/mentors/register?lang={{ lang }}" class="btn btn-teal btn-sm mt-4">
+          {% if lang == 'es' %}Registrarme de nuevo{% else %}Register again{% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}SofIA — {{ mentor.name }}{% endblock %}
+
+{% block hero %}
+<div class="hero">
+  <div class="container text-center">
+    <div class="mentor-avatar" style="font-size: 2.5rem; width: 80px; height: 80px; line-height: 80px; margin: 0 auto 1rem;">
+      {{ mentor.name[0] | upper }}
+    </div>
+    <h1>{{ mentor.name }}</h1>
+    <p class="mt-1">{{ mentor.role }}{% if mentor.company %} · {{ mentor.company }}{% endif %}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+
+    <!-- Profile card -->
+    <div class="card mb-4">
+      <div class="card-body">
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <p class="section-note mb-1">
+              <strong>{% if lang == 'es' %}Industria{% else %}Industry{% endif %}</strong><br>
+              {{ mentor.industry }}
+            </p>
+          </div>
+          <div class="col-md-6">
+            <p class="section-note mb-1">
+              <strong>{% if lang == 'es' %}Ubicación{% else %}Location{% endif %}</strong><br>
+              📍 {{ mentor.city }}{% if mentor.country_of_origin %} · {% if lang == 'es' %}de{% else %}from{% endif %} {{ mentor.country_of_origin }}{% endif %}
+            </p>
+          </div>
+        </div>
+
+        {% if mentor.languages %}
+        <div class="mb-3">
+          <p class="section-note mb-1"><strong>{% if lang == 'es' %}Idiomas{% else %}Languages{% endif %}</strong></p>
+          {% for l in mentor.languages %}
+            {% if l == 'en' %}<span class="lang-badge">English</span>
+            {% elif l == 'es' %}<span class="lang-badge">Español</span>
+            {% elif l == 'fr' %}<span class="lang-badge">Français</span>
+            {% else %}<span class="lang-badge">{{ l }}</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if mentor.bio %}
+        <div class="mb-3">
+          <p class="section-note mb-1"><strong>{% if lang == 'es' %}Sobre {% else %}About {% endif %}{{ mentor.name.split()[0] }}</strong></p>
+          <p class="section-note" style="white-space: pre-line;">{{ mentor.bio }}</p>
+        </div>
+        {% endif %}
+
+        <hr class="my-4">
+
+        <p class="section-title mb-3">
+          {% if lang == 'es' %}¿Cómo contactar a {{ mentor.name.split()[0] }}?
+          {% else %}How to reach out to {{ mentor.name.split()[0] }}{% endif %}
+        </p>
+
+        <div class="d-flex flex-wrap" style="gap: 0.75rem;">
+          {% if mentor.contact_preference == 'linkedin' and mentor.linkedin %}
+          <a href="{{ mentor.linkedin }}" target="_blank" class="btn btn-teal">
+            LinkedIn →
+          </a>
+          {% elif mentor.contact_preference == 'email' and mentor.email %}
+          <a href="mailto:{{ mentor.email }}" class="btn btn-teal">
+            {% if lang == 'es' %}Escribir por email{% else %}Send an email{% endif %} →
+          </a>
+          {% endif %}
+          {% if mentor.calendly %}
+          <a href="{{ mentor.calendly }}" target="_blank" class="btn btn-outline-secondary">
+            {% if lang == 'es' %}Agendar un café{% else %}Book a coffee chat{% endif %} →
+          </a>
+          {% endif %}
+        </div>
+
+        <p class="section-note mt-3" style="font-size: 0.8rem;">
+          {% if lang == 'es' %}
+            {{ mentor.name.split()[0] }} se registró voluntariamente — ya dijo que está disponible para conversar. No lo estás molestando.
+          {% else %}
+            {{ mentor.name.split()[0] }} volunteered to be here — they've already said they're open to a conversation. You're not bothering them.
+          {% endif %}
+        </p>
+
+      </div>
+    </div>
+
+    <!-- Prep tips -->
+    <div class="card mb-5">
+      <div class="card-body">
+        <p class="section-title mb-3">
+          {% if lang == 'es' %}Antes de escribir{% else %}Before you reach out{% endif %}
+        </p>
+        <ul class="list-unstyled section-note">
+          <li class="mb-2">📋 {% if lang == 'es' %}Revisa su LinkedIn y conoce su trayectoria.{% else %}Review their LinkedIn and understand their background.{% endif %}</li>
+          <li class="mb-2">✉️ {% if lang == 'es' %}Preséntate en una o dos frases: quién eres, dónde estás en tu transición, y qué esperas aprender.{% else %}Introduce yourself in one or two sentences: who you are, where you are in your transition, and what you're hoping to learn.{% endif %}</li>
+          <li class="mb-2">🎯 {% if lang == 'es' %}Prepara 2 o 3 preguntas específicas — las conversaciones vagas no le hacen bien a nadie.{% else %}Prepare 2–3 specific questions — vague conversations don't serve anyone's time well.{% endif %}</li>
+          <li class="mb-2">⏱️ {% if lang == 'es' %}Respeta los 30 minutos. Llega puntual y termina a tiempo.{% else %}Respect the 30 minutes. Arrive on time and wrap up on time.{% endif %}</li>
+          <li class="mb-2">💌 {% if lang == 'es' %}Envía un mensaje de agradecimiento después.{% else %}Send a thank-you message after.{% endif %}</li>
+        </ul>
+        <p class="section-note mt-3">
+          {% if lang == 'es' %}¿Quieres preparar este mensaje con SofIA?
+          {% else %}Want to prepare your outreach message with SofIA?{% endif %}
+          <a href="/?lang={{ lang }}">{% if lang == 'es' %}Únete a la lista de espera{% else %}Join the waitlist{% endif %} →</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="text-center mb-5">
+      <a href="/mentors?lang={{ lang }}" class="section-note">
+        ← {% if lang == 'es' %}Ver todos los mentores{% else %}View all mentors{% endif %}
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

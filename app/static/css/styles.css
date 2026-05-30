@@ -78,6 +78,8 @@ body { background-color: #f8f9fa; }
 .cost-total-row { font-weight: 600; background-color: #f8f9fa; }
 .btn-teal { background-color: var(--teal); color: white; border: none; }
 .btn-teal:hover { background-color: var(--teal-dark); color: white; }
+.btn-outline-teal { background-color: transparent; color: var(--teal-dark); border: 1px solid var(--teal); }
+.btn-outline-teal:hover { background-color: var(--teal-light); color: var(--teal-dark); }
 .footer-link { color: rgba(255,255,255,0.75); }
 .footer-link:hover { color: white; }
 

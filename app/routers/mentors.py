@@ -10,10 +10,14 @@ from pathlib import Path
 
 from app.clients.email_client import send_mentor_links_email
 from app.clients.firestore_client import (
+    deactivate_mentor,
+    delete_mentor,
     get_active_mentors,
     get_mentor_by_email,
+    get_mentor_by_id,
     get_mentor_by_token,
     optout_mentor,
+    reactivate_mentor,
     save_mentor,
     update_mentor,
 )
@@ -84,7 +88,7 @@ async def mentor_register_submit(
         "calendly": calendly.strip(),
         "contact_preference": contact_preference,
         "languages": languages,
-        "bio": bio.strip()[:250],
+        "bio": bio.strip()[:1000],
         "active": True,
         "opt_out_token": token,
         "created_at": datetime.now(timezone.utc).isoformat(),
@@ -144,7 +148,14 @@ async def mentor_manage_submit(email: str = Form(...), lang: str = Form("en")):
 
 
 @router.get("/mentors/edit", response_class=HTMLResponse)
-def mentor_edit_form(request: Request, token: str = "", lang: str = "en", updated: bool = False):
+def mentor_edit_form(
+    request: Request,
+    token: str = "",
+    lang: str = "en",
+    updated: bool = False,
+    paused: bool = False,
+    activated: bool = False,
+):
     lang = lang if lang in ("en", "es") else "en"
     if not token:
         return HTMLResponse("<p>Invalid link.</p>", status_code=400)
@@ -157,6 +168,8 @@ def mentor_edit_form(request: Request, token: str = "", lang: str = "en", update
         "mentor": mentor,
         "token": token,
         "updated": updated,
+        "paused": paused,
+        "activated": activated,
     })
 
 
@@ -208,24 +221,101 @@ async def mentor_edit_submit(
 
 @router.get("/mentors/optout", response_class=HTMLResponse)
 def mentor_optout(request: Request, token: str = "", lang: str = "en"):
+    """Legacy deactivate link — kept for backward compat with existing emails."""
     lang = lang if lang in ("en", "es") else "en"
     if not token:
-        msg_es, msg_en = "Enlace no válido.", "Invalid link."
+        return templates.TemplateResponse("mentor_optout.html", {
+            "request": request, "lang": lang, "token": "",
+            "message_es": "Enlace no válido.", "message_en": "Invalid link.", "deactivated": False,
+        })
+    mentor_id, mentor = get_mentor_by_token(token)
+    if mentor_id and mentor and mentor.get("active"):
+        deactivate_mentor(mentor_id)
+        deactivated = True
+    elif mentor_id:
+        deactivated = False  # already paused
     else:
-        mentor_id, mentor = get_mentor_by_token(token)
-        if mentor_id and mentor and mentor.get("active"):
-            optout_mentor(mentor_id)
-            msg_es = "Te eliminamos del directorio. ¡Gracias por haber participado!"
-            msg_en = "You've been removed from the directory. Thank you for participating!"
-        elif mentor_id:
-            msg_es = "Ya no apareces en el directorio."
-            msg_en = "You're already not listed in the directory."
-        else:
-            msg_es, msg_en = "Enlace no válido.", "Invalid link."
-
-    msg = msg_es if lang == "es" else msg_en
+        return templates.TemplateResponse("mentor_optout.html", {
+            "request": request, "lang": lang, "token": "",
+            "message_es": "Enlace no válido.", "message_en": "Invalid link.", "deactivated": False,
+        })
     return templates.TemplateResponse("mentor_optout.html", {
         "request": request,
         "lang": lang,
-        "message": msg,
+        "token": token,
+        "deactivated": deactivated,
+        "message_es": "Tu perfil está pausado — ya no apareces en el directorio.",
+        "message_en": "Your profile is paused — you're no longer visible in the directory.",
+    })
+
+
+@router.post("/mentors/deactivate")
+async def mentor_deactivate(token: str = Form(...), lang: str = Form("en")):
+    lang = lang if lang in ("en", "es") else "en"
+    mentor_id, _ = get_mentor_by_token(token)
+    if mentor_id:
+        deactivate_mentor(mentor_id)
+        logger.info("Mentor deactivated: %s", mentor_id)
+    return RedirectResponse(
+        url=f"/mentors/edit?token={token}&lang={lang}&paused=true",
+        status_code=303,
+    )
+
+
+@router.post("/mentors/reactivate")
+async def mentor_reactivate(token: str = Form(...), lang: str = Form("en")):
+    lang = lang if lang in ("en", "es") else "en"
+    mentor_id, _ = get_mentor_by_token(token)
+    if mentor_id:
+        reactivate_mentor(mentor_id)
+        logger.info("Mentor reactivated: %s", mentor_id)
+    return RedirectResponse(
+        url=f"/mentors/edit?token={token}&lang={lang}&activated=true",
+        status_code=303,
+    )
+
+
+@router.get("/mentors/delete", response_class=HTMLResponse)
+def mentor_delete_confirm(request: Request, token: str = "", lang: str = "en"):
+    lang = lang if lang in ("en", "es") else "en"
+    if not token:
+        return HTMLResponse("<p>Invalid link.</p>", status_code=400)
+    mentor_id, mentor = get_mentor_by_token(token)
+    if not mentor_id:
+        return HTMLResponse("<p>Invalid link.</p>", status_code=404)
+    return templates.TemplateResponse("mentor_delete.html", {
+        "request": request,
+        "lang": lang,
+        "mentor": mentor,
+        "token": token,
+    })
+
+
+@router.post("/mentors/delete")
+async def mentor_delete_submit(request: Request, token: str = Form(...), lang: str = Form("en")):
+    lang = lang if lang in ("en", "es") else "en"
+    mentor_id, _ = get_mentor_by_token(token)
+    if mentor_id:
+        delete_mentor(mentor_id)
+        logger.info("Mentor deleted: %s", mentor_id)
+    return templates.TemplateResponse("mentor_deleted.html", {
+        "request": request,
+        "lang": lang,
+    })
+
+
+# Dynamic route last — must come after all fixed /mentors/* paths
+@router.get("/mentors/{mentor_id}", response_class=HTMLResponse)
+def mentor_public_profile(request: Request, mentor_id: str, lang: str = "en"):
+    lang = lang if lang in ("en", "es") else "en"
+    mentor = get_mentor_by_id(mentor_id)
+    if not mentor or not mentor.get("active"):
+        return HTMLResponse(
+            "<p style='font-family:sans-serif;padding:2rem'>Profile not found.</p>",
+            status_code=404,
+        )
+    return templates.TemplateResponse("mentor_profile.html", {
+        "request": request,
+        "lang": lang,
+        "mentor": mentor,
     })

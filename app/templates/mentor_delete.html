@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}SofIA — {% if lang == 'es' %}Eliminar perfil{% else %}Delete profile{% endif %}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+      <div class="card p-4">
+
+        <p class="stat-number mb-2 text-danger">🗑</p>
+        <p class="section-title text-center">
+          {% if lang == 'es' %}¿Eliminar tu perfil?{% else %}Delete your profile?{% endif %}
+        </p>
+        <p class="section-note text-center mb-4">
+          {% if lang == 'es' %}
+            Esto eliminará permanentemente tu perfil del directorio y de nuestra base de datos.
+            Esta acción no se puede deshacer.
+          {% else %}
+            This will permanently remove your profile from the directory and our database.
+            This action cannot be undone.
+          {% endif %}
+        </p>
+
+        {% if lang == 'es' %}
+        <p class="section-note text-center mb-4">
+          Si solo quieres tomar un descanso, considera <a href="/mentors/edit?token={{ token }}&lang={{ lang }}">pausar tu perfil</a> en su lugar.
+        </p>
+        {% else %}
+        <p class="section-note text-center mb-4">
+          If you just need a break, consider <a href="/mentors/edit?token={{ token }}&lang={{ lang }}">pausing your profile</a> instead.
+        </p>
+        {% endif %}
+
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <a href="/mentors/edit?token={{ token }}&lang={{ lang }}" class="btn btn-outline-secondary btn-sm">
+            {% if lang == 'es' %}Cancelar{% else %}Cancel{% endif %}
+          </a>
+          <form method="POST" action="/mentors/delete">
+            <input type="hidden" name="token" value="{{ token }}">
+            <input type="hidden" name="lang" value="{{ lang }}">
+            <button type="submit" class="btn btn-danger btn-sm">
+              {% if lang == 'es' %}Sí, eliminar mi perfil{% else %}Yes, delete my profile{% endif %}
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+{% endblock %}

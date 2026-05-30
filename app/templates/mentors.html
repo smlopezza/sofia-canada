@@ -35,48 +35,45 @@
 
   <!-- Mentor cards -->
   {% if mentors %}
-  <div class="row">
+  <div class="row justify-content-center">
     {% for mentor in mentors %}
-    <div class="col-md-4 mb-4">
+    <div class="col-lg-4 col-md-6 mb-4">
       <div class="card h-100">
-        <div class="card-body text-center">
-          <div class="mentor-avatar">{{ mentor.name[0] | upper }}</div>
-          <div class="mentor-name">{{ mentor.name }}</div>
-          <div class="mentor-role">{{ mentor.role }}{% if mentor.company %} at {{ mentor.company }}{% endif %}</div>
-          <div class="mentor-role">{% if mentor.industry %}{{ mentor.industry }}{% endif %}</div>
-          <div class="mentor-city">
-            📍 {{ mentor.city }}{% if mentor.country_of_origin %} · {% if lang == 'es' %}de{% else %}from{% endif %} {{ mentor.country_of_origin }}{% endif %}
+        <div class="card-body d-flex flex-column">
+          <div class="text-center mb-3">
+            <div class="mentor-avatar">{{ mentor.name[0] | upper }}</div>
+            <div class="mentor-name">{{ mentor.name }}</div>
+            <div class="mentor-role">{{ mentor.role }}{% if mentor.company %} · {{ mentor.company }}{% endif %}</div>
+            <div class="mentor-role text-muted">{% if mentor.industry %}{{ mentor.industry }}{% endif %}</div>
+            <div class="mentor-city">
+              📍 {{ mentor.city }}{% if mentor.country_of_origin %} · {% if lang == 'es' %}de{% else %}from{% endif %} {{ mentor.country_of_origin }}{% endif %}
+            </div>
+            {% if mentor.languages %}
+            <div class="mt-2">
+              {% for l in mentor.languages %}
+                {% if l == 'en' %}<span class="lang-badge">English</span>
+                {% elif l == 'es' %}<span class="lang-badge">Español</span>
+                {% elif l == 'fr' %}<span class="lang-badge">Français</span>
+                {% else %}<span class="lang-badge">{{ l }}</span>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% endif %}
           </div>
-          {% if mentor.languages %}
-          <div class="mt-2">
-            {% for l in mentor.languages %}
-              {% if l == 'en' %}<span class="lang-badge">English</span>
-              {% elif l == 'es' %}<span class="lang-badge">Español</span>
-              {% elif l == 'fr' %}<span class="lang-badge">Français</span>
-              {% else %}<span class="lang-badge">{{ l }}</span>
-              {% endif %}
-            {% endfor %}
-          </div>
-          {% endif %}
+
           {% if mentor.bio %}
-          <p class="mentor-bio">{{ mentor.bio }}</p>
-          {% else %}
-          <p class="mentor-bio"></p>
+          <p class="mentor-bio flex-grow-1">
+            {{ mentor.bio | truncate(200, true, '…') }}
+          </p>
           {% endif %}
-          <div class="mt-auto">
-            {% if mentor.contact_preference == 'linkedin' and mentor.linkedin %}
-            <a href="{{ mentor.linkedin }}" target="_blank" class="btn btn-sm btn-teal mr-1">LinkedIn</a>
-            {% elif mentor.contact_preference == 'email' and mentor.email %}
-            <a href="mailto:{{ mentor.email }}" class="btn btn-sm btn-teal mr-1">
-              {% if lang == 'es' %}Escribir{% else %}Email{% endif %}
+
+          <div class="mt-3 d-flex flex-wrap justify-content-between align-items-center" style="gap: 0.5rem;">
+            
+            <a href="/mentors/{{ mentor.id }}?lang={{ lang }}" class="btn btn-sm btn-outline-teal">
+              {% if lang == 'es' %}Ver perfil{% else %}Learn more{% endif %} →
             </a>
-            {% endif %}
-            {% if mentor.calendly %}
-            <a href="{{ mentor.calendly }}" target="_blank" class="btn btn-sm btn-outline-secondary">
-              {% if lang == 'es' %}Agendar café{% else %}Book a chat{% endif %}
-            </a>
-            {% endif %}
           </div>
+
         </div>
       </div>
     </div>

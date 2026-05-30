@@ -1,16 +1,45 @@
 {% extends "base.html" %}
 
-{% block title %}SofIA — {% if lang == 'es' %}Salir del directorio{% else %}Leave the directory{% endif %}{% endblock %}
+{% block title %}SofIA — {% if lang == 'es' %}Perfil pausado{% else %}Profile paused{% endif %}{% endblock %}
 
 {% block content %}
   <div class="row">
     <div class="col-md-6 offset-md-3 text-center">
       <div class="card p-4">
-        <p class="stat-number mb-2">✓</p>
-        <p class="mission-text">{{ message }}</p>
+        <p class="stat-number mb-2">⏸</p>
+        <p class="mission-text">
+          {% if lang == 'es' %}{{ message_es }}{% else %}{{ message_en }}{% endif %}
+        </p>
+        <p class="section-note mt-2">
+          {% if lang == 'es' %}
+            Tu información está guardada. Puedes volver cuando quieras.
+          {% else %}
+            Your information is saved. You can come back whenever you're ready.
+          {% endif %}
+        </p>
+
+        {% if token %}
+        <div class="mt-4 d-flex flex-column align-items-center" style="gap: 0.75rem;">
+          <form method="POST" action="/mentors/reactivate">
+            <input type="hidden" name="token" value="{{ token }}">
+            <input type="hidden" name="lang" value="{{ lang }}">
+            <button type="submit" class="btn btn-teal btn-sm">
+              ▶ {% if lang == 'es' %}Reactivar mi perfil{% else %}Reactivate my profile{% endif %}
+            </button>
+          </form>
+          <a href="/mentors/edit?token={{ token }}&lang={{ lang }}" class="section-note small">
+            {% if lang == 'es' %}Editar mi perfil{% else %}Edit my profile{% endif %}
+          </a>
+          <a href="/mentors/delete?token={{ token }}&lang={{ lang }}" class="text-danger section-note small">
+            {% if lang == 'es' %}Eliminar mi perfil permanentemente{% else %}Delete my profile permanently{% endif %}
+          </a>
+        </div>
+        {% else %}
         <a href="/mentors?lang={{ lang }}" class="btn btn-teal btn-sm mt-3">
           {% if lang == 'es' %}Ver el directorio{% else %}View the directory{% endif %}
         </a>
+        {% endif %}
+
       </div>
     </div>
   </div>

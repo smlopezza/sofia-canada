@@ -46,22 +46,17 @@
         </a>
         <hr class="mt-4">
         <p class="section-note mb-2">
-          {% if lang == 'es' %}Guarda estos enlaces para gestionar tu perfil:
-          {% else %}Save these links to manage your profile:{% endif %}
+          {% if lang == 'es' %}Guarda este enlace para gestionar tu perfil:
+          {% else %}Save this link to manage your profile:{% endif %}
         </p>
         {% if token %}
         <div class="mb-1">
-          <small class="text-muted">{% if lang == 'es' %}Editar perfil:{% else %}Edit profile:{% endif %}</small><br>
+          <small class="text-muted">{% if lang == 'es' %}Editar, pausar o borrar tu perfil:{% else %}Edit, pause or delete your profile:{% endif %}</small><br>
           <a href="/mentors/edit?token={{ token }}&lang={{ lang }}" class="section-note">
             /mentors/edit?token={{ token }}
           </a>
         </div>
-        <div class="mt-2">
-          <small class="text-muted">{% if lang == 'es' %}Salir del directorio:{% else %}Leave the directory:{% endif %}</small><br>
-          <a href="/mentors/optout?token={{ token }}&lang={{ lang }}" class="section-note text-danger">
-            /mentors/optout?token={{ token }}
-          </a>
-        </div>
+        
         {% endif %}
         <p class="section-note mt-3">
           {% if lang == 'es' %}¿Perdiste los enlaces? Solicítalos en:

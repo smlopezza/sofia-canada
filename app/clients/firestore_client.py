@@ -200,6 +200,15 @@ def get_active_mentors() -> list[dict]:
     return results
 
 
+def get_mentor_by_id(mentor_id: str) -> dict | None:
+    doc = get_db().collection("mentors").document(mentor_id).get()
+    if doc.exists:
+        data = doc.to_dict()
+        data["id"] = doc.id
+        return data
+    return None
+
+
 def get_mentor_by_token(token: str) -> tuple[str | None, dict | None]:
     docs = list(get_db().collection("mentors").where(filter=FieldFilter("opt_out_token", "==", token)).stream())
     if docs:
@@ -209,6 +218,18 @@ def get_mentor_by_token(token: str) -> tuple[str | None, dict | None]:
 
 def optout_mentor(mentor_id: str):
     get_db().collection("mentors").document(mentor_id).update({"active": False})
+
+
+def deactivate_mentor(mentor_id: str):
+    get_db().collection("mentors").document(mentor_id).update({"active": False})
+
+
+def reactivate_mentor(mentor_id: str):
+    get_db().collection("mentors").document(mentor_id).update({"active": True})
+
+
+def delete_mentor(mentor_id: str):
+    get_db().collection("mentors").document(mentor_id).delete()
 
 
 def update_mentor(mentor_id: str, updates: dict):
