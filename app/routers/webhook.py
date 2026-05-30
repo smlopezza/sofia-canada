@@ -182,7 +182,7 @@ def _call_with_retry(user, contact, contact_id, phone, claude_messages) -> str:
         except Exception:
             if attempt == 0:
                 logger.warning("Claude call failed for %s, retrying", phone)
-                time.sleep(2)
+                time.sleep(4)
             else:
                 logger.exception("Claude retry failed for %s", phone)
     return ""

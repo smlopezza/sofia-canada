@@ -21,6 +21,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from app.routers.webhook import _process
+from app.clients.firestore_client import save_user
+from app.models import UserDoc
 
 SEPARATOR = "-" * 60
 
@@ -44,6 +46,7 @@ def chat(phone: str, text: str, replies: list[str]) -> str | None:
 
 def run_scenario(name: str, messages: list[str]) -> tuple[str, list[str]]:
     phone = "+1555" + uuid.uuid4().hex[:7]
+    save_user(UserDoc(phone=phone, tier="test"))
     replies = []
 
     print(f"\n{SEPARATOR}")
