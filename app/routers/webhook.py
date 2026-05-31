@@ -26,6 +26,7 @@ from app.clients.firestore_client import (
 from app.prompts import SYSTEM_PROMPT
 from app.clients.twilio_client import send_message
 from langfuse import Langfuse
+from langfuse.decorators import langfuse_context
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -111,7 +112,8 @@ def _process_safely(phone: str, text: str, message_sid: str):
     except Exception:
         logger.exception("Unhandled error processing message for %s", phone)
     finally:
-          _langfuse.flush()
+        _langfuse.flush()
+        langfuse_context.flush()
 
 
 def _find_mentioned_contact(text: str, all_contacts: list, active_contact) -> "ContactDoc | None":
