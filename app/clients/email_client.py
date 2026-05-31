@@ -8,6 +8,7 @@ resend.api_key = os.getenv("RESEND_API_KEY", "")
 
 FROM_EMAIL = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
 BASE_URL = os.getenv("BASE_URL", "https://sofia-qhgvxxwh5q-nn.a.run.app")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "sandritamlz@gmail.com")
 
 
 def send_mentor_links_email(name: str, email: str, token: str, lang: str = "en") -> bool:
@@ -76,4 +77,51 @@ def send_mentor_links_email(name: str, email: str, token: str, lang: str = "en")
         return True
     except Exception:
         logger.exception("Failed to send mentor links email to %s", email)
+        return False
+
+
+def send_daily_digest(waitlist_entries: list[dict], new_mentors: list[dict], date_label: str) -> bool:
+    def _waitlist_rows(entries):
+        if not entries:
+            return "<p style='color:#888'>No new sign-ups.</p>"
+        rows = ""
+        for e in entries:
+            linkedin = f" — <a href='{e['linkedin']}'>{e['linkedin']}</a>" if e.get("linkedin") else ""
+            story = f"<br><em style='color:#555'>{e['story']}</em>" if e.get("story") else ""
+            rows += f"<li><strong>{e.get('name', '?')}</strong> ({e.get('email', '?')}){linkedin}{story}</li>"
+        return f"<ul>{rows}</ul>"
+
+    def _mentor_rows(mentors):
+        if not mentors:
+            return "<p style='color:#888'>No new mentors.</p>"
+        rows = ""
+        for m in mentors:
+            linkedin = f" — <a href='{m['linkedin']}'>{m['linkedin']}</a>" if m.get("linkedin") else ""
+            rows += (
+                f"<li><strong>{m.get('name', '?')}</strong> — {m.get('role', '')} at {m.get('company', '')} "
+                f"({m.get('city', '')}){linkedin}</li>"
+            )
+        return f"<ul>{rows}</ul>"
+
+    body = f"""
+<h2>SofIA Daily Digest — {date_label}</h2>
+
+<h3>Waitlist ({len(waitlist_entries)} new)</h3>
+{_waitlist_rows(waitlist_entries)}
+
+<h3>Mentors ({len(new_mentors)} new)</h3>
+{_mentor_rows(new_mentors)}
+"""
+
+    try:
+        resend.Emails.send({
+            "from": FROM_EMAIL,
+            "to": [ADMIN_EMAIL],
+            "subject": f"SofIA Daily Digest — {date_label}",
+            "html": body,
+        })
+        logger.info("Daily digest sent for %s", date_label)
+        return True
+    except Exception:
+        logger.exception("Failed to send daily digest for %s", date_label)
         return False

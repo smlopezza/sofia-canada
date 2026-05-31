@@ -5,7 +5,8 @@ from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Header, HTTPException
 
 from app.clients.claude_client import HAIKU, SONNET, call_claude_simple
-from app.clients.firestore_client import get_all_contacts, get_all_users, load_user, save_contact, save_user
+from app.clients.email_client import send_daily_digest
+from app.clients.firestore_client import get_all_contacts, get_all_users, get_mentors_since, get_waitlist_since, load_user, save_contact, save_user
 from app.clients.twilio_client import send_message
 from app.utils import is_sendable, local_hour
 
@@ -193,6 +194,24 @@ def thank_you_nudge(x_scheduler_secret: str = Header(...)):
             logger.exception("Thank-you nudge failed for %s / %s", phone, contact.name)
 
     return {"status": "ok"}
+
+
+@router.post("/jobs/daily-digest")
+def daily_digest(x_scheduler_secret: str = Header(...)):
+    _verify(x_scheduler_secret)
+    now = datetime.now(timezone.utc)
+    cutoff = (now - timedelta(hours=24)).isoformat()
+    date_label = now.strftime("%Y-%m-%d")
+
+    waitlist_entries = get_waitlist_since(cutoff)
+    new_mentors = get_mentors_since(cutoff)
+
+    if not waitlist_entries and not new_mentors:
+        logger.info("Daily digest: nothing new, skipping email")
+        return {"status": "ok", "sent": False}
+
+    sent = send_daily_digest(waitlist_entries, new_mentors, date_label)
+    return {"status": "ok", "sent": sent, "waitlist": len(waitlist_entries), "mentors": len(new_mentors)}
 
 
 @router.post("/jobs/reset-rate-limits")

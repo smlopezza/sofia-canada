@@ -183,6 +183,16 @@ def get_waitlist_by_email(email: str) -> bool:
     return len(docs) > 0
 
 
+def get_waitlist_since(cutoff_iso: str) -> list[dict]:
+    docs = get_db().collection("waitlist").where(filter=FieldFilter("created_at", ">=", cutoff_iso)).stream()
+    return [doc.to_dict() for doc in docs]
+
+
+def get_mentors_since(cutoff_iso: str) -> list[dict]:
+    docs = get_db().collection("mentors").where(filter=FieldFilter("created_at", ">=", cutoff_iso)).stream()
+    return [doc.to_dict() for doc in docs]
+
+
 def count_active_users() -> int:
     return sum(1 for _ in get_db().collection("users").stream())
 
