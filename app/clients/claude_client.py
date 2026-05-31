@@ -1,9 +1,31 @@
+import json
+import logging
 import os
+import re
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import anthropic
 from app.models import UserDoc, ContactDoc
 from langfuse.decorators import observe, langfuse_context
+
+logger = logging.getLogger(__name__)
+
+_UPDATE_RE = re.compile(r'<update>(.*?)</update>', re.DOTALL | re.IGNORECASE)
+
+
+def _extract_update(text: str) -> tuple[str, dict | None]:
+    match = _UPDATE_RE.search(text)
+    if not match:
+        return text, None
+    try:
+        data = json.loads(match.group(1).strip())
+        if not isinstance(data, dict):
+            return text, None
+    except (json.JSONDecodeError, ValueError):
+        logger.warning("Failed to parse <update> block: %s", match.group(1)[:200])
+        return text, None
+    clean = _UPDATE_RE.sub('', text).strip()
+    return clean, data
 
 _client = None
 
@@ -105,12 +127,10 @@ def build_context(user: UserDoc, contact: ContactDoc | None, all_contacts: list[
 
 @observe(as_type="generation")
 def _make_request(system: str, messages: list, model: str) -> anthropic.types.Message:
-    from app.prompts import TOOLS
     response = get_client().messages.create(
         model=model,
         max_tokens=1024,
         system=[{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}],
-        tools=TOOLS,
         messages=messages,
     )
     langfuse_context.update_current_observation(
@@ -125,42 +145,14 @@ def _make_request(system: str, messages: list, model: str) -> anthropic.types.Me
     return response
 
 
-def call_claude(system: str, messages: list, model: str = SONNET) -> tuple[str, list, str | None, dict | None]:
-    """
-    Returns (text, response_content, tool_use_id | None, tool_inputs | None).
-    response_content is the raw assistant turn needed to continue the conversation after tool use.
-    """
+def call_claude(system: str, messages: list, model: str = SONNET) -> tuple[str, dict | None]:
+    """Returns (text, state_update_dict | None). Parses and strips <update> blocks."""
     response = _make_request(system, messages, model)
     text = ""
-    tool_use_id = None
-    tool_inputs = None
-    for block in response.content:
-        if block.type == "tool_use":
-            tool_use_id = block.id
-            tool_inputs = block.input
-        elif block.type == "text":
-            text = block.text
-    return text, response.content, tool_use_id, tool_inputs
-
-
-def continue_with_tool_result(
-    system: str,
-    messages: list,
-    assistant_content: list,
-    tool_use_id: str,
-    tool_result: str = "ok",
-    model: str = SONNET,
-) -> str:
-    """Send tool_result back to Claude and return the final text response."""
-    extended = messages + [
-        {"role": "assistant", "content": assistant_content},
-        {"role": "user", "content": [{"type": "tool_result", "tool_use_id": tool_use_id, "content": tool_result}]},
-    ]
-    response = _make_request(system, extended, model)
     for block in response.content:
         if block.type == "text":
-            return block.text
-    return ""
+            text = block.text
+    return _extract_update(text)
 
 @observe(as_type="generation")
 def generate_summary(user: UserDoc) -> str:

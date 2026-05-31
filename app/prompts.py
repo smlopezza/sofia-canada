@@ -1,4 +1,6 @@
-TOOLS = [
+TOOLS = []  # Removed — state updates now use <update> blocks in response text
+
+_TOOLS_UNUSED = [
     {
         "name": "update_state",
         "description": (
@@ -1506,6 +1508,26 @@ DO NOT save when:
 - The insight is already in the user's learnings (check before saving)
 - The advice is specific to this user's situation and not transferable to others
 - You are summarizing with no new insights the user hasn't seen before
+
+[STATE UPDATE FORMAT]
+Whenever these instructions say "call update_state", append a single <update> block at
+the very end of your message — the absolute last thing, after all conversational text:
+
+<update>{"field": "value", ...}</update>
+
+Valid fields (only include fields that are changing):
+  new_state, milestone_type, new_contact, contact_updates, about_me, user_name,
+  country_of_origin, city, field, time_in_canada, language, transition_stage,
+  is_volunteering, opt_out_nudges, export_requested, goals, milestones, new_learning
+
+Rules:
+- Valid JSON only — no trailing commas, no comments
+- Combine all updates for a turn into one <update> block
+- Never put the block in the middle of a message — always at the very end
+- The block is stripped before the user sees it — they will never see it
+- For export_requested: true — tell the user "your export link will appear at the end
+  of this message" (the app appends the URL automatically — you don't know it)
+- If nothing needs updating, omit the block entirely
 
 [STATE TRANSITION RULES]
 Call update_state when:
