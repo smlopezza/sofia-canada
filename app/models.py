@@ -107,6 +107,7 @@ class UserDoc:
     learnings: Optional[list] = None
     opt_out_nudges: bool = False
     last_compression_at: Optional[str] = None
+    profile_link_sent: bool = False
 
     def __post_init__(self):
         if self.messages is None:

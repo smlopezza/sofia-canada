@@ -306,6 +306,25 @@ def _apply_tool_use(user, contact, contact_id, phone, tool_inputs: dict) -> tupl
     if user_name and not user.name:
         user.name = user_name
         logger.info("User name set for %s: %s", phone, user_name)
+        if not user.profile_link_sent:
+            from app.routers.profile import generate_export_token
+            _, link = generate_export_token(phone)
+            lang = tool_inputs.get("language") or user.language or "es"
+            if lang == "en":
+                profile_msg = (
+                    f"One more thing — I'm already building your profile as we talk: "
+                    f"your contacts, milestones, and what you're learning. You can see it here:\n{link}\n"
+                    f"(Link valid 24h — write 'see my profile' anytime to get a new one)"
+                )
+            else:
+                profile_msg = (
+                    f"Una cosa más — ya estoy construyendo tu perfil mientras hablamos: "
+                    f"tus contactos, logros y aprendizajes. Puedes verlo aquí:\n{link}\n"
+                    f"(El enlace es válido por 24h — escríbeme 'ver mi perfil' para pedir uno nuevo)"
+                )
+            user._export_link = profile_msg
+            user.profile_link_sent = True
+            logger.info("Profile link auto-sent on first onboarding for %s", phone)
 
     country_of_origin = tool_inputs.get("country_of_origin")
     if country_of_origin and not user.country_of_origin:
