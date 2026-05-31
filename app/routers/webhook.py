@@ -168,6 +168,26 @@ def _process(phone: str, text: str, message_sid: str):
         reply = ERROR_MSG.get(user.language, ERROR_MSG["es"])
     t_claude = time.perf_counter()
 
+    # Backfill: existing users whose name was set before profile_link_sent existed
+    if not user.profile_link_sent and user.name:
+        from app.routers.profile import generate_export_token
+        _, link = generate_export_token(phone)
+        if user.language == "en":
+            profile_msg = (
+                f"One more thing — I have a profile for you with all your contacts, "
+                f"milestones, and learnings saved. You can see it here:\n{link}\n"
+                f"(Link valid 24h — write 'see my profile' anytime for a new one)"
+            )
+        else:
+            profile_msg = (
+                f"Una cosa más — tengo un perfil tuyo con todos tus contactos, logros y "
+                f"aprendizajes guardados. Puedes verlo aquí:\n{link}\n"
+                f"(El enlace es válido por 24h — escríbeme 'ver mi perfil' para pedir uno nuevo)"
+            )
+        reply = f"{reply}\n\n{profile_msg}"
+        user.profile_link_sent = True
+        logger.info("Profile link backfill sent to existing user %s", phone)
+
     ts = now.isoformat()
     user.messages.append({"role": "user", "content": text, "timestamp": ts})
     user.messages.append({"role": "assistant", "content": reply, "timestamp": ts})
