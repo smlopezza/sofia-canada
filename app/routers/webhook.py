@@ -26,7 +26,7 @@ from app.clients.firestore_client import (
 from app.prompts import SYSTEM_PROMPT
 from app.clients.twilio_client import send_message
 from langfuse import Langfuse
-from langfuse.decorators import langfuse_context
+from langfuse.decorators import langfuse_context, observe
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
@@ -128,6 +128,7 @@ def _find_mentioned_contact(text: str, all_contacts: list, active_contact) -> "C
     return None
 
 
+@observe(name="process_message")
 def _process(phone: str, text: str, message_sid: str):
     t0 = time.perf_counter()
 
@@ -179,19 +180,21 @@ def _process(phone: str, text: str, message_sid: str):
     send_message(phone, reply)
     t_twilio = time.perf_counter()
 
-    logger.info(
-        "LATENCY phone=%s dedup=%.3fs load_user=%.3fs active_contact=%.3fs all_contacts=%.3fs "
-        "build=%.3fs claude=%.3fs save_user=%.3fs twilio=%.3fs total=%.3fs",
-        phone,
-        t_dedup - t0,
-        t_load_user - t_dedup,
-        t_active_contact - t_rate_limit,
-        t_all_contacts - t_active_contact,
-        t_build - t_all_contacts,
-        t_claude - t_build,
-        t_save_user - t_claude,
-        t_twilio - t_save_user,
-        t_twilio - t0,
+    latency = {
+        "dedup_s": round(t_dedup - t0, 3),
+        "load_user_s": round(t_load_user - t_dedup, 3),
+        "active_contact_s": round(t_active_contact - t_rate_limit, 3),
+        "all_contacts_s": round(t_all_contacts - t_active_contact, 3),
+        "build_s": round(t_build - t_all_contacts, 3),
+        "claude_s": round(t_claude - t_build, 3),
+        "save_user_s": round(t_save_user - t_claude, 3),
+        "twilio_s": round(t_twilio - t_save_user, 3),
+        "total_s": round(t_twilio - t0, 3),
+    }
+    logger.info("LATENCY phone=%s %s", phone, latency)
+    langfuse_context.update_current_observation(
+        user_id=phone,
+        metadata={"latency": latency},
     )
 
     if len(user.messages) >= 20:
