@@ -129,10 +129,14 @@ def _find_mentioned_contact(text: str, all_contacts: list, active_contact) -> "C
 
 
 def _process(phone: str, text: str, message_sid: str):
+    t0 = time.perf_counter()
+
     if is_duplicate(message_sid):
         return
+    t_dedup = time.perf_counter()
 
     user = load_user(phone)
+    t_load_user = time.perf_counter()
 
     # Bounce new users if beta is full
     if user.last_active is None and user.tier != "test" and count_active_users() >= MAX_USERS:
@@ -145,16 +149,23 @@ def _process(phone: str, text: str, message_sid: str):
         send_message(phone, RATE_LIMIT_MSG.get(user.language, RATE_LIMIT_MSG["es"]))
         save_user(user)
         return
+    t_rate_limit = time.perf_counter()
 
     contact_id, contact = get_active_contact(phone)
+    t_active_contact = time.perf_counter()
+
     all_contacts = [c for _, c in get_user_contacts(phone)]
+    t_all_contacts = time.perf_counter()
+
     mentioned = _find_mentioned_contact(text, all_contacts, contact)
     context = build_context(user, contact, all_contacts, mentioned)
     claude_messages = _build_messages(user, context, text)
+    t_build = time.perf_counter()
 
     reply = _call_with_retry(user, contact, contact_id, phone, claude_messages)
     if not reply:
         reply = ERROR_MSG.get(user.language, ERROR_MSG["es"])
+    t_claude = time.perf_counter()
 
     ts = now.isoformat()
     user.messages.append({"role": "user", "content": text, "timestamp": ts})
@@ -163,8 +174,25 @@ def _process(phone: str, text: str, message_sid: str):
         user.messages = user.messages[-20:]
     user.last_active = ts
     save_user(user)
+    t_save_user = time.perf_counter()
 
     send_message(phone, reply)
+    t_twilio = time.perf_counter()
+
+    logger.info(
+        "LATENCY phone=%s dedup=%.3fs load_user=%.3fs active_contact=%.3fs all_contacts=%.3fs "
+        "build=%.3fs claude=%.3fs save_user=%.3fs twilio=%.3fs total=%.3fs",
+        phone,
+        t_dedup - t0,
+        t_load_user - t_dedup,
+        t_active_contact - t_rate_limit,
+        t_all_contacts - t_active_contact,
+        t_build - t_all_contacts,
+        t_claude - t_build,
+        t_save_user - t_claude,
+        t_twilio - t_save_user,
+        t_twilio - t0,
+    )
 
     if len(user.messages) >= 20:
         try:
