@@ -108,6 +108,8 @@ class UserDoc:
     opt_out_nudges: bool = False
     last_compression_at: Optional[str] = None
     profile_link_sent: bool = False
+    session_id: Optional[str] = None
+    session_message_count: int = 0
 
     def __post_init__(self):
         if self.messages is None:

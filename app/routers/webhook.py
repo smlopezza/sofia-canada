@@ -86,6 +86,20 @@ MILESTONE_LABELS = {
     },
 }
 
+SESSION_TIMEOUT_HOURS = 4
+
+
+def _get_or_create_session(user, now: datetime) -> str:
+    if user.session_id is None or (
+        user.last_active
+        and (now - datetime.fromisoformat(user.last_active)).total_seconds() > SESSION_TIMEOUT_HOURS * 3600
+    ):
+        user.session_id = str(uuid.uuid4())
+        user.session_message_count = 0
+    user.session_message_count += 1
+    return user.session_id
+
+
 WAITLIST_MSG = (
     "Hola / Hi! 👋\n\n"
     "SofIA está en beta cerrada por ahora — SofIA is currently in closed beta.\n\n"
@@ -152,6 +166,8 @@ def _process(phone: str, text: str, message_sid: str):
         return
     t_rate_limit = time.perf_counter()
 
+    session_id = _get_or_create_session(user, now)
+
     contact_id, contact = get_active_contact(phone)
     t_active_contact = time.perf_counter()
 
@@ -214,7 +230,8 @@ def _process(phone: str, text: str, message_sid: str):
     logger.info("LATENCY phone=%s %s", phone, latency)
     langfuse_context.update_current_observation(
         user_id=phone,
-        metadata={"latency": latency},
+        session_id=session_id,
+        metadata={"latency": latency, "session_message_count": user.session_message_count},
     )
 
     if len(user.messages) >= 20:
