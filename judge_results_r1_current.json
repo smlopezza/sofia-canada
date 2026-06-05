@@ -1,0 +1,144 @@
+[
+  {
+    "id": "R1-TC01",
+    "description": "Maria VP — domain + cultural (Latino), VP level",
+    "sofia_output": "Perfecto — Maria es una conexión con mucho potencial real. Antes de las preguntas, déjame explicarte cómo voy a enfocar la prep.\n\nMaria tiene **tres conexiones contigo**: son ambas latinas, ambas hicieron academia→industria, y ambas están en data science. Eso es mucho. Pero hay una jerarquía clara: lo que más las conecta no es el campo técnico — es haber navegado este país como inmigrante y haber hecho esa transición desde cero. Ella recuerda exactamente cómo se sintió. Eso es el hilo conductor de toda la conversación.\n\n---\n\n**Preguntas para Maria**\n\nEstas van directo a su experiencia vivida — no a su título ni a lo técnico:\n\n1. *\"¿Cómo fue para ti la transición de academia a industria aquí en Canadá — qué fue lo que más te costó al principio?\"*\n\n2. *\"¿Qué cambió en cómo te presentabas a ti misma cuando dejaste de ser 'la investigadora' y pasaste a ser 'la profesional de datos'?\"*\n\n3. *\"Llegaste hace 8 años — ¿qué ves diferente ahora en cómo Canadá recibe a profesionales latinos en posiciones de liderazgo?\"*\n\n4. *\"Si estuvieras en mi lugar hoy — con un PhD y haciendo la transición al sector privado — ¿por dónde empezarías en el mercado canadiense específicamente?\"*\n\n5. *\"¿Hay algo que desearías haber sabido antes de tu primera entrevista en industria aquí?\"*\n\n---\n\n**Cómo abrir — las primeras palabras**\n\nTú abres. Cuando empiece la llamada:\n\n*\"Maria, ¡qué bueno conectar! Quedé muy contenta de haberte conocido en el evento. ¿Cómo estás?\"*\n\nYa está. Ya empezó. Nada más necesitas al principio.\n\n---\n\n**El cierre — una sola pregunta al final**\n\nSi la conversación se sintió real — y con Maria probablemente sí — termina con:\n\n*\"¿Hay alguien más que creas que vale la pena que conozca, dado lo que me contaste?\"*\n\nSolo si fluyó de verdad. No como fórmula.\n\n---\n\n**Si se te va el hilo en medio de la conversación**\n\nRespira, toma un sorbo de agua, y di:\n\n*\"Eso que dices me parece muy interesante — ¿puedes contarme un poco más?\"*\n\nTe da tiempo y muestra que estás escuchando. Funciona siempre.\n\n---\n\n¿Tienes fecha y hora confirmada con ella para agendar el recordatorio?",
+    "latency_s": 18.19,
+    "scores": {
+      "d1_contact_grounding": {
+        "score": 5,
+        "reasoning": "Every question is anchored in Maria's specific profile: her 8-year timeline in Canada, her Mexico-to-Canada immigrant journey, her academia-to-industry transition, and her VP-level vantage point. Question 3 references her 8 years explicitly. Question 4 references the user's PhD in direct contrast to Maria's established path. No question could have been written without Maria's profile."
+      },
+      "d2_connection_type": {
+        "score": 5,
+        "reasoning": "SofIA explicitly names the hierarchy: three overlapping connections exist, but cultural/immigrant experience is identified as the primary angle over domain overlap. The rationale is stated clearly — 'haber navegado este país como inmigrante' is the thread, not the technical field. All five questions flow exclusively from the immigrant + academia-to-industry lived experience angle. No blending with generic professional questions.",
+        "failed_pillar": "none"
+      },
+      "d3_cultural_why": {
+        "score": 3,
+        "reasoning": "The framing explains WHAT to do and which angle to prioritize, but mostly stops short of explaining WHY it works in Canadian professional culture specifically. The opener and recovery line are given without cultural reasoning. The closing referral question gets a partial why ('solo si fluyó de verdad') but no cultural grounding. The strongest cultural insight — that shared immigrant experience creates trust faster than domain overlap — is implied but never explicitly taught. The user learns the playbook but not the cultural mechanics behind it.",
+        "failed_pillar": "Cultural reasoning present in framing section but absent from tactical recommendations (opener, closer, recovery line)."
+      },
+      "d4_conciseness": {
+        "score": 3,
+        "reasoning": "The output runs noticeably long for WhatsApp — estimated 380-420 words. The recovery line section ('si se te va el hilo') is useful but adds padding. The section headers and horizontal rules add visual bulk. The closing question about confirming date/time is good but the surrounding scaffolding could be trimmed. Could cut 25-30% without losing substance."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Strong output with excellent contact grounding and correct angle selection with clear rationale. The cultural/immigrant thread is properly prioritized over domain overlap, and questions are genuinely specific to Maria's profile. Main gaps: cultural WHY is explained for the strategic framing but missing from tactical moments (opener, recovery, close), and the output is moderately verbose for WhatsApp. The Spanish-language delivery is a notable strength for a Latina user — culturally resonant and appropriate."
+    },
+    "avg": 4.0
+  },
+  {
+    "id": "R1-TC02",
+    "description": "Carlos — 5-yr friendship + shared immigrant journey",
+    "sofia_output": "¡Qué bueno que tienes esta conversación con Carlos! Un amigo de Bogotá con 3 años en Canadá y en tech — esto no es networking en frío, es una reconexión real. Y eso cambia todo el enfoque.\n\nCon Carlos no llegas como alguien que necesita algo de un extraño. Llegas como un amigo que retoma el hilo. Eso significa que puedes ser mucho más directo y personal de lo que serías con alguien que no te conoce.\n\n---\n\n**Preguntas específicas para Carlos:**\n\n- *\"Che, ¿cómo fue para ti el primer año aquí en términos profesionales — qué fue lo más diferente a lo que esperabas?\"*\n- *\"Trabajando en product en una startup de Toronto — ¿cómo ves la relación entre PM y data science acá? ¿Es distinto a como trabajábamos en Bogotá?\"*\n- *\"¿Qué cambiarías si empezaras de nuevo la transición laboral aquí?\"*\n- *\"¿Hay algo que haberlo sabido antes te hubiera ahorrado tiempo o energía?\"*\n- *\"¿Conoces gente en data science aquí — alguien que crea que valdría la pena que yo conociera?\"*\n\nEsa última pregunta la dejas para el final, cuando la conversación ya fluyó bien.\n\n---\n\n**Cómo abrir:**\n\nNo necesitas un script elaborado con Carlos — ya se conocen. Algo tan simple como: *\"Parcero, ¡qué bueno verte! Cuéntame cómo estás, cómo va todo.\"* Y de ahí fluye.\n\n---\n\n**Una cosa concreta que puedes pedirle:**\n\nCarlos lleva 3 años en Canadá y está en tech — tiene contexto real del mercado. Al final de la conversación puedes preguntarle directamente: *\"¿Hay alguien que conozcas en data science a quien valga la pena que le escriba?\"* No tienes que rodear eso con mucho protocolo — son amigos.\n\n---\n\n¿Ya tienen fecha y hora confirmada, o todavía están coordinando?",
+    "latency_s": 17.92,
+    "scores": {
+      "d1_contact_grounding": {
+        "score": 5,
+        "reasoning": "Every question is anchored to Carlos's specific profile: his 3 years in Canada, his PM role at a Toronto startup, and the shared Bogotá history. 'How was your first year professionally?' ties to his immigrant timeline. 'PM and data science in Toronto vs. Bogotá' ties to his exact role and their shared past. No generic networking questions. Nothing projected from the user's data science background onto Carlos."
+      },
+      "d2_connection_type": {
+        "score": 5,
+        "reasoning": "Correctly identifies and names the existing friendship + shared immigrant journey as the primary angle ('esto no es networking en frío, es una reconexión real'). The output commits fully — the opening, the questions, and the ask all flow from this angle. No blending with domain overlap or generic professional journey framing. Hierarchy followed correctly: existing relationship + cultural/immigrant wins over domain.",
+        "failed_pillar": ""
+      },
+      "d3_cultural_why": {
+        "score": 3,
+        "reasoning": "The output gives directional instructions well ('puedes ser mucho más directo y personal') and explains that existing friendship changes the approach, but it doesn't explain WHY Canadian professional culture specifically rewards or interprets these moves in a particular way. For example, why the referral ask works at the end (trust-building before asks is a Canadian norm) or why being direct is acceptable here but less so with strangers in Canadian contexts. The reasoning stays at the relationship level, not the cultural mechanics level."
+      },
+      "d4_conciseness": {
+        "score": 3,
+        "reasoning": "The output is approximately 380 words. The referral ask is stated twice — once in the questions list and once in the 'Una cosa concreta' section — which is redundant. The closing question ('¿Ya tienen fecha?') adds length without adding prep value. Cutting the duplicate referral block and the closing question would bring it under 300 words with no loss of substance."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Strong output overall. Contact grounding and connection angle are excellent — SofIA correctly prioritized friendship + immigrant journey and made every question specific to Carlos. The main weaknesses are a lack of cultural WHY depth (instructions given without Canadian cultural reasoning) and slight redundancy that pushes past ideal WhatsApp length. The duplicate referral framing and closing logistics question are easy cuts."
+    },
+    "avg": 4.0
+  },
+  {
+    "id": "R1-TC03",
+    "description": "Ahmed — cross-sector domain overlap only, cold contact",
+    "sofia_output": "Perfecto, Ahmed es un contacto interesante — y la preparación aquí tiene una lógica específica.\n\nLo primero que noto: tú y Ahmed trabajan con datos, pero en mundos completamente distintos. Eso significa que **la conexión no es de dominio** — no tienes bases para hacerle preguntas técnicas sobre healthcare analytics, y él no las espera. Lo que sí tienes es algo más poderoso para este tipo de conversación: **curiosidad genuina sobre su mundo**.\n\nEl ángulo que funciona aquí es este: llegaste de Colombia, estás navegando el mercado laboral canadiense en data science, y él es alguien que construyó una carrera sólida en analytics en Canadá. Eso es la conexión real — no el sector, sino el camino.\n\n---\n\n**Preguntas específicas para Ahmed:**\n\n1. *\"How did you build your analytics career here in Canada — was there a particular moment where things started to click professionally?\"*\n\n2. *\"What do you think makes someone stand out in analytics leadership in Canada, compared to what might be valued elsewhere?\"*\n\n3. *\"Healthcare and financial risk are very different contexts — what do you see as the core transferable skills across data-heavy fields in this market?\"*\n\n4. *\"If you were starting over in Canada with a strong data background but no local network, where would you focus your energy first?\"*\n\n5. *\"Is there someone else you'd suggest I talk to, given what you've heard about my background?\"* ← esta va al final, solo si la conversación fluyó bien.\n\n---\n\n**Cómo abrir (los primeros 15 segundos):**\n\nAbre tú, sin esperar:\n*\"Hi Ahmed, great to connect — really appreciate you taking the time. How are you doing?\"*\n\nYa está. De ahí fluye.\n\n---\n\n**Si se te va el hilo:**\n\n*\"That's really interesting — could you tell me more about that?\"*\n\nTe da tiempo, y le muestra que estás escuchando.\n\n---\n\nUna cosa importante antes de que mandes el mensaje de contacto: muchas personas sienten que están interrumpiendo cuando le escriben a alguien que no conocen. Si eso te pasa, es normal — y en Canadá este tipo de mensaje es completamente esperado. La mayoría de los profesionales recuerdan haber estado en tu lugar y esperan esta interacción.\n\n¿Ya tienes agendada la conversación con Ahmed, o todavía estás en la etapa de escribirle?",
+    "latency_s": 19.59,
+    "scores": {
+      "d1_contact_grounding": {
+        "score": 3,
+        "reasoning": "Questions 1 and 4 are somewhat generic career navigation questions that could apply to any senior Canadian professional. Questions 2 and 3 make partial use of Ahmed's profile (analytics leadership in Canada, cross-sector transferability), but none of the questions anchor specifically to Ahmed being a Director at a large hospital network — his healthcare context, the scale of his organization, or what makes his trajectory distinctive. The questions would fit almost any senior analytics person in Canada."
+      },
+      "d2_connection_type": {
+        "score": 4,
+        "reasoning": "SofIA correctly identifies that domain overlap is insufficient ('la conexión no es de dominio') and pivots to the immigrant/career navigation angle rooted in the user's Colombian background. The rationale is explicitly named: not sector, but the journey. This follows the hierarchy correctly — cultural/immigrant experience over domain overlap for a Director+ contact. Slight deduction because question 3 does slip back into domain overlap framing ('transferable skills across data-heavy fields'), blending angles after committing to the immigrant journey angle.",
+        "failed_pillar": "Minor bleed from domain overlap angle in Q3 after committing to immigrant journey angle"
+      },
+      "d3_cultural_why": {
+        "score": 4,
+        "reasoning": "The closing paragraph explicitly explains WHY cold outreach is culturally normalized in Canada ('en Canadá este tipo de mensaje es completamente esperado. La mayoría de los profesionales recuerdan haber estado en tu lugar'). The framing of genuine curiosity over technical questions also implicitly teaches Canadian professional norms. However, the opening advice ('Abre tú, sin esperar') and the recovery line lack cultural WHY reasoning — they are presented as instructions without explaining the Canadian norm around conversational ownership or active listening signals."
+      },
+      "d4_conciseness": {
+        "score": 3,
+        "reasoning": "The output runs significantly over 300 words. The section headers, horizontal rules, and bolding add visual bulk appropriate for a document but excessive for WhatsApp. The closing check-in question is good, but the overall structure reads more like a formatted brief than a chat message. Could cut the recovery line section and tighten the opening framing by ~30% without losing substance."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "SofIA correctly diagnoses the connection hierarchy and pivots away from domain overlap toward the immigrant professional journey — the right call for a Director-level cold contact. The cultural normalization of cold outreach is well-explained. Main weaknesses: questions don't leverage Ahmed's specific profile (hospital network scale, healthcare sector specifics) enough to score high on D1, one question backslides into domain overlap after the angle was committed, and the output is too long and structured for WhatsApp delivery."
+    },
+    "avg": 3.5
+  },
+  {
+    "id": "R1-TC04",
+    "description": "Jin — cross-cultural immigrant (Korean-Canadian), different field",
+    "sofia_output": "Antes de generar las preguntas, déjame nombrarte el ángulo que voy a usar — porque aquí hay varias opciones y la elección importa.\n\nJin es ingeniero, tú eres de data science. Campos distintos, culturas distintas. Pero los dos llegaron a Canadá como recién llegados y están navegando el mercado laboral profesional aquí. **Ese es el puente real.** No el dominio técnico — la experiencia migratoria compartida.\n\nA nivel de Director/VP+, el dominio se da por sentado. Lo que abre la conversación es lo humano: cómo llegó, qué aprendió, qué haría diferente.\n\n---\n\n**Preguntas para Jin:**\n\n1. *\"How did your first year in Canada go professionally — what surprised you most about the job market here?\"*\n\n2. *\"You made it to Engineering Manager in 6 years — what do you think made the biggest difference in that trajectory here specifically?\"*\n\n3. *\"Coming from South Korea, were there things about Canadian professional culture that took time to understand? Anything you wish someone had told you early?\"*\n\n4. *\"If you were starting your Canadian job search today — in a different field, like data science — where would you focus your energy first?\"*\n\n5. *\"Is there someone you think would be worth me talking to, given what we've discussed?\"* ← guárdala para el final.\n\n---\n\n**Cómo abrir:**\n\nCuando empiece la llamada, abre tú:\n*\"Hi Jin, great to connect! How are you?\"*\n\nYa está. Ya empezó.\n\n---\n\n**Si se te va el hilo:**\n\n*\"That's really interesting — can you tell me more about that?\"*\n\nTe da tiempo y muestra que estás escuchando.\n\n---\n\n¿Tienes fecha y hora confirmada con Jin para que te mande el recordatorio?",
+    "latency_s": 12.61,
+    "scores": {
+      "d1_contact_grounding": {
+        "score": 5,
+        "reasoning": "Every question is rooted specifically in Jin's profile: 6 years in Canada, Engineering Manager trajectory, South Korean origin, met via Newcomers in Tech. Q2 references his specific 6-year arc to EM. Q3 names South Korea explicitly. Q4 reframes his engineering experience for data science relevance. No question could be copy-pasted to a generic contact."
+      },
+      "d2_connection_type": {
+        "score": 5,
+        "reasoning": "SofIA correctly identifies the cross-cultural/immigrant experience as the primary angle, names it explicitly ('el puente real'), and provides clear rationale for why domain overlap is subordinate here ('el dominio se da por sentado'). All five questions flow exclusively from the shared newcomer/immigrant experience angle. The hierarchy is applied correctly: cultural/immigrant beats domain overlap even though both exist.",
+        "failed_pillar": ""
+      },
+      "d3_cultural_why": {
+        "score": 4,
+        "reasoning": "The cultural reasoning is present and meaningful: explains why domain is table stakes at Director+ level and why the human/immigrant angle opens conversations. The fallback line is explained as serving dual purpose (time + active listening signal). However, the opening instruction ('ya empezó') lacks explicit cultural WHY — Canadian professional culture's preference for warm, low-stakes openings over structured preamble isn't named. Minor gap keeps this from a 5."
+      },
+      "d4_conciseness": {
+        "score": 4,
+        "reasoning": "Well under 300 words, structured cleanly, no obvious padding. The Spanish-language framing intro adds purposeful context without bloat. Slight verbosity in the rationale section ('Ese es el puente real') but it earns its place. The closing CTA question is efficient. Could trim one sentence in the intro but this is minor."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Strong output. Correct angle identified and named with rationale. All questions grounded in Jin's specific profile. Cultural reasoning present for most recommendations. Concise and WhatsApp-appropriate. Minor gap: the opening instruction lacks explicit cultural WHY (Canadian warmth norms). Overall high-quality prep that would genuinely serve the user."
+    },
+    "avg": 4.5
+  },
+  {
+    "id": "R1-TC05",
+    "description": "Dr. Sarah — professor/supervisor, reference letter, domain + academic + mentorship",
+    "sofia_output": "¡Qué buena oportunidad — y qué relación tan sólida para aprovechar!\n\nLa Dra. Sarah no es un contacto frío ni alguien que apenas te conoce. Te supervisó, te conoce el trabajo, y ya apostó por ti cuando escribió esa carta. Eso cambia completamente el tono de la conversación: no llegas a presentarte ni a convencerla de nada. Llegas a ponerse al día y a pedirle algo concreto.\n\n---\n\n**Primero — ¿cuándo es la reunión?**\n\nDime la fecha y hora para agendarla y mandarte un recordatorio antes.\n\n---\n\nMientras tanto, aquí va la prep:\n\n**Preguntas para la Dra. Sarah**\n\n1. *\"Dra. Sarah, desde que terminé el certificado he estado haciendo la transición al mercado laboral aquí en Canadá. ¿Cómo ve usted el mercado de Data Science en Ontario ahora mismo — qué roles o sectores están contratando?\"*\n2. *\"¿Hay diferencias entre lo que buscan las empresas en industria versus lo que desarrollamos en el programa? ¿Algo que debería reforzar o destacar más?\"*\n3. *\"¿Hay alguien en sus contactos de industria con quien crea que valdría la pena que yo hablara? No para pedir trabajo — sino para entender cómo funciona ese mundo desde adentro.\"*\n4. *\"Si usted estuviera en mi lugar ahora mismo, ¿por dónde empezaría?\"*\n\n---\n\n**Cómo abrir**\n\nNo esperes a que ella dirija. Abre tú:\n*\"Dra. Sarah, ¡qué gusto hablar con usted! Le quería contar cómo van las cosas desde que terminé el programa...\"*\n\nY dale un update genuino de 2-3 oraciones: qué has hecho, qué estás buscando, cómo te sientes. Ella ya invirtió en ti — quiere saber cómo vas.\n\n---\n\n**Al cerrar — el ask más importante**\n\nLa pregunta 3 de arriba es el cierre natural. Es concreta, no invasiva, y es exactamente el tipo de cosa que ella puede hacer. Si la conversación fluyó bien, hazla. Si sientes que no llegó el momento, no la fuerces — hay espacio para un seguimiento.\n\n---\n\n¿Hay algo específico que quieras trabajar más — el update inicial, cómo plantear el ask, o el mensaje de seguimiento después?",
+    "latency_s": 16.81,
+    "scores": {
+      "d1_contact_grounding": {
+        "score": 5,
+        "reasoning": "Every question is anchored in Dr. Sarah's specific profile: her supervision of the user's graduate certificate, her industry connections, her knowledge of the Data Science market in Ontario, and the program's curriculum. The opening framing explicitly references the reference letter and prior investment. No generic questions — each one could only have been written for this specific supervisor-turned-reference contact."
+      },
+      "d2_connection_type": {
+        "score": 5,
+        "reasoning": "SofIA correctly identifies and names the existing relationship angle ('no es un contacto frío') and commits fully. The rationale is explicit: she supervised, knows the work, already wrote the letter — therefore the tone shifts from introduction to reconnection + concrete ask. All four questions and the opening/closing guidance flow exclusively from this existing relationship dynamic. No blending with other angles.",
+        "failed_pillar": "none"
+      },
+      "d3_cultural_why": {
+        "score": 4,
+        "reasoning": "Cultural reasoning is present in key moments: the reframe that 'no llegas a presentarte ni a convencerla' teaches the Canadian norm of not overselling to existing contacts; the framing of the ask as 'no para pedir trabajo — sino para entender' explains why indirect asks work better in Canadian professional culture. The instruction to open proactively with an update explains why (she already invested in you). Minor gap: the closing guidance about not forcing the ask if the moment isn't right could have explained why in Canadian culture the relationship preservation matters over the single-meeting transaction.",
+        "failed_pillar": "none"
+      },
+      "d4_conciseness": {
+        "score": 3,
+        "reasoning": "The output runs noticeably long for WhatsApp — estimated 380-400 words. The closing section ('Al cerrar') partially repeats what was already embedded in question 3, and the transitional framing before the questions adds length without adding meaning. The closing offer ('¿Hay algo específico...') is good but comes after an already dense block. Could cut 25-30% without losing substance."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Strong prep output that correctly identifies and commits to the existing relationship angle with clear rationale. Contact grounding is excellent — every element traces back to Dr. Sarah's specific profile. Cultural reasoning is present and functional. Main weakness is length: the output exceeds comfortable WhatsApp sizing, with some structural repetition between question 3 and the closing section. Tightening by ~100 words would make this a near-perfect response."
+    },
+    "avg": 4.25
+  }
+]
