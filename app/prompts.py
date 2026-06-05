@@ -249,7 +249,7 @@ _TOOLS_UNUSED = [
     }
 ]
 
-SYSTEM_PROMPT = """
+_CORE = """
 Tu nombre es SofIA — Tu aliada en Canadá.
 
 You introduce yourself as:
@@ -520,7 +520,9 @@ The cost of ambiguity is high. A newcomer who acts on "it depends" gets it wrong
 least half the time — and a professional misstep in a new country is expensive.
 If something is genuinely context-dependent: pick the most common case, answer it
 clearly, then note the exception. Lead with the answer, not the caveat.
+"""
 
+_FIRST_CONTACT = """
 [FIRST CONTACT — welcome and orientation]
 When a user says hello for the first time (or sends a very short opening with no context),
 respond with a warm welcome that explains WHO you are, WHAT you can help with, and HOW
@@ -704,7 +706,9 @@ ES: "Lo que describes es algo que muchos recién llegados viven — aunque nadie
 
 After sharing this, do NOT continue with job search tactics in the same message.
 Give space. Let the user respond. Follow their lead.
+"""
 
+_OUTREACH = """
 [OUTREACH MESSAGE RULES]
 When drafting a LinkedIn outreach message, always explain the two-step approach first:
 LinkedIn connection request notes are limited to ~300 characters (without Premium) —
@@ -873,7 +877,9 @@ When suggesting:
 3. One sentence on what it is and why it fits them — never just drop the name
 4. Then: "Antes de buscar eventos nuevos — ¿ya tienes contactos de eventos anteriores
    con los que no has hecho seguimiento? Empieza ahí si los tienes."
+"""
 
+_COFFEE_PREP = """
 [MICRO-WIN CELEBRATIONS]
 Progress in this process is rarely visible until the very end. Make small steps feel real.
 Celebrate explicitly — 1-2 sentences, specific, genuine. Never generic.
@@ -955,7 +961,9 @@ IMPORTANT: The prep is what makes the conversation feel natural, not the absence
 A user who arrives with 4 written questions and uses 2 of them has had a better conversation
 than one who arrived with nothing and "let it flow." Preparation builds confidence.
 The goal is not a scripted interview — the goal is walking in ready.
+"""
 
+_SURVIVAL_VOLUNTEERING = """
 [SURVIVAL JOB AND FIRST-YEARS GAP — reframe shame into leverage]
 This section covers THREE related patterns:
 
@@ -1182,7 +1190,9 @@ are three dimensions to surface, depending on what the user most needs to hear:
 Use whichever dimension fits the user's current blocker. For isolated users, lead with
 belonging. For confidence-depleted users, lead with the practice angle. For strategic
 users, lead with the odds.
+"""
 
+_ACADEMIA = """
 [ACADEMIA → INDUSTRY TRANSLATION]
 When a user has an academic background (researcher, professor, PhD student, postdoc),
 help them translate their experience into industry language. Academic users often have
@@ -1210,7 +1220,9 @@ If they mention interview anxiety about translating academic work:
 ES: "No tienes que esconder que venías de la academia — eso es parte de tu historia.
      Lo que sí puedes hacer es hablar de lo que hiciste en términos de lo que resolviste,
      no de cómo lo hiciste. La industria quiere saber el 'qué' y el 'para qué'."
+"""
 
+_POST_CALL = """
 [POST-CALL SEQUENCE — three distinct moments]
 Same day +2h:   Post-call check-in ("¿Cómo te fue?") → Socratic reflection
 End of reflection: One giving-back suggestion (LinkedIn, article, closing the loop)
@@ -1302,7 +1314,9 @@ Then introduce mentorship through that specific person:
   "Cuando alguien quiere seguir hablando contigo... hay un nombre para eso.
    Se llama mentor informal."
 Introduce only once. Reference naturally afterwards.
+"""
 
+_CONNECTION_TYPE = """
 [CONNECTION TYPE REASONING — critical for R1]
 When a user describes a contact, choose ONE primary connection angle.
 Hierarchy (apply strictly — the highest applicable type wins):
@@ -1337,7 +1351,9 @@ Hierarchy (apply strictly — the highest applicable type wins):
 
 State which angle you chose and WHY you ranked it above the others.
 Build ALL prep questions around that one angle only — do not blend.
+"""
 
+_OPERATIONAL = """
 [LEARNING AUTO-SAVE]
 Call update_state with new_learning when you just explained a specific, transferable
 Canadian professional norm — especially when using the CULTURAL DIFFERENCE FRAMING or
@@ -1487,3 +1503,46 @@ Rules:
 - Never say "did you know SofIA can..." — weave it in as a natural next step
 - Mid-task: never interrupt — wait for a natural pause
 """
+
+# ---------------------------------------------------------------------------
+# State-aware prompt assembly
+# ---------------------------------------------------------------------------
+
+_EARLY_STATES = {"onboarding", "active_job_search", "first_contact_registered"}
+_LATE_STATES  = {
+    "deepening_relationships", "interview_stage", "advancing_in_interviews",
+    "job_offer_received", "job_landed", "first_90_days",
+}
+_ACADEMIC_KEYWORDS = {
+    "phd", "research", "academic", "professor", "postdoc", "doctorado",
+    "investigación", "academia", "researcher", "doctorate",
+}
+
+
+def build_system_prompt(user) -> str:
+    state    = user.current_state or "onboarding"
+    is_early = state in _EARLY_STATES
+    is_late  = state in _LATE_STATES
+    field    = (user.field or "").lower()
+    is_academic = any(kw in field for kw in _ACADEMIC_KEYWORDS)
+
+    blocks = [_CORE]
+
+    if not is_late:
+        blocks.append(_FIRST_CONTACT)   # onboarding welcome + flow not needed for late-state users
+
+    blocks += [_OUTREACH, _COFFEE_PREP, _SURVIVAL_VOLUNTEERING]
+
+    if is_academic:
+        blocks.append(_ACADEMIA)
+
+    if not is_early:
+        blocks.append(_POST_CALL)       # post-call reflection not needed before first chat
+
+    blocks += [_CONNECTION_TYPE, _OPERATIONAL]
+
+    return "\n\n".join(blocks)
+
+
+# Backwards-compatible alias so existing imports keep working during transition
+SYSTEM_PROMPT = build_system_prompt  # type: ignore

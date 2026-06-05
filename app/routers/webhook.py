@@ -23,7 +23,7 @@ from app.clients.firestore_client import (
     save_contact,
     save_user,
 )
-from app.prompts import SYSTEM_PROMPT
+from app.prompts import build_system_prompt
 from app.clients.twilio_client import send_message
 from langfuse import Langfuse
 from langfuse.decorators import langfuse_context, observe
@@ -258,7 +258,7 @@ def _call_with_retry(user, contact, contact_id, phone, claude_messages) -> str:
 
 
 def _call_claude_and_apply(user, contact, contact_id, phone, claude_messages) -> str:
-    reply, tool_inputs = call_claude(SYSTEM_PROMPT, list(claude_messages))
+    reply, tool_inputs = call_claude(build_system_prompt(user), list(claude_messages))
 
     if tool_inputs:
         contact, contact_id = _apply_tool_use(user, contact, contact_id, phone, tool_inputs)
