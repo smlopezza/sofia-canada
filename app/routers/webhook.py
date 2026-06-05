@@ -19,6 +19,7 @@ from app.clients.firestore_client import (
     get_active_contact,
     get_user_contacts,
     is_duplicate,
+    is_whatsapp_allowed,
     load_user,
     save_contact,
     save_user,
@@ -153,9 +154,9 @@ def _process(phone: str, text: str, message_sid: str):
     user = load_user(phone)
     t_load_user = time.perf_counter()
 
-    # Bounce new users if beta is full
-    if user.last_active is None and user.tier != "test" and count_active_users() >= MAX_USERS:
-        logger.info("Beta full — bouncing new user %s to waitlist", phone)
+    # Allowlist check — every message, every user (bypass for test tier)
+    if user.tier != "test" and not is_whatsapp_allowed(phone):
+        logger.info("Unauthorized phone %s — not in allowlist", phone)
         send_message(phone, WAITLIST_MSG)
         return
     now = datetime.utcnow()
