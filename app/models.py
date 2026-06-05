@@ -1,9 +1,10 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 
 @dataclass
 class Milestone:
+    # A milestone or goal checkpoint the user has achieved.
     key: str
     label: str
     achieved_at: str
@@ -12,17 +13,19 @@ class Milestone:
 
 @dataclass
 class Learning:
+    # A saved learning or insight captured by the user.
     id: str
     topic: str
     insight: str
     saved_at: str
-    source_context: str = ""
-    confidence: str = "medium"  # "high" | "medium" | "uncertain"
-    user_flagged: bool = False
+    source_context: str = ""  # optional info about where the learning came from
+    confidence: str = "medium"  # expected values: "high" | "medium" | "uncertain"
+    user_flagged: bool = False  # whether the user marked this learning as important
 
 
 @dataclass
 class MentorDoc:
+    # Mentor profile document stored for mentor management.
     name: str
     email: str
     role: str = ""
@@ -32,20 +35,22 @@ class MentorDoc:
     country_of_origin: str = ""
     linkedin: str = ""
     calendly: str = ""
-    contact_preference: str = "linkedin"  # "linkedin" | "email"
+    contact_preference: str = "linkedin"  # preferred way to contact the mentor
     languages: Optional[list] = None
     bio: str = ""
     active: bool = True
-    opt_out_token: str = ""
+    opt_out_token: str = ""  # token used when a mentor opts out of notifications
     created_at: str = ""
 
     def __post_init__(self):
+        # Ensure list fields are always initialized as lists, not None.
         if self.languages is None:
             self.languages = []
 
 
 @dataclass
 class ExportToken:
+    # Token used for exporting user data or validating an export request.
     phone: str
     created_at: str
     expires_at: str
@@ -54,6 +59,7 @@ class ExportToken:
 
 @dataclass
 class ContactDoc:
+    # Stored contact or networking connection associated with a user.
     name: str
     role: str
     company: str
@@ -71,6 +77,7 @@ class ContactDoc:
     chats: Optional[list] = None
 
     def __post_init__(self):
+        # Initialize list fields to empty lists when no data is provided.
         if self.topics_of_interest is None:
             self.topics_of_interest = []
         if self.chats is None:
@@ -79,9 +86,10 @@ class ContactDoc:
 
 @dataclass
 class UserDoc:
+    # Main user profile document used for app state and metadata.
     phone: str
     name: str = ""
-    field: str = ""
+    field: str = ""  # user’s professional or academic field
     language: str = "es"
     time_in_canada: str = ""
     transition_stage: str = ""
@@ -112,6 +120,7 @@ class UserDoc:
     session_message_count: int = 0
 
     def __post_init__(self):
+        # Initialize optional list fields to avoid None checks elsewhere.
         if self.messages is None:
             self.messages = []
         if self.goals is None:
