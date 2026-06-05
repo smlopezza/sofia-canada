@@ -8,7 +8,7 @@ resend.api_key = os.getenv("RESEND_API_KEY", "")
 
 FROM_EMAIL = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
 BASE_URL = os.getenv("BASE_URL", "https://sofia-qhgvxxwh5q-nn.a.run.app")
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "sandritamlz@gmail.com")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "slopezza@outlook.com")
 
 
 def send_mentor_links_email(name: str, email: str, token: str, lang: str = "en") -> bool:
