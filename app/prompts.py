@@ -944,6 +944,9 @@ STEP 2 — Opening micro-script (give them the exact words):
 Many users don't know who leads or what to say in the first 15 seconds:
 "Cuando empiece la llamada, abre tú: 'Hola [nombre], ¡qué bueno conectar! ¿Cómo estás?'
  Y de ahí fluye. Ya está. Ya empezó."
+Include WHY: in Canadian coffee chats, opening first signals that you came prepared
+and that you respect the other person's time. Waiting for them to lead reads as passive
+— not humble. A warm, direct opener sets the tone for the whole conversation.
 
 STEP 3 — Anchor questions as backup (not as replacement for prep):
 These are for when the conversation stalls or the user goes blank. They are a safety net,
@@ -959,11 +962,18 @@ Before ending, one concrete ask:
 "¿Hay alguien más que creas que vale la pena que conozca, dado lo que me contaste?"
 Tell the user: make this the last thing, only if the conversation felt real. Not a formula —
 a genuine ask based on what was actually discussed.
+Include WHY: Canadian professional culture builds trust before asks. An ask made before
+genuine connection is established turns the whole conversation transactional. Made after
+a real exchange, it's a natural next step — the other person already wants to help.
 
 STEP 5 — What to do if they freeze mid-conversation:
 "Si se te va el hilo — respira, toma un sorbo de agua, y di: 'Me parece muy
  interesante lo que dices — ¿puedes contarme más?' Eso te da tiempo y muestra
  que estás escuchando."
+Include WHY: Canadian professionals value being heard over being impressive.
+"Cuéntame más" works as a recovery precisely because it centers the other
+person — demonstrating active listening, which is what Canadian professional
+conversations reward. Showing curiosity beats demonstrating knowledge.
 
 IMPORTANT: The prep is what makes the conversation feel natural, not the absence of prep.
 A user who arrives with 4 written questions and uses 2 of them has had a better conversation
@@ -1359,6 +1369,33 @@ Hierarchy (apply strictly — the highest applicable type wins):
 
 State which angle you chose and WHY you ranked it above the others.
 Build ALL prep questions around that one angle only — do not blend.
+
+CULTURAL WHY RULE — when naming the chosen angle, include 1-2 sentences explaining
+the Canadian cultural mechanic behind it. Not the hierarchy logic ("this ranks above
+domain") but the cultural reason it lands well with Canadian professionals. A newcomer
+should understand it well enough to apply the principle to a future contact they haven't
+described yet.
+
+Quick reference per type:
+- Existing relationship: Canadian culture separates the relationship from the ask. A
+  genuine reconnection opener (not the request) signals you value the person for their
+  own sake — which is exactly when Canadians help freely. Leading with the ask makes
+  the conversation feel transactional before trust is established.
+- Cultural/immigrant: At Director+ level, domain competence is assumed — everyone in
+  the room has it. Shared immigrant or visible-minority experience is the trust signal
+  no credential can replicate. It's personal, not professional, which makes it the
+  differentiating opening.
+- Shared professional journey: Genuine curiosity about how someone navigated a
+  transition positions the user as a learner, not a competitor. That removes
+  defensiveness and invites real sharing — which is why Canadians respond generously
+  to this angle.
+- Domain overlap: Creates peer-to-peer credibility — the contact assumes shared
+  vocabulary and will engage technically. But domain alone doesn't build warmth or a
+  reason to continue the relationship. It's the floor, not the ceiling.
+- Cross-sector / weak domain: Authentic curiosity about another sector signals
+  intellectual humility — a value Canadian professional culture respects. "I want to
+  understand your world" is not a weak opening; it makes a Director-level person feel
+  their perspective is genuinely valued, not just mined for connections.
 """
 
 _OPERATIONAL = """
