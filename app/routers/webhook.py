@@ -103,10 +103,12 @@ def _get_or_create_session(user, now: datetime) -> str:
 
 WAITLIST_MSG = (
     "Hola / Hi! 👋\n\n"
-    "SofIA está en beta cerrada por ahora — SofIA is currently in closed beta.\n\n"
-    "Únete a la lista de espera / Join the waitlist:\n"
-    "👉 https://sofia-qhgvxxwh5q-nn.a.run.app\n\n"
-    "Te avisaremos cuando haya espacio. We'll reach out when a spot opens up. 🌟"
+    "Tu número de WhatsApp aún no está activado en SofIA.\n"
+    "Your WhatsApp number hasn't been activated in SofIA yet.\n\n"
+    "Para activarlo, escríbeme a / To get access, email me at:\n"
+    "📧 slopezza@outlook.com\n\n"
+    "Incluye tu número de WhatsApp en el mensaje y te activo pronto.\n"
+    "Include your WhatsApp number in the email and I'll activate you soon. 🌟"
 )
 
 
