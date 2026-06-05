@@ -16,6 +16,21 @@
 
 {% block content %}
 
+  <!-- CTA to register as mentor -->
+  <div class="row mb-5">
+    <div class="col-md-8 offset-md-2">
+      <div class="mission-box">
+        <p class="mb-2 mission-text">
+          {% if lang == 'es' %}¿Eres profesional en Canadá y quieres apoyar a recién llegados?
+          {% else %}Are you a professional in Canada and want to support newcomers?{% endif %}
+        </p>
+        <a href="/mentors/register?lang={{ lang }}" class="btn btn-teal btn-sm">
+          {% if lang == 'es' %}Regístrate como mentor{% else %}Register as a mentor{% endif %}
+        </a>
+      </div>
+    </div>
+  </div>
+
   <!-- Gratitude section -->
   <div class="row mb-5">
     <div class="col-md-10 offset-md-1">
@@ -145,19 +160,6 @@
     </div>
   </div>
 
-  <!-- CTA to register as mentor -->
-  <div class="row mb-5">
-    <div class="col-md-8 offset-md-2">
-      <div class="mission-box">
-        <p class="mb-2 mission-text">
-          {% if lang == 'es' %}¿Eres profesional en Canadá y quieres apoyar a recién llegados?
-          {% else %}Are you a professional in Canada and want to support newcomers?{% endif %}
-        </p>
-        <a href="/mentors/register?lang={{ lang }}" class="btn btn-teal btn-sm">
-          {% if lang == 'es' %}Regístrate como mentor{% else %}Register as a mentor{% endif %}
-        </a>
-      </div>
-    </div>
-  </div>
+
 
 {% endblock %}

@@ -1,0 +1,381 @@
+[
+  {
+    "id": "R7-TC01",
+    "description": "Patricia — personal self-disclosure + time overrun",
+    "signals_expected": [
+      "time_overrun",
+      "personal_self_disclosure"
+    ],
+    "sofia_output": "Cuarenta minutos, y ella fue quien extendió el tiempo. Y luego te contó algo que claramente no le cuenta a todo el mundo.\n\n¿Qué sentiste cuando te dijo eso — que casi se regresó y que ojalá hubiera tenido a alguien que la guiara?",
+    "latency_s": 3.58,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 5,
+        "signals_in_input": [
+          "time_overrun",
+          "personal_self_disclosure"
+        ],
+        "signals_caught": [
+          "time_overrun",
+          "personal_self_disclosure"
+        ],
+        "false_positives": [],
+        "reasoning": "SofIA correctly identified both signals present. The time overrun is explicitly named ('Cuarenta minutos, y ella fue quien extendió el tiempo'). The personal self-disclosure is correctly framed as unusual intimacy ('algo que claramente no le cuenta a todo el mundo'). No false positives — seniority not treated as signal. Clean and precise."
+      },
+      "d2_socratic_quality": {
+        "score": 5,
+        "reasoning": "The output is purely Socratic. SofIA does not declare what the relationship means or what the user should do. The single question — 'qué sentiste cuando te dijo eso' — invites the user to process their own emotional response first, which is exactly the right entry point. No declarations about mentor potential or next steps."
+      },
+      "d3_specificity": {
+        "score": 5,
+        "vague_input_applied": false,
+        "reasoning": "Every element references the specific conversation: the 40-minute duration, the fact that Patricia extended the time herself, and the specific content of her disclosure (almost returning to Brazil, wishing she'd had a guide). Nothing generic is present."
+      },
+      "d4_conciseness": {
+        "score": 5,
+        "reasoning": "The output is extremely concise — well under 50 words. It opens with reflection, not logistics. No thank-you note template, no second-meeting scheduling prompt. Pure reflection first, appropriately short."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Near-perfect output. SofIA correctly identified both signals without false positives, stayed fully Socratic, grounded every word in the specific conversation, and kept the response tight and reflection-first. The chosen question ('¿Qué sentiste?') is especially well-calibrated — it meets the user where they are ('no supe qué decir') by turning inward before strategizing outward."
+    },
+    "avg": 5.0
+  },
+  {
+    "id": "R7-TC02",
+    "description": "Marco — reciprocal curiosity + GitHub request",
+    "signals_expected": [
+      "reciprocal_curiosity",
+      "github_request",
+      "forward_looking_statement"
+    ],
+    "sofia_output": "Tres preguntas sobre tu proyecto. Tu GitHub. \"Me encantaría escuchar cómo va esto.\"\n\nEso no es cortesía — eso es alguien que se enganchó con lo que estás haciendo.\n\nDéjame preguntarte algo: cuando te pidió el GitHub y dijo que quería escuchar cómo avanza... ¿cómo se sintió ese momento para ti?",
+    "latency_s": 5.36,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 5,
+        "signals_in_input": [
+          "reciprocal_curiosity",
+          "github_request",
+          "forward_looking_statement"
+        ],
+        "signals_caught": [
+          "reciprocal_curiosity",
+          "github_request",
+          "forward_looking_statement"
+        ],
+        "false_positives": [],
+        "reasoning": "SofIA explicitly references all three signals: the three questions Marco asked (reciprocal curiosity), the GitHub request, and the forward-looking statement ('me encantaría escuchar cómo va esto'). No false positives — seniority is not mentioned as a signal. All signals correctly identified and none fabricated."
+      },
+      "d2_socratic_quality": {
+        "score": 4,
+        "reasoning": "SofIA opens with a near-declarative statement ('Eso no es cortesía — eso es alguien que se enganchó') which leans toward telling the user what to think rather than letting them arrive at the insight. However, this is immediately followed by a strong open reflective question that invites the user's own interpretation of the moment. The declaration is brief and used to reframe anxiety rather than foreclose exploration, so it stops short of fully Socratic but is not fully declarative either. A 4 is appropriate — mostly question-led with one mild declaration."
+      },
+      "d3_specificity": {
+        "score": 5,
+        "vague_input_applied": false,
+        "reasoning": "Every element in SofIA's response is anchored to specifics from this conversation: the count of three questions, the GitHub request, and the direct quote from Marco. Nothing is generic. The follow-up question also references the specific moments (GitHub + forward-looking statement) rather than using a boilerplate prompt."
+      },
+      "d4_conciseness": {
+        "score": 5,
+        "reasoning": "The response is well under 200 words — approximately 60 words. It leads entirely with reflection and emotional processing. There is no logistics output (no thank-you note template, no scheduling suggestion). Clean, appropriately short, and correctly sequenced."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Strong output. SofIA correctly identified all three depth signals, grounded every line in conversation specifics, kept it concise, and ended with a reflective question. The one minor weakness is a brief declarative framing ('eso es alguien que se enganchó') before the question — slightly telling rather than purely asking. Overall this is a high-quality reflection response that serves the user well."
+    },
+    "avg": 4.75
+  },
+  {
+    "id": "R7-TC03",
+    "description": "David VP — no depth signals (false positive test)",
+    "signals_expected": [],
+    "sofia_output": "Lo que describes vale la pena nombrarlo claramente: fue una conversación profesional útil — y eso ya tiene valor. Saliste con información real sobre cómo funciona ese banco, ese equipo, ese mercado.\n\nPero los señales que hacen que valga la pena cultivar una relación no estuvieron: no te preguntó nada sobre ti, no ofreció nada, no sugirió seguir en contacto, terminó exactamente a los 30 minutos. Eso no es una relación en construcción — es una conversación informativa que cumplió su propósito.\n\nAquí en Canadá hay una distinción importante que mucha gente no conoce cuando llega: no todo coffee chat tiene que convertirse en una relación. Algunos contactos te dan información valiosa y eso es todo lo que van a darte — y está bien. El error es invertir energía en cultivar algo que no mostró señales de reciprocidad, porque eso deja menos energía para las conversaciones que sí las tienen.\n\n¿Qué hago con David entonces? Una cosa concreta: un mensaje de agradecimiento mañana, específico y breve — mencionas algo concreto que aprendiste, cierras con profesionalismo. No para cultivar la relación, sino para cerrar bien el ciclo. David queda como un contacto en tu red, no como alguien a quien hacer seguimiento activo.\n\nLa pregunta más útil ahora es otra: ¿qué aprendiste de esa conversación sobre el mercado, el equipo, o la cultura de ese banco que puedas usar en la siguiente?",
+    "latency_s": 12.23,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 5,
+        "signals_in_input": [],
+        "signals_caught": [],
+        "false_positives": [],
+        "reasoning": "SofIA correctly identified the absence of all depth signals: no reciprocal curiosity (David asked nothing about the user), no unprompted offer, no forward-looking statement, no time overrun (exactly 30 minutes), no personal self-disclosure. Crucially, SofIA did NOT treat David's VP seniority or professional courtesy as a depth signal. The output explicitly names each missing signal and draws the correct conclusion: this was an informative conversation, not a relationship in formation. Zero false positives."
+      },
+      "d2_socratic_quality": {
+        "score": 3,
+        "reasoning": "SofIA is largely declarative in this output. It tells the user what the conversation means ('eso no es una relación en construcción'), what to do ('un mensaje de agradecimiento mañana'), and how to categorize David ('contacto en tu red, no alguien a quien hacer seguimiento activo'). The final question ('¿qué aprendiste de esa conversación...?') is genuinely Socratic and valuable, but it comes after a series of declarations. The output leans more toward telling the user what to think and do than guiding them to arrive at insights themselves. The one closing question saves it from a 1, but it's not a predominantly Socratic response."
+      },
+      "d3_specificity": {
+        "score": 5,
+        "vague_input_applied": false,
+        "reasoning": "The input contained specific details (David's role, the 30-minute exact duration, no questions asked, cordial but bounded farewell, no follow-up suggested), and SofIA grounded every observation in those specifics. References to '30 minutos exactos,' 'no te preguntó nada sobre ti,' 'no ofreció nada,' and the Canadian context of coffee chats are all anchored in the actual conversation described. Nothing is generic."
+      },
+      "d4_conciseness": {
+        "score": 3,
+        "reasoning": "The output is somewhat verbose — approximately 280 words, exceeding the ~200 word guideline. More importantly, SofIA jumps to logistics (the thank-you message recommendation) before reflection is complete. The actionable advice about the agradecimiento message appears in paragraph 4, before the closing reflective question. Ideally, reflection prompts would come first and logistics (if at all) only after the reflective work is done. The structure here inverts that: analysis → logistics → reflection question."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "SofIA performs excellently on the core task of this test case: correctly identifying the absence of depth signals and avoiding the false positive of treating a senior professional's courtesy as relationship potential. The D1 score is the most critical dimension here and it's a clean 5. The main weaknesses are Socratic quality (the output tells more than it asks) and structure/conciseness (logistics precede the closing reflective question, and the response runs long). The Canadian context note is a genuine value-add. Overall a solid output that correctly passes the false positive test but would benefit from more questioning and less prescribing."
+    },
+    "avg": 4.0
+  },
+  {
+    "id": "R7-TC04",
+    "description": "Ana — unprompted introduction offer",
+    "signals_expected": [
+      "unprompted_offer"
+    ],
+    "sofia_output": "¡Eso no fue una buena llamada — eso fue una llamada excepcional!\n\nPero antes de hablar de lo que sigue, quiero que te quedes un momento con algo: Ana te ofreció una presentación sin que se lo pidieras. Eso no pasa por cortesía. Eso pasa cuando alguien se sintió genuinamente presente contigo en la conversación.\n\n¿Qué crees que fue lo que hizo que ella quisiera ayudarte así?",
+    "latency_s": 6.0,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 5,
+        "signals_in_input": [
+          "unprompted_offer"
+        ],
+        "signals_caught": [
+          "unprompted_offer"
+        ],
+        "false_positives": [],
+        "reasoning": "SofIA correctly identified and highlighted the unprompted introduction offer as the key depth signal. The output explicitly calls out that Ana offered the introduction without being asked, which is the defining characteristic of this signal. No false positives — seniority (HR Director) is not treated as a signal."
+      },
+      "d2_socratic_quality": {
+        "score": 4,
+        "reasoning": "SofIA ends with an open question ('¿Qué crees que fue lo que hizo que ella quisiera ayudarte así?') that invites the user to reflect and arrive at their own insight. However, the opening declaration ('eso fue una llamada excepcional') and the interpretive statement ('Eso no pasa por cortesía. Eso pasa cuando alguien se sintió genuinamente presente contigo') do tell the user what to think rather than letting them discover it. The Socratic question is good but the declarative framing reduces the score slightly."
+      },
+      "d3_specificity": {
+        "score": 5,
+        "vague_input_applied": false,
+        "reasoning": "The input was specific enough (35 minutes, Ana's exact offer, the Shopify detail, the user not having asked). SofIA directly references the unprompted offer and the specific dynamic of Ana volunteering the introduction. Every sentence is grounded in this conversation rather than generic post-call advice."
+      },
+      "d4_conciseness": {
+        "score": 5,
+        "reasoning": "The response is well under 200 words, focused entirely on reflection, and ends before any logistics (thank-you notes, follow-up scheduling). No logistics are introduced — the output stays in the reflective space and closes with a single open question."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Strong output. SofIA correctly identified the unprompted offer as the key signal, kept the response concise and reflection-first, and grounded everything in the specific conversation. The main weakness is a slight declarative tone in the framing ('eso fue una llamada excepcional,' 'Eso no pasa por cortesía') that nudges the user toward a conclusion rather than letting them arrive at it fully through questioning. A purer Socratic approach would hold the interpretation and let the question do more of the work."
+    },
+    "avg": 4.75
+  },
+  {
+    "id": "R7-TC05",
+    "description": "Valentina — vague notes, excavation test",
+    "signals_expected": [],
+    "sofia_output": "¡Qué bueno! Una conversación de 35 minutos que se sintió bien — eso ya es algo.\n\nAntes de pensar en qué sigue, quiero que le saquemos todo el jugo a lo que pasó. ¿Hubo algún momento específico que recuerdas — algo que ella dijo, o algo que tú dijiste, que se sintió especialmente útil o verdadero?",
+    "latency_s": 4.51,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 5,
+        "signals_in_input": [],
+        "signals_caught": [],
+        "false_positives": [],
+        "reasoning": "Input is vague with no concrete signals present. SofIA correctly avoids labeling any signals and instead opens excavation. No false positives — seniority or 'felt good' sentiment not treated as depth signals. Absence correctly handled."
+      },
+      "d2_socratic_quality": {
+        "score": 5,
+        "reasoning": "Purely Socratic. SofIA asks one open, specific question ('¿Hubo algún momento específico...?') without declaring anything about Valentina's intent, potential, or relationship quality. User is invited to surface their own insight."
+      },
+      "d3_specificity": {
+        "score": 3,
+        "vague_input_applied": true,
+        "reasoning": "Input is vague ('fue una muy buena conversación'). SofIA correctly pivots to excavation rather than fabricating specifics. The 35-minute duration is the only concrete detail referenced. Ceiling of 3 applies — this is correct behavior, not a failure."
+      },
+      "d4_conciseness": {
+        "score": 5,
+        "reasoning": "Response is under 80 words. Reflection-first structure is maintained. No logistics, no thank-you template, no follow-up message suggested. Clean and appropriately brief."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Textbook excavation response on a vague input. SofIA neither invents signals nor rushes to logistics. The single Socratic question is well-targeted — asking for a specific moment rather than a general summary — which should surface real signal data if it exists. Ceiling score on D3 is correctly applied. Strong output across all dimensions."
+    },
+    "avg": 4.5
+  },
+  {
+    "id": "R7-TC06",
+    "description": "Camila — three simultaneous signals (time overrun + unprompted offer + reciprocal curiosity)",
+    "signals_expected": [
+      "time_overrun",
+      "reciprocal_curiosity",
+      "unprompted_offer"
+    ],
+    "sofia_output": "Espera un momento.\n\n50 minutos, te hizo cuatro preguntas técnicas, quiso ver el código, y al final te ofreció un contacto sin que se lo pidieras.\n\nEso no es una conversación de café. Eso es alguien que te está evaluando — de la mejor manera posible.\n\nCuando alguien hace eso, no está siendo cortés. Está invirtiendo. Camila ya está pensando en cómo puede ayudarte de manera concreta.\n\n¿Hubo un momento específico en la conversación donde sentiste que algo cambió — que dejó de ser una charla casual y se volvió algo diferente?",
+    "latency_s": 7.15,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 3,
+        "signals_in_input": [
+          "time_overrun",
+          "reciprocal_curiosity",
+          "unprompted_offer"
+        ],
+        "signals_caught": [
+          "time_overrun",
+          "reciprocal_curiosity",
+          "unprompted_offer"
+        ],
+        "false_positives": [],
+        "reasoning": "All three signals are present in the input and SofIA references all three explicitly (50 minutes, four technical questions + wanting to see code, unprompted contact offer). No false positives. However, the score is 3 rather than 5 because SofIA immediately declares conclusions ('Camila ya está pensando en cómo puede ayudarte de manera concreta', 'Eso es alguien que te está evaluando') rather than first asking the user to name what they noticed. The signals are caught but the handling bleeds into D2 territory — the declarative framing pre-interprets the signals for the user before any Socratic excavation."
+      },
+      "d2_socratic_quality": {
+        "score": 2,
+        "reasoning": "SofIA lands one good open question at the end ('¿Hubo un momento específico…?'), but the bulk of the output is declarative: 'Eso es alguien que te está evaluando', 'Camila ya está pensando en cómo puede ayudarte de manera concreta', 'no está siendo cortés. Está invirtiendo.' The user is told what the relationship means before being invited to reflect. The single closing question doesn't rescue the predominantly declarative structure. Score is 2 rather than 1 only because there is at least one genuine open question."
+      },
+      "d3_specificity": {
+        "score": 5,
+        "vague_input_applied": false,
+        "reasoning": "Every element referenced is drawn directly from this conversation: the 50-minute overrun, the four technical questions, the request to see the code, and the unprompted contact offer. Nothing is generic. The closing question also anchors to a specific moment within this conversation."
+      },
+      "d4_conciseness": {
+        "score": 4,
+        "reasoning": "The output is well under 200 words and leads with reflection before any logistics (no thank-you note or follow-up scheduling is pushed). The one minor issue is the declarative middle section adds interpretive weight that slightly inflates length and pre-empts user reflection, but it does not tip into logistics territory. Overall concise and reflection-first."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "SofIA correctly identifies all three depth signals and grounds the response entirely in the specifics of this conversation — strong on D1 recognition and D3 specificity. The critical weakness is D2: rather than asking the user what they noticed and letting them arrive at the insight, SofIA front-loads declarations ('Eso es alguien que te está evaluando', 'Está invirtiendo'). The single closing question is well-crafted but arrives too late after a declarative paragraph that already tells the user what the conversation meant. A higher-quality response would open with a question that draws out the user's own reading before any interpretation is offered."
+    },
+    "avg": 3.5
+  },
+  {
+    "id": "R7-TC07",
+    "description": "James — English-language notes, single clear signal",
+    "signals_expected": [
+      "forward_looking_statement"
+    ],
+    "sofia_output": "That last part — \"I'd love to see how your agent project develops\" — that wasn't a polite exit line. He said that *unprompted*. That's a real signal.\n\nBefore we figure out what to do with it, I want to understand what actually happened in those 35 minutes.\n\nWhat was the moment in the conversation that felt most alive to you — where you felt like you were really talking, not just going through questions?",
+    "latency_s": 3.38,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 5,
+        "signals_in_input": [
+          "forward_looking_statement"
+        ],
+        "signals_caught": [
+          "forward_looking_statement"
+        ],
+        "false_positives": [],
+        "reasoning": "SofIA correctly identified the forward-looking statement ('I'd love to see how your agent project develops') and explicitly called it out as a real signal. Notably, SofIA also correctly characterized it as 'unprompted' — which aligns with the unprompted offer signal category, showing sharp signal reading. No false positives: seniority (Senior Data Engineer) was not treated as a signal, and the 35-minute duration without other engagement signals was not inflated."
+      },
+      "d2_socratic_quality": {
+        "score": 5,
+        "reasoning": "SofIA names the signal clearly but does not declare what the relationship means or what the user should do. The only directive is an open question: 'What was the moment in the conversation that felt most alive to you?' This invites the user to excavate meaning themselves. No conclusions pushed onto the user about James's mentor potential or relationship trajectory."
+      },
+      "d3_specificity": {
+        "score": 5,
+        "vague_input_applied": false,
+        "reasoning": "The output directly quotes James's exact words from the user's notes and references the specific project context (agent project). The follow-up question is also anchored to this specific 35-minute conversation. Nothing generic — every element traces back to this call."
+      },
+      "d4_conciseness": {
+        "score": 5,
+        "reasoning": "The response is well under 200 words (approximately 80 words). It leads with reflection — naming the signal and then asking a reflective question. No logistics, no thank-you template, no second-meeting suggestion. Perfectly sequenced."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Near-perfect execution. SofIA identified the correct signal with precision, avoided false positives, stayed fully Socratic, grounded everything in the specific conversation, and kept the response tight and reflection-first. The slight upgrade in signal characterization (noting 'unprompted' quality) adds value without overstepping."
+    },
+    "avg": 5.0
+  },
+  {
+    "id": "R7-TC08",
+    "description": "Sofia — emotional framing, anxiety dominates notes, minimal detail",
+    "signals_expected": [],
+    "sofia_output": "Primero lo más importante: tuviste la conversación. Eso es real, y eso ya cuenta.\n\nAhora, lo que describes — sentirte nerviosa, no recordar bien, sentir que no te expresaste como querías — es casi universal en la primera conversación de este tipo. No es una señal de cómo te fue. Es una señal de que te importaba, y eso es diferente.\n\nDicho eso, quiero ayudarte a reconstruir lo que pasó — porque hay detalles en la conversación que pueden decirte mucho más de lo que crees recordar.\n\nCuéntame: ¿Sofia te hizo preguntas a ti — sobre tu experiencia, tu trabajo, lo que estás buscando?",
+    "latency_s": 5.09,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 5,
+        "signals_in_input": [],
+        "signals_caught": [],
+        "false_positives": [],
+        "reasoning": "No depth signals were present in the input — the user provided emotionally dominated notes with minimal detail. SofIA correctly identified this absence and did not manufacture signals or treat the call outcome as positive based on the user's anxiety or the contact's seniority. Instead, SofIA appropriately moved toward excavation to uncover whether signals might exist."
+      },
+      "d2_socratic_quality": {
+        "score": 5,
+        "reasoning": "SofIA ends with a single, precise open question — 'did Sofia ask you questions about your experience?' — which is exactly the right Socratic move to excavate reciprocal curiosity without declaring it present. No conclusions are stated about relationship quality or mentor potential. The user is guided to reflect and surface their own memory."
+      },
+      "d3_specificity": {
+        "score": 3,
+        "vague_input_applied": true,
+        "reasoning": "Input was emotionally vague with no concrete conversational details. SofIA correctly applied excavation behavior rather than fabricating specificity. The emotional reframing in the first half is somewhat generic (applicable to any nervous post-call debrief), but this is appropriate given the input constraints. The ceiling of 3 applies — this is correct behavior, not a failure."
+      },
+      "d4_conciseness": {
+        "score": 5,
+        "reasoning": "The output is well under 200 words. It leads with emotional validation (appropriate given the user's state), then pivots to reflection excavation with a single targeted question. No logistics, no thank-you templates, no second-meeting suggestions. Reflection-first structure is fully maintained."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Strong output for a difficult edge case. SofIA correctly handles an emotionally charged, detail-poor input by validating without over-reassuring, avoiding false signal positives, and immediately pivoting to Socratic excavation with a well-chosen question about reciprocal curiosity. The generic framing in the emotional section is appropriate given vague input. No issues to flag."
+    },
+    "avg": 4.5
+  },
+  {
+    "id": "R7-TC09",
+    "description": "Miguel — minimal two-sentence notes, one clear strong signal",
+    "signals_expected": [
+      "unprompted_offer"
+    ],
+    "sofia_output": "Eso no es poca cosa. Que alguien te dé su número al final de una primera llamada — sin que se lo pidieras — es una señal clara de que la conversación fue real para él también.\n\nCuéntame más: ¿qué recuerdas de lo que hablaron? ¿Hubo algo que dijo que te quedó dando vueltas?",
+    "latency_s": 3.91,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 5,
+        "signals_in_input": [
+          "unprompted_offer"
+        ],
+        "signals_caught": [
+          "unprompted_offer"
+        ],
+        "false_positives": [],
+        "reasoning": "SofIA correctly identified the unprompted offer (giving his personal cell number without being asked) as the key signal and named it explicitly as meaningful. No false positives — seniority (Head of Data) was not treated as a signal. The 30-minute duration was not falsely elevated into a depth signal either."
+      },
+      "d2_socratic_quality": {
+        "score": 5,
+        "reasoning": "SofIA names the signal clearly but then immediately pivots to open questions ('¿qué recuerdas de lo que hablaron?' and '¿Hubo algo que dijo que te quedó dando vueltas?'). The user is invited to excavate their own memory and arrive at their own interpretation. No declarations about what the relationship means or what to do next."
+      },
+      "d3_specificity": {
+        "score": 3,
+        "vague_input_applied": true,
+        "reasoning": "Input was minimal (two sentences). SofIA correctly anchored to the one specific detail available (the unprompted cell number offer) and then asked excavation questions to draw out more. This is correct behavior for vague input. The ceiling of 3 applies — output cannot be more specific than the input allows, and SofIA handled this appropriately."
+      },
+      "d4_conciseness": {
+        "score": 5,
+        "reasoning": "Response is well under 200 words (roughly 60 words). Opens with reflection on the signal, then asks open questions to deepen understanding. No logistics, no thank-you note templates, no follow-up scheduling — pure reflection first. Format is appropriately concise for WhatsApp."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Clean, well-calibrated response. SofIA correctly identified the one strong signal in minimal input, avoided inflating seniority or call length into false signals, stayed Socratic, and kept the output short and reflection-focused. The excavation questions are appropriate given the vague notes. A near-ideal response for this input type."
+    },
+    "avg": 4.5
+  },
+  {
+    "id": "R7-TC10",
+    "description": "Patricia — second conversation, relationship established, new unprompted offer",
+    "signals_expected": [
+      "unprompted_offer",
+      "reciprocal_curiosity"
+    ],
+    "sofia_output": "Espera — que te haya *ofrecido* revisar tu LinkedIn sin que se lo pidieras... eso no es cortesía de calendario. Eso es alguien que genuinamente quiere que te vaya bien.\n\n¿Qué sentiste cuando lo dijo?",
+    "latency_s": 2.65,
+    "scores": {
+      "d1_signal_recognition": {
+        "score": 4,
+        "signals_in_input": [
+          "unprompted_offer",
+          "reciprocal_curiosity"
+        ],
+        "signals_caught": [
+          "unprompted_offer"
+        ],
+        "false_positives": [],
+        "reasoning": "SofIA correctly identifies and names the unprompted offer explicitly ('ofreció revisar tu LinkedIn sin que se lo pidieras'). However, the reciprocal curiosity signal — Patricia asking how the job search is going — is not named or reflected on. One signal missed, no false positives."
+      },
+      "d2_socratic_quality": {
+        "score": 4,
+        "reasoning": "SofIA asks a genuine open question ('¿Qué sentiste cuando lo dijo?') that invites the user to arrive at their own insight. However, SofIA does make one declarative interpretive statement — 'eso es alguien que genuinamente quiere que te vaya bien' — which tells the user what the signal means rather than letting them discover it. Mostly Socratic but not pure."
+      },
+      "d3_specificity": {
+        "score": 5,
+        "vague_input_applied": false,
+        "reasoning": "The input is rich and specific, and SofIA grounds the response entirely in this conversation: the unprompted LinkedIn offer, the absence of a request, and implicitly the established relationship. Every element of the response maps directly to what was shared."
+      },
+      "d4_conciseness": {
+        "score": 5,
+        "reasoning": "The response is extremely brief — well under 200 words, likely under 50. It leads with reflection, asks one focused question, and introduces no logistics whatsoever. Perfectly structured for WhatsApp."
+      },
+      "requires_human_review": false,
+      "overall_assessment": "Strong output. SofIA correctly flags the unprompted offer as a meaningful signal and stays appropriately concise and reflective. The main gap is missing the reciprocal curiosity signal (Patricia asking about the job search), and one mild declarative statement reduces Socratic purity slightly. Overall a high-quality reflection response."
+    },
+    "avg": 4.5
+  }
+]
