@@ -3,6 +3,7 @@ import os
 import re
 import time
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta
 
 from fastapi import APIRouter, BackgroundTasks, Request
@@ -31,6 +32,7 @@ from langfuse.decorators import langfuse_context, observe
 
 router = APIRouter()
 logger = logging.getLogger(__name__)
+_READ_POOL = ThreadPoolExecutor(max_workers=20)
 
 _langfuse = Langfuse()
 
@@ -149,15 +151,24 @@ def _find_mentioned_contact(text: str, all_contacts: list, active_contact) -> "C
 def _process(phone: str, text: str, message_sid: str):
     t0 = time.perf_counter()
 
-    if is_duplicate(message_sid):
-        return
-    t_dedup = time.perf_counter()
+    f_dedup        = _READ_POOL.submit(is_duplicate, message_sid)
+    f_user         = _READ_POOL.submit(load_user, phone)
+    f_contact      = _READ_POOL.submit(get_active_contact, phone)
+    f_all_contacts = _READ_POOL.submit(get_user_contacts, phone)
+    f_allowed      = _READ_POOL.submit(is_whatsapp_allowed, phone)
 
-    user = load_user(phone)
-    t_load_user = time.perf_counter()
+    is_dup               = f_dedup.result()
+    user                 = f_user.result()
+    contact_id, contact  = f_contact.result()
+    all_contacts         = [c for _, c in f_all_contacts.result()]
+    is_allowed           = f_allowed.result()
+    t_reads = time.perf_counter()
+
+    if is_dup:
+        return
 
     # Allowlist check — every message, every user (bypass for test tier)
-    if user.tier != "test" and not is_whatsapp_allowed(phone):
+    if user.tier != "test" and not is_allowed:
         logger.info("Unauthorized phone %s — not in allowlist", phone)
         send_message(phone, WAITLIST_MSG)
         return
@@ -167,15 +178,8 @@ def _process(phone: str, text: str, message_sid: str):
         send_message(phone, RATE_LIMIT_MSG.get(user.language, RATE_LIMIT_MSG["es"]))
         save_user(user)
         return
-    t_rate_limit = time.perf_counter()
 
     session_id = _get_or_create_session(user, now)
-
-    contact_id, contact = get_active_contact(phone)
-    t_active_contact = time.perf_counter()
-
-    all_contacts = [c for _, c in get_user_contacts(phone)]
-    t_all_contacts = time.perf_counter()
 
     mentioned = _find_mentioned_contact(text, all_contacts, contact)
     context = build_context(user, contact, all_contacts, mentioned)
@@ -220,11 +224,8 @@ def _process(phone: str, text: str, message_sid: str):
     t_twilio = time.perf_counter()
 
     latency = {
-        "dedup_s": round(t_dedup - t0, 3),
-        "load_user_s": round(t_load_user - t_dedup, 3),
-        "active_contact_s": round(t_active_contact - t_rate_limit, 3),
-        "all_contacts_s": round(t_all_contacts - t_active_contact, 3),
-        "build_s": round(t_build - t_all_contacts, 3),
+        "reads_s": round(t_reads - t0, 3),
+        "build_s": round(t_build - t_reads, 3),
         "claude_s": round(t_claude - t_build, 3),
         "save_user_s": round(t_save_user - t_claude, 3),
         "twilio_s": round(t_twilio - t_save_user, 3),
