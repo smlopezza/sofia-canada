@@ -105,8 +105,8 @@ WAITLIST_MSG = (
     "Hola / Hi! 👋\n\n"
     "Tu número de WhatsApp aún no está activado en SofIA.\n"
     "Your WhatsApp number hasn't been activated in SofIA yet.\n\n"
-    "Para activarlo, escríbeme a / To get access, email me at:\n"
-    "📧 slopezza@outlook.com\n\n"
+    "Para activarlo, unete a mi lista de espera / To get acces join the waiting list:\n"
+    "📧 https://sofia-qhgvxxwh5q-nn.a.run.app/\n\n"
     "Incluye tu número de WhatsApp en el mensaje y te activo pronto.\n"
     "Include your WhatsApp number in the email and I'll activate you soon. 🌟"
 )
