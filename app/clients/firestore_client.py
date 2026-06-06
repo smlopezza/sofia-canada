@@ -1,11 +1,15 @@
 import os
 import logging
+import time
 from google.cloud import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 from app.models import UserDoc, ContactDoc, ExportToken
 
 _db = None
 logger = logging.getLogger(__name__)
+
+_user_cache: dict[str, tuple[UserDoc, float]] = {}
+_CACHE_TTL = 60
 
 _USER_FIELDS = {f for f in UserDoc.__dataclass_fields__} - {"application_stage"}
 _CONTACT_FIELDS = {f for f in ContactDoc.__dataclass_fields__}
@@ -50,15 +54,19 @@ def _safe_contact_data(data: dict) -> dict:
 
 
 def load_user(phone: str) -> UserDoc:
+    cached, ts = _user_cache.get(phone, (None, 0))
+    if cached is not None and time.time() - ts < _CACHE_TTL:
+        return cached
     doc = get_db().collection("users").document(phone).get()
-    if doc.exists:
-        return UserDoc(phone=phone, **_safe_user_data(doc.to_dict()))
-    return UserDoc(phone=phone)
+    user = UserDoc(phone=phone, **_safe_user_data(doc.to_dict())) if doc.exists else UserDoc(phone=phone)
+    _user_cache[phone] = (user, time.time())
+    return user
 
 
 def save_user(user: UserDoc):
     data = {k: v for k, v in user.__dict__.items() if k != "phone" and not k.startswith("_")}
     get_db().collection("users").document(user.phone).set(data, merge=True)
+    _user_cache[user.phone] = (user, time.time())
 
 
 def get_active_contact(phone: str) -> tuple[str | None, ContactDoc | None]:
