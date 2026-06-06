@@ -217,19 +217,19 @@ def _process(phone: str, text: str, message_sid: str):
     if len(user.messages) > 20:
         user.messages = user.messages[-20:]
     user.last_active = ts
-    save_user(user)
-    t_save_user = time.perf_counter()
-
     send_message(phone, reply)
     t_twilio = time.perf_counter()
+
+    save_user(user)
+    t_save_user = time.perf_counter()
 
     latency = {
         "reads_s": round(t_reads - t0, 3),
         "build_s": round(t_build - t_reads, 3),
         "claude_s": round(t_claude - t_build, 3),
-        "save_user_s": round(t_save_user - t_claude, 3),
-        "twilio_s": round(t_twilio - t_save_user, 3),
-        "total_s": round(t_twilio - t0, 3),
+        "twilio_s": round(t_twilio - t_claude, 3),
+        "save_user_s": round(t_save_user - t_twilio, 3),
+        "total_s": round(t_save_user - t0, 3),
     }
     logger.info("LATENCY phone=%s %s", phone, latency)
     langfuse_context.update_current_observation(
