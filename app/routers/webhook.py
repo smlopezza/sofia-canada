@@ -156,7 +156,7 @@ def _process(phone: str, text: str, message_sid: str):
     t0 = time.perf_counter()
 
     if not is_user_cached(phone):
-        _READ_POOL.submit(send_message, phone, ACK_MSG)
+        send_message(phone, ACK_MSG)
 
     f_dedup        = _READ_POOL.submit(is_duplicate, message_sid)
     f_user         = _READ_POOL.submit(load_user, phone)
