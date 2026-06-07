@@ -14,12 +14,14 @@ from app.clients.claude_client import (
     build_context,
     call_claude,
     generate_summary,
+    HAIKU,
 )
 from app.clients.firestore_client import (
     count_active_users,
     get_active_contact,
     get_user_contacts,
     is_duplicate,
+    is_user_cached,
     is_whatsapp_allowed,
     load_user,
     save_contact,
@@ -103,6 +105,8 @@ def _get_or_create_session(user, now: datetime) -> str:
     return user.session_id
 
 
+ACK_MSG = "Hola / Hi! Un momento... ✨"
+
 WAITLIST_MSG = (
     "Hola / Hi! 👋\n\n"
     "Tu número de WhatsApp aún no está activado en SofIA.\n"
@@ -150,6 +154,9 @@ def _find_mentioned_contact(text: str, all_contacts: list, active_contact) -> "C
 @observe(name="process_message")
 def _process(phone: str, text: str, message_sid: str):
     t0 = time.perf_counter()
+
+    if not is_user_cached(phone):
+        _READ_POOL.submit(send_message, phone, ACK_MSG)
 
     f_dedup        = _READ_POOL.submit(is_duplicate, message_sid)
     f_user         = _READ_POOL.submit(load_user, phone)
@@ -262,7 +269,8 @@ def _call_with_retry(user, contact, contact_id, phone, claude_messages) -> str:
 
 
 def _call_claude_and_apply(user, contact, contact_id, phone, claude_messages) -> str:
-    reply, tool_inputs = call_claude(build_system_prompt(user), list(claude_messages))
+    model = HAIKU if not user.messages else SONNET
+    reply, tool_inputs = call_claude(build_system_prompt(user), list(claude_messages), model=model)
 
     if tool_inputs:
         contact, contact_id = _apply_tool_use(user, contact, contact_id, phone, tool_inputs)

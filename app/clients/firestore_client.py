@@ -69,6 +69,11 @@ def save_user(user: UserDoc):
     _user_cache[user.phone] = (user, time.time())
 
 
+def is_user_cached(phone: str) -> bool:
+    cached, ts = _user_cache.get(phone, (None, 0))
+    return cached is not None and time.time() - ts < _CACHE_TTL
+
+
 def get_active_contact(phone: str) -> tuple[str | None, ContactDoc | None]:
     """Returns (contact_id, ContactDoc) for the most recently created contact, or (None, None)."""
     try:
