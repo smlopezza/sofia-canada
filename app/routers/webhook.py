@@ -15,6 +15,7 @@ from app.clients.claude_client import (
     call_claude,
     generate_summary,
     HAIKU,
+    SONNET,
 )
 from app.clients.firestore_client import (
     count_active_users,
