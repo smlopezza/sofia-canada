@@ -33,7 +33,7 @@
         {% elif user.transition_stage == 'applying' %}{% if lang == 'es' %}Aplicando, poca respuesta{% else %}Applying, few responses{% endif %}
         {% elif user.transition_stage == 'interviewing' %}{% if lang == 'es' %}Consiguiendo entrevistas{% else %}Getting interviews{% endif %}
         {% elif user.transition_stage == 'employed' %}{% if lang == 'es' %}Tengo trabajo, buscando mi área{% else %}Employed, seeking my field{% endif %}
-        {% else %}{{ user.transition_stage }}{% endif %}
+        {% else %}{{ user.transition_stage | capitalize}}{% endif %}
       </span>
       {% endif %}
     </div>
