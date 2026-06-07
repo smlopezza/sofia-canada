@@ -22,13 +22,7 @@
   <div class="container text-center">
     <img src="/static/images/sofia_avatar.png" alt="SofIA" class="hero-avatar">
     <h1>{{ user.name or ("Tu historia" if lang == 'es' else "Your Story") }}</h1>
-    {% if user.goals %}
-    <div class="mt-3">
-      {% for goal in user.goals %}
-      <span class="badge badge-light mr-1">{{ goal }}</span>
-      {% endfor %}
-    </div>
-    {% endif %}
+    
     <div class="mt-3">
       <span class="badge badge-light mr-2">{{ user.field }}</span>
       <span class="badge badge-light mr-2">{{ user.city }}</span>
