@@ -1,253 +1,253 @@
 TOOLS = []  # Removed — state updates now use <update> blocks in response text
 
-_TOOLS_UNUSED = [
-    {
-        "name": "update_state",
-        "description": (
-            "Call this when the user's state has changed, when a new contact is identified, "
-            "when a coffee chat is scheduled or completed, or when the user confirms their About Me."
-        ),
-        "input_schema": {
-            "type": "object",
-            "properties": {
-                "new_state": {
-                    "type": "string",
-                    "enum": [
-                        "onboarding", "active_job_search", "first_contact_registered",
-                        "first_chat_scheduled", "first_chat_completed", "building_momentum",
-                        "deepening_relationships", "interview_stage", "advancing_in_interviews",
-                        "job_offer_received", "job_landed", "first_90_days"
-                    ],
-                    "description": "New user state. Only include if state has changed."
-                },
-                "milestone_type": {
-                    "type": "string",
-                    "description": (
-                        "Milestone to record. "
-                        "E.g. 'first_chat_completed', 'event_attended'. "
-                        "Use 'event_attended' when a user reports going to a professional event."
-                    )
-                },
-                "new_contact": {
-                    "type": "object",
-                    "description": (
-                        "Create a new contact when the user first names a specific person they want "
-                        "to connect with. Only call this once per contact — use contact_updates for "
-                        "all subsequent changes."
-                    ),
-                    "properties": {
-                        "name": {"type": "string"},
-                        "role": {"type": "string"},
-                        "company": {"type": "string"},
-                        "connection_context": {
-                            "type": "string",
-                            "description": "How they know each other or why this person is relevant."
-                        },
-                        "scheduled_chat_at": {
-                            "type": "string",
-                            "description": "ISO datetime if a chat is already scheduled."
-                        }
-                    },
-                    "required": ["name", "role", "company", "connection_context"]
-                },
-                "contact_updates": {
-                    "type": "object",
-                    "description": (
-                        "Update fields on the active contact. "
-                        "Use 'add_chat' to log a coffee chat: "
-                        "{\"add_chat\": {\"scheduled_at\": \"ISO datetime\", \"notes\": \"...\", \"depth_signals\": \"...\"}}. "
-                        "'depth_signals' captures 1-2 observations about the quality of the conversation — "
-                        "written in second person ('tú') as if the user is recalling it. "
-                        "In Spanish: 'Llegaste preparada', 'Hiciste preguntas estratégicas', 'Mostraste vulnerabilidad'. "
-                        "In English: 'You came prepared', 'You asked strategic questions'. "
-                        "Never use third person ('Sandra llegó', 'Llegó con preguntas'). "
-                        "Set 'is_mentor: true' when the user explicitly says this person is their mentor. "
-                        "Other fields: post_call_notes, depth_signals, topics_of_interest, linkedin_url."
-                    )
-                },
-                "about_me": {
-                    "type": "string",
-                    "description": (
-                        "User's confirmed About Me (3–4 sentences in English). "
-                        "Set once when user confirms it. Never overwrite unless user explicitly "
-                        "asks to update their About Me."
-                    )
-                },
-                "user_name": {
-                    "type": "string",
-                    "description": (
-                        "User's first name. Set once during onboarding when the user tells you "
-                        "their name. Never overwrite once set."
-                    )
-                },
-                "country_of_origin": {
-                    "type": "string",
-                    "description": (
-                        "User's country of origin (e.g. 'Mexico', 'Colombia', 'Venezuela'). "
-                        "Set once during onboarding when the user mentions where they're from."
-                    )
-                },
-                "city": {
-                    "type": "string",
-                    "description": (
-                        "User's city in Canada (e.g. 'London, ON', 'Toronto', 'Calgary'). "
-                        "Set as soon as the user mentions their city. Set once — do not overwrite."
-                    )
-                },
-                "field": {
-                    "type": "string",
-                    "description": (
-                        "User's professional field (e.g. 'Ingeniería química', 'Community & Youth Services', "
-                        "'Data Science', 'Medicine'). Set as soon as the user describes their profession. "
-                        "Set once — do not overwrite unless the user explicitly changes their field."
-                    )
-                },
-                "time_in_canada": {
-                    "type": "string",
-                    "description": (
-                        "How long the user has been in Canada (e.g. '8 months', '2 years', '16 meses'). "
-                        "Set once during onboarding when the user mentions it."
-                    )
-                },
-                "language": {
-                    "type": "string",
-                    "enum": ["es", "en"],
-                    "description": (
-                        "User's language preference. Update only when the user explicitly asks to "
-                        "switch languages (e.g. 'I want to speak in English', 'en español por favor')."
-                    )
-                },
-                "transition_stage": {
-                    "type": "string",
-                    "enum": [
-                        "exploring", "active_search", "applying", "interviewing", "employed"
-                    ],
-                    "description": (
-                        "Where the user is in their job-transition journey. "
-                        "This is more important than time in Canada — two people can arrive the "
-                        "same year but be at completely different stages. "
-                        "Set as soon as the user describes their situation. Update if their stage changes. "
-                        "Values: "
-                        "'exploring' = just starting to think about the job search; "
-                        "'active_search' = actively looking but no traction yet; "
-                        "'applying' = sending applications, few or no responses; "
-                        "'interviewing' = getting interviews, working on strategy; "
-                        "'employed' = has a job (survival or field), still seeking their area."
-                    )
-                },
-                "is_volunteering": {
-                    "type": "boolean",
-                    "description": (
-                        "Set to true when the user confirms they are actively volunteering "
-                        "anywhere in Canada — professional org, non-profit, community group, etc. "
-                        "Use this to unlock the volunteering leverage section and build on "
-                        "their existing volunteer work in prep and reflection."
-                    )
-                },
-                "opt_out_nudges": {
-                    "type": "boolean",
-                    "description": (
-                        "Set to true when the user asks to pause, stop, or turn off automated "
-                        "messages (pre-chat nudges, post-chat check-ins, thank-you reminders). "
-                        "Set to false when the user asks to resume or re-enable them."
-                    )
-                },
-                "export_requested": {
-                    "type": "boolean",
-                    "description": (
-                        "Set to true when the user asks to download, export, or see their history, "
-                        "contacts, progress, or milestones. This generates a secure link SofIA "
-                        "will include in her response."
-                    )
-                },
-                "goals": {
-                    "type": "array",
-                    "items": {"type": "string"},
-                    "description": (
-                        "User's career goals as a list. Set or update when the user explicitly "
-                        "states their professional objectives (e.g. 'land a data analyst role', "
-                        "'transition into product management'). Add to the list, do not replace "
-                        "unless the user says their goals have changed."
-                    )
-                },
-                "milestones": {
-                    "type": "array",
-                    "description": (
-                        "List of milestones to save to the user's profile. Milestones are things "
-                        "the user DID — actions, events, achievements (e.g. attended a networking "
-                        "event, had a first coffee chat, got an interview). "
-                        "Use ONLY when the user asks to save their achievements/logros/progreso, "
-                        "or when a concrete action they took is not yet recorded. "
-                        "NEVER use milestones for cultural insights or things they learned — "
-                        "use new_learning for those instead. "
-                        "Only include milestones not already saved."
-                    ),
-                    "items": {
-                        "type": "object",
-                        "properties": {
-                            "key": {
-                                "type": "string",
-                                "description": "Short snake_case identifier, e.g. 'five_chats_juanita'"
-                            },
-                            "label": {
-                                "type": "string",
-                                "description": "Human-readable label in the user's language, e.g. '5 conversaciones con Juanita (TD Bank)'"
-                            },
-                            "note": {
-                                "type": "string",
-                                "description": "Optional context or insight about this milestone."
-                            }
-                        },
-                        "required": ["key", "label"]
-                    }
-                },
-                "new_learning": {
-                    "type": "object",
-                    "description": (
-                        "Save a specific insight the user just learned about Canadian professional "
-                        "culture or job search. Use this — NOT milestones — for cultural norms, "
-                        "workplace insights, or job search knowledge. "
-                        "Only call this when you just explained a concrete, transferable norm — "
-                        "not for general encouragement or emotional support. "
-                        "One learning per update_state call. To save multiple learnings, make "
-                        "one update_state call per learning in sequence."
-                    ),
-                    "properties": {
-                        "topic": {
-                            "type": "string",
-                            "enum": [
-                                "canadian_workplace", "job_search", "outreach",
-                                "interview", "survival_job", "volunteering"
-                            ],
-                            "description": "Category of the insight."
-                        },
-                        "insight": {
-                            "type": "string",
-                            "description": (
-                                "The key insight in 1-2 sentences in the user's language. "
-                                "Specific and actionable — written in second person ('tú'), "
-                                "as if the user is recalling it themselves. "
-                                "In Spanish use 'Descubriste', 'Aprendiste', 'Notaste', etc. "
-                                "In English use 'You learned', 'You discovered', etc. "
-                                "Never use third person ('Descubrió', 'She learned')."
-                            )
-                        },
-                        "confidence": {
-                            "type": "string",
-                            "enum": ["high", "medium", "uncertain"],
-                            "description": (
-                                "high = well-established Canadian norm; "
-                                "medium = generally true, some context-dependence; "
-                                "uncertain = varies by industry/role/company."
-                            )
-                        }
-                    },
-                    "required": ["topic", "insight", "confidence"]
-                }
-            }
-        }
-    }
-]
+# _TOOLS_UNUSED = [
+#     {
+#         "name": "update_state",
+#         "description": (
+#             "Call this when the user's state has changed, when a new contact is identified, "
+#             "when a coffee chat is scheduled or completed, or when the user confirms their About Me."
+#         ),
+#         "input_schema": {
+#             "type": "object",
+#             "properties": {
+#                 "new_state": {
+#                     "type": "string",
+#                     "enum": [
+#                         "onboarding", "active_job_search", "first_contact_registered",
+#                         "first_chat_scheduled", "first_chat_completed", "building_momentum",
+#                         "deepening_relationships", "interview_stage", "advancing_in_interviews",
+#                         "job_offer_received", "job_landed", "first_90_days"
+#                     ],
+#                     "description": "New user state. Only include if state has changed."
+#                 },
+#                 "milestone_type": {
+#                     "type": "string",
+#                     "description": (
+#                         "Milestone to record. "
+#                         "E.g. 'first_chat_completed', 'event_attended'. "
+#                         "Use 'event_attended' when a user reports going to a professional event."
+#                     )
+#                 },
+#                 "new_contact": {
+#                     "type": "object",
+#                     "description": (
+#                         "Create a new contact when the user first names a specific person they want "
+#                         "to connect with. Only call this once per contact — use contact_updates for "
+#                         "all subsequent changes."
+#                     ),
+#                     "properties": {
+#                         "name": {"type": "string"},
+#                         "role": {"type": "string"},
+#                         "company": {"type": "string"},
+#                         "connection_context": {
+#                             "type": "string",
+#                             "description": "How they know each other or why this person is relevant."
+#                         },
+#                         "scheduled_chat_at": {
+#                             "type": "string",
+#                             "description": "ISO datetime if a chat is already scheduled."
+#                         }
+#                     },
+#                     "required": ["name", "role", "company", "connection_context"]
+#                 },
+#                 "contact_updates": {
+#                     "type": "object",
+#                     "description": (
+#                         "Update fields on the active contact. "
+#                         "Use 'add_chat' to log a coffee chat: "
+#                         "{\"add_chat\": {\"scheduled_at\": \"ISO datetime\", \"notes\": \"...\", \"depth_signals\": \"...\"}}. "
+#                         "'depth_signals' captures 1-2 observations about the quality of the conversation — "
+#                         "written in second person ('tú') as if the user is recalling it. "
+#                         "In Spanish: 'Llegaste preparada', 'Hiciste preguntas estratégicas', 'Mostraste vulnerabilidad'. "
+#                         "In English: 'You came prepared', 'You asked strategic questions'. "
+#                         "Never use third person ('Sandra llegó', 'Llegó con preguntas'). "
+#                         "Set 'is_mentor: true' when the user explicitly says this person is their mentor. "
+#                         "Other fields: post_call_notes, depth_signals, topics_of_interest, linkedin_url."
+#                     )
+#                 },
+#                 "about_me": {
+#                     "type": "string",
+#                     "description": (
+#                         "User's confirmed About Me (3–4 sentences in English). "
+#                         "Set once when user confirms it. Never overwrite unless user explicitly "
+#                         "asks to update their About Me."
+#                     )
+#                 },
+#                 "user_name": {
+#                     "type": "string",
+#                     "description": (
+#                         "User's first name. Set once during onboarding when the user tells you "
+#                         "their name. Never overwrite once set."
+#                     )
+#                 },
+#                 "country_of_origin": {
+#                     "type": "string",
+#                     "description": (
+#                         "User's country of origin (e.g. 'Mexico', 'Colombia', 'Venezuela'). "
+#                         "Set once during onboarding when the user mentions where they're from."
+#                     )
+#                 },
+#                 "city": {
+#                     "type": "string",
+#                     "description": (
+#                         "User's city in Canada (e.g. 'London, ON', 'Toronto', 'Calgary'). "
+#                         "Set as soon as the user mentions their city. Set once — do not overwrite."
+#                     )
+#                 },
+#                 "field": {
+#                     "type": "string",
+#                     "description": (
+#                         "User's professional field (e.g. 'Ingeniería química', 'Community & Youth Services', "
+#                         "'Data Science', 'Medicine'). Set as soon as the user describes their profession. "
+#                         "Set once — do not overwrite unless the user explicitly changes their field."
+#                     )
+#                 },
+#                 "time_in_canada": {
+#                     "type": "string",
+#                     "description": (
+#                         "How long the user has been in Canada (e.g. '8 months', '2 years', '16 meses'). "
+#                         "Set once during onboarding when the user mentions it."
+#                     )
+#                 },
+#                 "language": {
+#                     "type": "string",
+#                     "enum": ["es", "en"],
+#                     "description": (
+#                         "User's language preference. Update only when the user explicitly asks to "
+#                         "switch languages (e.g. 'I want to speak in English', 'en español por favor')."
+#                     )
+#                 },
+#                 "transition_stage": {
+#                     "type": "string",
+#                     "enum": [
+#                         "exploring", "active_search", "applying", "interviewing", "employed"
+#                     ],
+#                     "description": (
+#                         "Where the user is in their job-transition journey. "
+#                         "This is more important than time in Canada — two people can arrive the "
+#                         "same year but be at completely different stages. "
+#                         "Set as soon as the user describes their situation. Update if their stage changes. "
+#                         "Values: "
+#                         "'exploring' = just starting to think about the job search; "
+#                         "'active_search' = actively looking but no traction yet; "
+#                         "'applying' = sending applications, few or no responses; "
+#                         "'interviewing' = getting interviews, working on strategy; "
+#                         "'employed' = has a job (survival or field), still seeking their area."
+#                     )
+#                 },
+#                 "is_volunteering": {
+#                     "type": "boolean",
+#                     "description": (
+#                         "Set to true when the user confirms they are actively volunteering "
+#                         "anywhere in Canada — professional org, non-profit, community group, etc. "
+#                         "Use this to unlock the volunteering leverage section and build on "
+#                         "their existing volunteer work in prep and reflection."
+#                     )
+#                 },
+#                 "opt_out_nudges": {
+#                     "type": "boolean",
+#                     "description": (
+#                         "Set to true when the user asks to pause, stop, or turn off automated "
+#                         "messages (pre-chat nudges, post-chat check-ins, thank-you reminders). "
+#                         "Set to false when the user asks to resume or re-enable them."
+#                     )
+#                 },
+#                 "export_requested": {
+#                     "type": "boolean",
+#                     "description": (
+#                         "Set to true when the user asks to download, export, or see their history, "
+#                         "contacts, progress, or milestones. This generates a secure link SofIA "
+#                         "will include in her response."
+#                     )
+#                 },
+#                 "goals": {
+#                     "type": "array",
+#                     "items": {"type": "string"},
+#                     "description": (
+#                         "User's career goals as a list. Set or update when the user explicitly "
+#                         "states their professional objectives (e.g. 'land a data analyst role', "
+#                         "'transition into product management'). Add to the list, do not replace "
+#                         "unless the user says their goals have changed."
+#                     )
+#                 },
+#                 "milestones": {
+#                     "type": "array",
+#                     "description": (
+#                         "List of milestones to save to the user's profile. Milestones are things "
+#                         "the user DID — actions, events, achievements (e.g. attended a networking "
+#                         "event, had a first coffee chat, got an interview). "
+#                         "Use ONLY when the user asks to save their achievements/logros/progreso, "
+#                         "or when a concrete action they took is not yet recorded. "
+#                         "NEVER use milestones for cultural insights or things they learned — "
+#                         "use new_learning for those instead. "
+#                         "Only include milestones not already saved."
+#                     ),
+#                     "items": {
+#                         "type": "object",
+#                         "properties": {
+#                             "key": {
+#                                 "type": "string",
+#                                 "description": "Short snake_case identifier, e.g. 'five_chats_juanita'"
+#                             },
+#                             "label": {
+#                                 "type": "string",
+#                                 "description": "Human-readable label in the user's language, e.g. '5 conversaciones con Juanita (TD Bank)'"
+#                             },
+#                             "note": {
+#                                 "type": "string",
+#                                 "description": "Optional context or insight about this milestone."
+#                             }
+#                         },
+#                         "required": ["key", "label"]
+#                     }
+#                 },
+#                 "new_learning": {
+#                     "type": "object",
+#                     "description": (
+#                         "Save a specific insight the user just learned about Canadian professional "
+#                         "culture or job search. Use this — NOT milestones — for cultural norms, "
+#                         "workplace insights, or job search knowledge. "
+#                         "Only call this when you just explained a concrete, transferable norm — "
+#                         "not for general encouragement or emotional support. "
+#                         "One learning per update_state call. To save multiple learnings, make "
+#                         "one update_state call per learning in sequence."
+#                     ),
+#                     "properties": {
+#                         "topic": {
+#                             "type": "string",
+#                             "enum": [
+#                                 "canadian_workplace", "job_search", "outreach",
+#                                 "interview", "survival_job", "volunteering"
+#                             ],
+#                             "description": "Category of the insight."
+#                         },
+#                         "insight": {
+#                             "type": "string",
+#                             "description": (
+#                                 "The key insight in 1-2 sentences in the user's language. "
+#                                 "Specific and actionable — written in second person ('tú'), "
+#                                 "as if the user is recalling it themselves. "
+#                                 "In Spanish use 'Descubriste', 'Aprendiste', 'Notaste', etc. "
+#                                 "In English use 'You learned', 'You discovered', etc. "
+#                                 "Never use third person ('Descubrió', 'She learned')."
+#                             )
+#                         },
+#                         "confidence": {
+#                             "type": "string",
+#                             "enum": ["high", "medium", "uncertain"],
+#                             "description": (
+#                                 "high = well-established Canadian norm; "
+#                                 "medium = generally true, some context-dependence; "
+#                                 "uncertain = varies by industry/role/company."
+#                             )
+#                         }
+#                     },
+#                     "required": ["topic", "insight", "confidence"]
+#                 }
+#             }
+#         }
+#     }
+# ]
 
 _CORE = """
 Tu nombre es SofIA — Tu aliada en Canadá.
