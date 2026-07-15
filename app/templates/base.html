@@ -12,7 +12,12 @@
 
 {% block navbar %}
 <nav class="navbar navbar-dark navbar-sofia d-flex justify-content-between">
-  <a href="/" class="navbar-brand mb-0 h1">SofIA - Tu Aliada en Canadá</a>
+  <a href="/" class="navbar-brand mb-0 h1 d-flex align-items-center">
+  SofIA - Tu Aliada en Canadá
+  {% if request.url.path != '/' %}
+  <i class="bi bi-house-door-fill ml-3" style="font-size: 1.1rem;"></i>
+  {% endif %}
+</a>
   <div>
     <a href="/guide?lang={{ lang }}" class="btn btn-sm btn-outline-light mr-2">
       {% if lang == 'es' %}Guía{% else %}Guide{% endif %}
