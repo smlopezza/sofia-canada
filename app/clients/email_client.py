@@ -6,11 +6,9 @@ logger = logging.getLogger(__name__)
 
 resend.api_key = os.getenv("RESEND_API_KEY", "")
 
-FROM_EMAIL: str = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
-BASE_URL: str = os.getenv("BASE_URL", "https://sofia-qhgvxxwh5q-nn.a.run.app")
-ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "")
-if not ADMIN_EMAIL:
-    raise RuntimeError("ADMIN_EMAIL is not configured in the environment (.env)")
+FROM_EMAIL = os.getenv("RESEND_FROM_EMAIL", "onboarding@resend.dev")
+BASE_URL = os.getenv("BASE_URL", "https://sofia-qhgvxxwh5q-nn.a.run.app")
+ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", " ")
 
 def send_mentor_links_email(name: str, email: str, token: str, lang: str = "en") -> bool:
     edit_url = f"{BASE_URL}/mentors/edit?token={token}&lang={lang}"
